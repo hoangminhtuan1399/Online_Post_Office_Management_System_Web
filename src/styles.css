@@ -25,3 +25,7 @@ ul {
 .global__hover-underline:hover {
   text-decoration: underline !important;
 }
+
+img {
+  max-width: 100%;
+}

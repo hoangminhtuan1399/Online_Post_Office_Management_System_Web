@@ -1,0 +1,17 @@
+.slick-slider {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.slick-slider img {
+  width: 100%;
+  height: auto;
+}
+
+.slick-dots {
+  bottom: 20px;
+}
+
+.slick-dots li button:before {
+  color: white;
+}

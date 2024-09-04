@@ -1,17 +1,11 @@
-.home__container {
-
-}
-
 .landing-page {
   display: grid;
   gap: 2rem;
-  padding: 2rem 0;
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
 }
 
 .image-col img {
@@ -28,7 +22,7 @@
 
 .text-col h2 {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .text-col p {
@@ -45,6 +39,10 @@
   .row:nth-child(even) {
     grid-template-columns: 1fr 1fr;
   }
+
+  .text-col h2 {
+    margin-bottom: 1rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -54,5 +52,11 @@
 
   .text-col p {
     font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .image-col {
+    order: 2;
   }
 }
