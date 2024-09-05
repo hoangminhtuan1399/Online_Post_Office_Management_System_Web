@@ -1,0 +1,67 @@
+.popover__outside-background {
+  display: none;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 999;
+}
+
+.popover__outside-background.active {
+  display: block;
+}
+
+.popover-content {
+  width: 250px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  position: absolute;
+  z-index: 1000;
+  top: 40px; /* Adjust this value to position the popover below the icon */
+  right: 0;
+  transition: 224ms ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.popover-content.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popover-header {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.popover-body .form-group {
+  margin-bottom: 4px;
+}
+
+.text-danger {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.form-control {
+  font-size: 0.875rem;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.popover__submit-btn {
+  font-size: 0.875rem;
+  background-color: var(--primary-button-bg);
+  border: none;
+  transition: 224ms ease-in-out;
+}
+
+.popover__submit-btn:hover {
+  background-color: var(--primary-button-bg-hover);
+}
