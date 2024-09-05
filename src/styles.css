@@ -1,6 +1,12 @@
 :root {
   --primary-color: #f36e2f;
   --secondary-color: #04295e;
+  --primary-button-bg: var(--secondary-color);
+  --primary-button-bg-hover: #0B5ED7FF;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {

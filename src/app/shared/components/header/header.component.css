@@ -5,3 +5,7 @@
 .header__logo {
   max-height: 40px;
 }
+
+#track-delivery {
+  cursor: pointer;
+}
