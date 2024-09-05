@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary-color: #f36e2f;
+  --secondary-color: #04295e;
+}
+
+body {
+  font-family: "Poppins", sans-serif !important;
+}
+
+ul {
+  margin: 0;
+  list-style-type: none;
+  padding: 0;
+}
+
+.global__hover--scale {
+  transition: 224ms linear !important;
+}
+
+.global__hover--scale:hover {
+  transform: scale(1.2);
+  transform-origin: center center;
+}
+
+.global__hover-underline:hover {
+  text-decoration: underline !important;
+}
+
+img {
+  max-width: 100%;
+}

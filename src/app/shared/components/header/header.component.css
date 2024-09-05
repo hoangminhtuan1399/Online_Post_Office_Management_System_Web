@@ -1,0 +1,7 @@
+.header__container {
+  background-color: var(--secondary-color);
+}
+
+.header__logo {
+  max-height: 40px;
+}
