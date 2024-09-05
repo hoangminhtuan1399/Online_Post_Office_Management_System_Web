@@ -1,4 +1,4 @@
-<div class="popover-content {{isVisible ? 'active' : ''}}">
+<div class="popover-content p-3 {{isVisible ? 'active' : ''}}">
   <div class="popover-header">
     <h5>Track Your Delivery</h5>
   </div>
@@ -21,7 +21,7 @@
           <div *ngIf="packageId?.errors?.['required']">Package ID is required.</div>
         </div>
       </div>
-      <button type="submit" class="popover__submit-btn w-100 btn btn-primary mt-2 pt-1 pb-1 ps-2 pe-2">Submit</button>
+      <button type="submit" class="submit-btn w-100 btn btn-primary mt-2 pt-1 pb-1 ps-2 pe-2">Submit</button>
     </form>
   </div>
 </div>

@@ -1,0 +1,43 @@
+#sidebar {
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease;
+}
+
+.collapsed {
+  transform: translateX(-100%);
+}
+
+@media (min-width: 768px) {
+  #sidebar {
+    transform: none;
+    position: relative;
+  }
+}
+
+.user-info {
+  cursor: pointer;
+}
+
+a.nav-link.active {
+  background-color: #007bff;
+  color: white;
+}
+
+a.nav-link {
+  color: #495057;
+  text-decoration: none;
+}
+
+a.nav-link:hover {
+  background-color: #e9ecef;
+}
+
+button.btn {
+  position: absolute;
+  bottom: 20px;
+}
