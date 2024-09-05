@@ -1,0 +1,52 @@
+<footer class="text-light pt-4 footer__container">
+  <div class="container">
+    <div class="row">
+      <!-- Contact Information -->
+      <div class="col-md-4">
+        <h5>Contact Us</h5>
+        <p>
+          <i class="me-1 fas fa-map-marker-alt"></i> 123 Main Street, City, Country<br>
+          <i class="me-1 fas fa-phone-alt"></i> +123 456 7890<br>
+          <i class="me-1 fas fa-envelope"></i> support&#64;tardelivery.com
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a routerLink="" class="text-light global__hover-underline">Home</a></li>
+          <li><a routerLink="" class="text-light global__hover-underline">Services</a></li>
+          <li><a routerLink="/delivery" class="text-light global__hover-underline">Track Your Package</a></li>
+          <li><a routerLink="" class="text-light global__hover-underline">Contact</a></li>
+          <li><a routerLink="" class="text-light global__hover-underline">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Media and App Links -->
+      <div class="col-md-4">
+        <h5>Follow Us</h5>
+        <ul class="ps-0 d-flex gap-2 gap-md-3">
+          <li *ngFor="let icon of socialIcons" class="nav-item">
+            <a class="nav-link text-white global__hover--scale" href="{{icon.href}}" target="_blank">
+              <i class="fab {{icon.classIcon}}" style="font-size: 20px;"></i>
+            </a>
+          </li>
+        </ul>
+        <h5 class="mt-3">Download Our App</h5>
+        <a href="#" class="text-light me-2">
+          <i class="fab fa-apple"></i> App Store
+        </a>
+        <a href="#" class="text-light">
+          <i class="fab fa-google-play"></i> Google Play
+        </a>
+      </div>
+    </div>
+    <hr class="bg-light">
+    <div class="row">
+      <div class="col text-center">
+        <p>&copy; 2024 Tar Delivery. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>

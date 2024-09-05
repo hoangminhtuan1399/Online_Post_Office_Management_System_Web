@@ -1,0 +1,31 @@
+<nav class="header__container navbar">
+  <div class="container">
+    <!-- Left Side -->
+    <a routerLink="/" class="navbar-brand d-flex align-items-center">
+      <img class="header__logo" src="assets/img/logo.png" alt="TARS Logo" />
+      <span class="header__site-name fw-bold ms-2 d-inline text-white">TARS Delivery</span>
+    </a>
+
+    <!-- Mid Side-->
+    <a routerLink="/" class="navbar-brand d-none d-sm-flex align-items-center">
+      <img class="header__logo" src="assets/img/logo2.png" alt="TARS Logo" />
+    </a>
+
+    <!-- Right Side -->
+    <div class="header__right-col">
+      <ul class="d-flex mb-0 navbar-nav flex-row gap-3 gap-md-4 ms-auto">
+        <li *ngFor="let icon of socialIcons" class="nav-item">
+          <a class="nav-link text-white global__hover--scale" href="{{icon.href}}" target="_blank">
+            <i class="fab {{icon.classIcon}}" style="font-size: 20px;"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link position-relative text-white global__hover--scale" href="/delivery">
+            <i class="fas fa-box" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="bottom"
+               title="Track your delivery"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
