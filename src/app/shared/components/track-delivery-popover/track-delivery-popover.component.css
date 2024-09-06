@@ -16,11 +16,11 @@
   width: 250px;
   padding: 10px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   background-color: #fff;
   position: absolute;
   z-index: 1000;
-  top: 40px; /* Adjust this value to position the popover below the icon */
+  top: 40px;
   right: 0;
   transition: 224ms ease-in-out;
   opacity: 0;

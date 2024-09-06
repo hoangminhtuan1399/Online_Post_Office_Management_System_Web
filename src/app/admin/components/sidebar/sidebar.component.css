@@ -6,10 +6,22 @@
   top: 0;
   left: 0;
   transition: transform 0.3s ease;
+  background: rgb(13,6,79);
+  background: -moz-linear-gradient(180deg, rgba(13,6,79,1) 30%, rgba(42,58,150,1) 70%, rgba(61,118,182,1) 100%);
+  background: -webkit-linear-gradient(180deg, rgba(13,6,79,1) 30%, rgba(42,58,150,1) 70%, rgba(61,118,182,1) 100%);
+  background: linear-gradient(180deg, rgba(13,6,79,1) 30%, rgba(42,58,150,1) 70%, rgba(61,118,182,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0d064f",endColorstr="#3d76b6",GradientType=1);
 }
 
 .collapsed {
   transform: translateX(-100%);
+}
+
+.siderbar__logout-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 @media (min-width: 768px) {
@@ -29,15 +41,26 @@ a.nav-link.active {
 }
 
 a.nav-link {
-  color: #495057;
+  color: white;
   text-decoration: none;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  font-size: 0.875rem;
 }
 
-a.nav-link:hover {
+a.nav-link:not(.active):not(.parent-link):hover {
   background-color: #e9ecef;
+  color: black;
 }
 
-button.btn {
-  position: absolute;
-  bottom: 20px;
+.sidebar__toggle-btn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: var(--secondary-color);
+  border: none;
+}
+
+.sidebar__toggle-btn.active {
+  background-color: transparent;
 }
