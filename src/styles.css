@@ -35,3 +35,28 @@ ul {
 img {
   max-width: 100%;
 }
+
+label {
+  font-weight: 500;
+}
+
+.form-control:focus {
+  box-shadow: none !important;
+  border-color: var(--secondary-color) !important;
+}
+
+.submit-btn {
+  background-color: var(--primary-button-bg) !important;
+  border: none !important;
+  transition: 224ms ease-in-out !important;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-button-bg-hover) !important;
+}
+
+.admin-background {
+  background-image: url('./assets/img/admin-background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}

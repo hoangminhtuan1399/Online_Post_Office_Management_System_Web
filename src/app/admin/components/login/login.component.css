@@ -1,0 +1,4 @@
+.login__container {
+  width: 400px;
+  max-width: calc(100vw - 30px);
+}

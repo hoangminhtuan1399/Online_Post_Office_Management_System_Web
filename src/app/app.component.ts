@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from "@angular/router";
+import { filter } from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,7 @@ import { NavigationEnd, Router } from "@angular/router";
   styleUrl: './app.component.css'
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'online-post-office-management-web';
   showHeaderAndFooter: boolean = true;
   socialIcons = [
@@ -25,14 +26,16 @@ export class AppComponent implements OnInit {
     }
   ]
 
-  constructor(private _router: Router) {}
+  constructor(private router: Router) {
+    // Listen for route changes to determine if header/footer should be shown
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.checkRoute(event.urlAfterRedirects);
+      });
+  }
 
-  ngOnInit(): void {
-    this._router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        const noHeaderAndFooter = ['/admin']
-        this.showHeaderAndFooter = !noHeaderAndFooter.includes(event.url);
-      }
-    })
+  checkRoute(url: string) {
+    this.showHeaderAndFooter = !url.startsWith('/admin');
   }
 }
