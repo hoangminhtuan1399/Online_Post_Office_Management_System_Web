@@ -21,7 +21,9 @@
         </div>
         <div class="mt-4">
           <button type="submit"
-                  class="submit-btn w-100 btn btn-primary btn-block p-2">
+                  class="submit-btn w-100 btn btn-primary btn-block p-2"
+                  [disabled]="isSubmitting"
+          >
             Sign in
           </button>
         </div>
