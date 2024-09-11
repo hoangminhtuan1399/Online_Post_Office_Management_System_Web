@@ -1,0 +1,4 @@
+.admin-right-col {
+  max-height: 100vh;
+  overflow-y: auto;
+}

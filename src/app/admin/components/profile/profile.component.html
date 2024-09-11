@@ -1,1 +1,71 @@
-<p>profile works!</p>
+<div class="" *ngIf="!loading; else loadingTemplate">
+  <div class="card bg-transparent border-0">
+    <div class="card-header border-0 bg-transparent">
+      <h3 class="fw-bold">User Profile</h3>
+    </div>
+    <div class="card-body border-0">
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-4 text-center d-flex flex-column gap-1">
+            <div>
+              <img [src]="profileForm.get('image_url')?.value" class="img-fluid rounded-circle mb-1" alt="User Avatar" width="150">
+            </div>
+            <div>
+              <span class="fw-semibold">{{this.defaultData.name}}</span>
+            </div>
+            <div>
+              <span class="">{{this.defaultData.email}}</span>
+            </div>
+            <div>
+              <span class="">{{this.defaultData.phone}}</span>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input id="name" type="text" class="form-control" formControlName="name">
+              <div *ngIf="profileForm.get('name')?.invalid && (profileForm.get('name')?.touched || profileForm.get('name')?.dirty)" class="text-danger">
+                <small *ngIf="profileForm.get('name')?.errors?.['required']">Name is required.</small>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input id="email" type="email" class="form-control" formControlName="email">
+              <div *ngIf="profileForm.get('email')?.invalid && (profileForm.get('email')?.touched || profileForm.get('email')?.dirty)" class="text-danger">
+                <small *ngIf="profileForm.get('email')?.errors?.['required']">Email is required.</small>
+                <small *ngIf="profileForm.get('email')?.errors?.['email']">Invalid email format.</small>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input id="phone" type="text" class="form-control" formControlName="phone">
+              <div *ngIf="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.touched || profileForm.get('phone')?.dirty)" class="text-danger">
+                <small *ngIf="profileForm.get('phone')?.errors?.['required']">Phone number is required.</small>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="dateOfBirth" class="form-label">Date of Birth</label>
+              <input id="dateOfBirth" type="date" class="form-control" formControlName="dateOfBirth">
+              <div *ngIf="profileForm.get('dateOfBirth')?.invalid && (profileForm.get('dateOfBirth')?.touched || profileForm.get('dateOfBirth')?.dirty)" class="text-danger">
+                <small *ngIf="profileForm.get('dateOfBirth')?.errors?.['required']">Date of birth is required.</small>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="gender" class="form-label">Gender</label>
+              <input id="gender" type="text" class="form-control" formControlName="gender" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary submit-btn">Update Profile</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>

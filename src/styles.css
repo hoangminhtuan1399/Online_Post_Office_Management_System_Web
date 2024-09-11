@@ -40,6 +40,10 @@ label {
   font-weight: 500;
 }
 
+p {
+  margin-bottom: 0 !important;
+}
+
 .form-control:focus {
   box-shadow: none !important;
   border-color: var(--secondary-color) !important;
@@ -59,4 +63,14 @@ label {
   background-image: url('./assets/img/admin-background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
 }

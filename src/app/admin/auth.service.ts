@@ -20,5 +20,14 @@ export class AuthService {
     return null;
   }
 
-  // Other authentication related methods can be added here
+  setUserData(data: any) {
+    localStorage.setItem('username', data.username);
+    localStorage.setItem('roleName', data.roleName);
+  }
+
+  signOut() {
+    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.removeItem('username');
+    localStorage.removeItem('roleName');
+  }
 }
