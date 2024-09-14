@@ -8,6 +8,7 @@ import { HomeModule } from "./home/home.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AdminModule } from "./admin/admin.module";
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'; // Import HttpClientModule
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminModule
+    
+    HttpClientModule
   ],
   exports: [],
   providers: [

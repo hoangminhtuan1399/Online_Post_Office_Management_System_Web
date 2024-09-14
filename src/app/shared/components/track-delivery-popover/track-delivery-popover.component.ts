@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TrackingPopoverService } from "../../tracking-popover.service";
+import { PackageDetailService } from '../../package-detail.service';
+import { HttpClient } from '@angular/common/http';
+import { PackageDetail } from '../../package-detail.model';
 
 @Component({
   selector: 'app-track-delivery-popover',
@@ -11,9 +14,12 @@ export class TrackDeliveryPopoverComponent implements OnInit {
   @Input() isVisible: boolean | null = false;
   trackForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private trackingPopoverService: TrackingPopoverService) {
-
-  }
+  constructor(
+    private fb: FormBuilder, 
+    private trackingPopoverService: TrackingPopoverService,
+    private packageDetailService: PackageDetailService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.trackForm = this.fb.group({
@@ -25,8 +31,20 @@ export class TrackDeliveryPopoverComponent implements OnInit {
   onSubmit() {
     if (this.trackForm.valid) {
       const { phoneNumber, packageId } = this.trackForm.value;
-      console.log('Phone Number:', phoneNumber);
-      console.log('Package ID:', packageId);
+      const apiUrl = `https://localhost:7029/api/Customer/CheckPackageStatus?phone=${phoneNumber}&packageId=${packageId}`;
+
+      this.packageDetailService.setLoadingState(true);  // Kích hoạt trạng thái loading
+
+      this.http.get<PackageDetail>(apiUrl).subscribe(
+        (response) => {
+          this.packageDetailService.setPackageDetail(response);
+          this.packageDetailService.setVisibility(true);
+        },
+        (error) => {
+          this.packageDetailService.setPackageDetail(null);
+          this.packageDetailService.setVisibility(true); 
+        }
+      );
     } else {
       this.trackForm.markAllAsTouched();
     }
