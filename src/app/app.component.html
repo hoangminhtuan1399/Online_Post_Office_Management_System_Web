@@ -1,5 +1,6 @@
 <app-header [socialIcons]="socialIcons" *ngIf="showHeaderAndFooter"></app-header>
 <router-outlet />
+
 <app-footer [socialIcons]="socialIcons" *ngIf="showHeaderAndFooter"></app-footer>
 
 <div *ngIf="showToast" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11;">

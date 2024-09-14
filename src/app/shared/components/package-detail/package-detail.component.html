@@ -1,0 +1,26 @@
+<div *ngIf="isVisible" class="package-detail-overlay">
+  <div class="package-detail-container">
+    <div class="card">
+      <div class="card-header">
+        Package Details
+        <button type="button" class="close" (click)="closeDetail()">&times;</button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="isLoading; else detailTemplate">
+          <div class="spinner"></div> <!-- Hiển thị spinner khi đang loading -->
+        </div>
+        <ng-template #detailTemplate>
+          <ng-container *ngIf="packageDetail; else errorTemplate">
+            <h5 class="card-title">Delivery Number: {{ packageDetail.deliveryNumber }}</h5>
+            <p class="card-text">Receiver: {{ packageDetail.receiver }}</p>
+            <p class="card-text">Weight: {{ packageDetail.weight }} kg</p>
+            <p class="card-text">Created At: {{ packageDetail.createdAt | date:'medium' }}</p>
+          </ng-container>
+          <ng-template #errorTemplate>
+            <p class="text-danger">{{ errorMessage }}</p>
+          </ng-template>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

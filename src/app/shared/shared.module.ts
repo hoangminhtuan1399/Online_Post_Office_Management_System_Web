@@ -5,12 +5,14 @@ import { FooterComponent } from "./components/footer/footer.component";
 import { RouterLink } from "@angular/router";
 import { TrackDeliveryPopoverComponent } from "./components/track-delivery-popover/track-delivery-popover.component";
 import { ReactiveFormsModule } from "@angular/forms";
+import { PackageDetailComponent } from './components/package-detail/package-detail.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    TrackDeliveryPopoverComponent
+    TrackDeliveryPopoverComponent,
+    PackageDetailComponent
   ],
   exports: [
     HeaderComponent,
