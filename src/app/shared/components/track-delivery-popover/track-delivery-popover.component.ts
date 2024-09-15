@@ -4,6 +4,7 @@ import { TrackingPopoverService } from "../../tracking-popover.service";
 import { PackageDetailService } from '../../package-detail.service';
 import { HttpClient } from '@angular/common/http';
 import { PackageDetail } from '../../package-detail.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-track-delivery-popover',
@@ -31,7 +32,7 @@ export class TrackDeliveryPopoverComponent implements OnInit {
   onSubmit() {
     if (this.trackForm.valid) {
       const { phoneNumber, packageId } = this.trackForm.value;
-      const apiUrl = `https://localhost:7029/api/Customer/CheckPackageStatus?phone=${phoneNumber}&packageId=${packageId}`;
+      const apiUrl = `${environment.apiBaseUrl}/api/Customer/CheckPackageStatus?phone=${phoneNumber}&packageId=${packageId}`;
 
       this.trackingPopoverService.setVisibility(false);
       this.packageDetailService.setVisibility(true);
