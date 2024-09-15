@@ -1,0 +1,81 @@
+<h2>Create Employee</h2>
+
+<!-- Thông báo thành công -->
+<div *ngIf="successMessage" class="alert alert-success" role="alert">
+  {{ successMessage }}
+</div>
+
+<form (ngSubmit)="createEmployee()">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input 
+      id="name" 
+      [(ngModel)]="employee.name" 
+      name="name" 
+      class="form-control" 
+      required 
+      placeholder="Enter employee's name">
+  </div>
+  
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input 
+      id="email" 
+      [(ngModel)]="employee.email" 
+      name="email" 
+      type="email" 
+      class="form-control" 
+      required 
+      placeholder="Enter employee's email">
+  </div>
+  
+  <div class="form-group">
+    <label for="phone">Phone</label>
+    <input 
+      id="phone" 
+      [(ngModel)]="employee.phone" 
+      name="phone" 
+      class="form-control" 
+      required 
+      placeholder="Enter employee's phone number">
+  </div>
+  
+  <div class="form-group">
+    <label for="gender">Gender</label>
+    <select 
+      id="gender" 
+      [(ngModel)]="employee.gender" 
+      name="gender" 
+      class="form-control" 
+      required>
+      <option value="" disabled selected>Select gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label for="dateOfBirth">Date of Birth</label>
+    <input 
+      id="dateOfBirth" 
+      [(ngModel)]="employee.dateOfBirth" 
+      name="dateOfBirth" 
+      type="date" 
+      class="form-control" 
+      required>
+  </div>
+  
+  <div class="form-group">
+    <label for="officeId">Office ID</label>
+    <input 
+      id="officeId" 
+      [(ngModel)]="employee.officeId" 
+      name="officeId" 
+      class="form-control" 
+      required 
+      placeholder="Enter office ID">
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
