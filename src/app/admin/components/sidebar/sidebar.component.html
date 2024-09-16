@@ -29,11 +29,8 @@
       <i class="fa-solid fa-building fa-lg"></i>
       <span>Branches</span>
     </a>
-
-    <!-- Admin Section -->
-    <div class="nav-item">
-      <a class="nav-link d-flex align-items-center gap-2 parent-link" 
-         href="javascript:void(0)" role="button">
+    <div *ngIf="hasAdminAccess()" class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2 parent-link" href="javascript:void(0)" role="button">
         <i class="fa-solid fa-user-tie fa-lg"></i>
         <span>Admin</span>
       </a>
