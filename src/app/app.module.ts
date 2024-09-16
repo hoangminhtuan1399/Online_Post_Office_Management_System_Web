@@ -8,7 +8,6 @@ import { HomeModule } from "./home/home.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AdminModule } from "./admin/admin.module";
 import { HttpClientModule } from '@angular/common/http';
-import { EmployeeModule } from './Employee/employee.module'; 
 
 @NgModule({
   declarations: [
@@ -23,7 +22,7 @@ import { EmployeeModule } from './Employee/employee.module';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    EmployeeModule // Import EmployeeModule vào đây
+    AdminModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
