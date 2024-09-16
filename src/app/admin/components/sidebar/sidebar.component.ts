@@ -12,12 +12,14 @@ import { AuthService } from "../../auth.service";
 export class SidebarComponent implements OnInit {
   isCollapsed = true;
   userRole: string | null = null;
+  username: string | null = null;
 
   constructor(protected router: Router, private authService: AuthService) {
   }
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('userRole');
+    this.username = localStorage.getItem('username');
   }
 
   logout() {
