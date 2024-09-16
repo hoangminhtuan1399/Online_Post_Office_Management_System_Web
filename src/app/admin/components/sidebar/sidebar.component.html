@@ -1,8 +1,8 @@
 <div [class.collapsed]="isCollapsed" id="sidebar" class="border-end text-white">
   <div (click)="router.navigate(['/admin/profile'])"
        class="user-info p-3 d-flex align-items-center border-bottom gap-2">
-    <img src="assets/avatar.png" alt="Avatar" class="rounded-circle me-2" width="40">
-    <span class="cursor-pointer">Hello</span>
+    <img src="assets/img/user-avatar.jpg" alt="Avatar" class="rounded-circle me-2" width="40">
+    <span class="cursor-pointer">{{this.username}}</span>
   </div>
   <nav class="nav flex-column mt-3 ps-2 pe-2">
     <a class="nav-link d-flex align-items-center gap-2" [class.active]="isActive('/admin/dashboard')"
