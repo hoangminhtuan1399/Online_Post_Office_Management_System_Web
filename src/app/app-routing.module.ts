@@ -6,10 +6,11 @@ import { AuthGuard } from "./admin/auth.guard";
 import { LoginComponent } from "./admin/components/login/login.component";
 import { PaymentsComponent } from "./admin/components/payments/payments.component";
 import { BranchesComponent } from "./admin/components/branches/branches.component";
-import { EmployeesComponent } from "./admin/components/employees/employees.component";
 import { ServicesComponent } from "./admin/components/services/services.component";
 import { ProfileComponent } from "./admin/components/profile/profile.component";
 import { AdminLayoutComponent } from "./admin/components/admin-layout/admin-layout.component";
+import { EmployeeListComponent } from './admin/components/employees/employee-list/employee-list.component';
+import { EmployeeCreateComponent } from './admin/components/employees/employee-create/employee-create.component';
 
 const routes: Routes = [
   { path: 'admin/login', component: LoginComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'payments', component: PaymentsComponent },
       { path: 'branches', component: BranchesComponent },
-      { path: 'employees', component: EmployeesComponent },
+      { path: 'employees/list', component: EmployeeListComponent },
+      { path: 'employees/create', component: EmployeeCreateComponent },
       { path: 'services', component: ServicesComponent },
       { path: 'profile', component: ProfileComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -29,7 +31,7 @@ const routes: Routes = [
     ]
   },
   { path: '', component: HomeComponent },
-  { path: '**', redirectTo: ''}
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

@@ -7,7 +7,6 @@ import { SharedModule } from "./shared/shared.module";
 import { HomeModule } from "./home/home.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AdminModule } from "./admin/admin.module";
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'; // Import HttpClientModule
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -22,13 +21,10 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    
-    HttpClientModule
+    HttpClientModule,
+    AdminModule 
   ],
-  exports: [],
-  providers: [
-    provideHttpClient(withInterceptorsFromDi())
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
