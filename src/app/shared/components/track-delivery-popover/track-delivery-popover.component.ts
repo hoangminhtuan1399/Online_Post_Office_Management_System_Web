@@ -33,16 +33,16 @@ export class TrackDeliveryPopoverComponent implements OnInit {
       const { phoneNumber, packageId } = this.trackForm.value;
       const apiUrl = `https://localhost:7029/api/Customer/CheckPackageStatus?phone=${phoneNumber}&packageId=${packageId}`;
 
-      this.packageDetailService.setLoadingState(true);  // Kích hoạt trạng thái loading
+      this.trackingPopoverService.setVisibility(false);
+      this.packageDetailService.setVisibility(true);
+      this.packageDetailService.setLoadingState(true); // Kích hoạt trạng thái loading
 
       this.http.get<PackageDetail>(apiUrl).subscribe(
         (response) => {
-          this.packageDetailService.setPackageDetail(response);
-          this.packageDetailService.setVisibility(true);
+          this.packageDetailService.setPackageDetail(response);         
         },
         (error) => {
-          this.packageDetailService.setPackageDetail(null);
-          this.packageDetailService.setVisibility(true); 
+          this.packageDetailService.setPackageDetail(null);          
         }
       );
     } else {
