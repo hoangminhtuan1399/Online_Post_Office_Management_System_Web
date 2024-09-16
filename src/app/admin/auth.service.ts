@@ -22,7 +22,7 @@ export class AuthService {
 
   setUserData(data: any) {
     localStorage.setItem('username', data.username);
-    localStorage.setItem('roleName', data.roleName);
+    localStorage.setItem('userRole', data.roleName);
   }
 
   signOut() {
