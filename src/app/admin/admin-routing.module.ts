@@ -10,6 +10,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
 import { EmployeeListComponent } from './components/employees/employee-list/employee-list.component';  
 import { EmployeeCreateComponent } from './components/employees/employee-create/employee-create.component';
+import { EmployeeEditComponent } from './components/employees/employee-edit/employee-edit.component';
+import { EmployeeDetailComponent } from './components/employees/employee-detail/employee-detail.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,7 +26,9 @@ const routes: Routes = [
       { path: 'services', component: ServicesComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'employees', component: EmployeeListComponent }, 
-      { path: 'employees/create', component: EmployeeCreateComponent }, 
+      { path: 'employees/create', component: EmployeeCreateComponent },
+      { path: 'employees/edit/:id', component: EmployeeEditComponent }, 
+      { path: 'employees/detail/:id', component: EmployeeDetailComponent }, 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', redirectTo: 'dashboard' }
     ]

@@ -16,8 +16,8 @@ import { EmployeeListComponent } from './components/employees/employee-list/empl
 import { EmployeeCreateComponent } from './components/employees/employee-create/employee-create.component';
 import { OfficeListComponent } from './components/offices/office-list/office-list.component';
 import { PackageComponent } from './components/package/package.component';
-
-
+import { EmployeeEditComponent } from './components/employees/employee-edit/employee-edit.component';
+import { EmployeeDetailComponent } from './components/employees/employee-detail/employee-detail.component';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -31,7 +31,9 @@ import { PackageComponent } from './components/package/package.component';
     EmployeeListComponent,
     EmployeeCreateComponent,
     OfficeListComponent,
-    PackageComponent
+    PackageComponent,
+    EmployeeEditComponent,
+    EmployeeDetailComponent
   ],
   imports: [
     CommonModule,

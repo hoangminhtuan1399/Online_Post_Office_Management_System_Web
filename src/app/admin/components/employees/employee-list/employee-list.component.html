@@ -7,7 +7,8 @@
       <th>Phone</th>
       <th>Gender</th>
       <th>Date of Birth</th>
-      <th>Office ID</th>
+      <th>Office Name</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -17,7 +18,13 @@
       <td>{{ employee.phone }}</td>
       <td>{{ employee.gender }}</td>
       <td>{{ employee.dateOfBirth | date }}</td>
-      <td>{{ employee.officeId }}</td>
+      <td>{{ employee.officeName }}</td>
+      <td>
+        <a [routerLink]="['/admin/employees/edit', employee.id]" class="btn btn-primary">Update</a>
+        <a [routerLink]="['/admin/employees/detail', employee.id]" class="btn btn-info">Detail</a>
+        
+        
+      </td>
     </tr>
   </tbody>
 </table>
