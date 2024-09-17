@@ -1,9 +1,9 @@
 <div [class.collapsed]="isCollapsed" id="sidebar" class="border-end text-white">
   <div (click)="router.navigate(['/admin/profile'])"
-       class="user-info p-3 d-flex align-items-center border-bottom gap-2 cursor-pointer">
-    <img src="assets/avatar.png" alt="Avatar" class="rounded-circle me-2" width="40">
-    <span>Hello</span>
-
+  class="user-info p-3 d-flex align-items-center border-bottom gap-2">
+  <img src="assets/img/user-avatar.jpg" alt="Avatar" class="rounded-circle me-2" width="40">
+  <span class="cursor-pointer">{{this.username}}</span>
+</div>
 
   <nav class="nav flex-column mt-3 ps-2 pe-2">
     <!-- Dashboard Link -->
@@ -61,15 +61,12 @@
   </nav>
 
   <!-- Logout Button -->
-  <button class="sidebar__logout-btn btn btn-danger w-75 mt-auto" 
-          (click)="logout()">
+  <button class="siderbar__logout-btn btn btn-danger w-75" (click)="logout()">
     <span>Sign Out</span>
   </button>
 </div>
 
 <!-- Mobile Toggle Button -->
-<button class="sidebar__toggle-btn btn btn-primary d-md-none" 
-        [class.active]="!isCollapsed" 
-        (click)="isCollapsed = !isCollapsed">
+<button class="sidebar__toggle-btn btn btn-primary d-md-none {{!isCollapsed ? 'active' : ''}}" (click)="isCollapsed = !isCollapsed">
   <i class="fa-solid fa-bars"></i>
 </button>

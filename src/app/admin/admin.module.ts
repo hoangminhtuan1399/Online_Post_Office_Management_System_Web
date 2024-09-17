@@ -30,7 +30,7 @@ import { PackageComponent } from './components/package/package.component';
     AdminLayoutComponent,
     EmployeeListComponent,
     EmployeeCreateComponent,
-    OfficeListComponent
+    OfficeListComponent,
     PackageComponent
   ],
   imports: [
