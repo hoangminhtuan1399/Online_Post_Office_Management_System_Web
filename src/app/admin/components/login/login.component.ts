@@ -47,8 +47,8 @@ export class LoginComponent {
         }
       },
       error: (errorResponse) => {
-        if (errorResponse.status >= 400 && errorResponse.error && errorResponse.error.error) {
-          this.toastService.showToast(errorResponse.error.error, 'danger');
+        if (errorResponse.status >= 400 && errorResponse.error) {
+          this.toastService.showToast(errorResponse.error, 'danger');
         } else {
           this.toastService.showToast('An unexpected error occurred', 'danger');
         }
