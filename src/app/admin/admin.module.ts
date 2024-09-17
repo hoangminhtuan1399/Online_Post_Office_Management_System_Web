@@ -15,6 +15,8 @@ import { AdminLayoutComponent } from './components/admin-layout/admin-layout.com
 import { EmployeeListComponent } from './components/employees/employee-list/employee-list.component'; 
 import { EmployeeCreateComponent } from './components/employees/employee-create/employee-create.component';
 import { OfficeListComponent } from './components/offices/office-list/office-list.component';
+import { PackageComponent } from './components/package/package.component';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { OfficeListComponent } from './components/offices/office-list/office-lis
     EmployeeListComponent,
     EmployeeCreateComponent,
     OfficeListComponent
+    PackageComponent
   ],
   imports: [
     CommonModule,
