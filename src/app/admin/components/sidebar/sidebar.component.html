@@ -7,28 +7,21 @@
 
   <nav class="nav flex-column mt-3 ps-2 pe-2">
     <!-- Dashboard Link -->
-    <a class="nav-link d-flex align-items-center gap-2" 
-       [class.active]="isActive('/admin/dashboard')" 
+    <a class="nav-link d-flex align-items-center gap-2"
+       [class.active]="isActive('/admin/dashboard')"
        routerLink="/admin/dashboard">
       <i class="fa-solid fa-house-user fa-lg"></i>
       <span>Dashboard</span>
     </a>
 
     <!-- Payments Link -->
-    <a class="nav-link d-flex align-items-center gap-2" 
-       [class.active]="isActive('/admin/payments')" 
+    <a class="nav-link d-flex align-items-center gap-2"
+       [class.active]="isActive('/admin/payments')"
        routerLink="/admin/payments">
       <i class="fa-regular fa-credit-card fa-lg"></i>
       <span>Payments</span>
     </a>
 
-    <!-- Branches Link -->
-    <a class="nav-link d-flex align-items-center gap-2" 
-       [class.active]="isActive('/admin/branches')" 
-       routerLink="/admin/branches">
-      <i class="fa-solid fa-building fa-lg"></i>
-      <span>Branches</span>
-    </a>
     <div *ngIf="hasAdminAccess()" class="nav-item">
       <a class="nav-link d-flex align-items-center gap-2 parent-link" href="javascript:void(0)" role="button">
         <i class="fa-solid fa-user-tie fa-lg"></i>
@@ -36,22 +29,22 @@
       </a>
       <div class="ms-3">
         <!-- Employees Link -->
-        <a class="nav-link d-flex align-items-center gap-2" 
-           [class.active]="isActive('/admin/employees/list')" 
+        <a class="nav-link d-flex align-items-center gap-2"
+           [class.active]="isActive('/admin/employees/list')"
            routerLink="/admin/employees/list">
           <i class="fa-solid fa-clipboard-user fa-lg"></i>
           <span>Employees</span>
         </a>
         <!-- Create Employee Link -->
-        <a class="nav-link d-flex align-items-center gap-2" 
-           [class.active]="isActive('/admin/employees/create')" 
+        <a class="nav-link d-flex align-items-center gap-2"
+           [class.active]="isActive('/admin/employees/create')"
            routerLink="/admin/employees/create">
           <i class="fa-solid fa-user-plus fa-lg"></i>
           <span>Create Employee</span>
         </a>
         <!-- Services Link -->
-        <a class="nav-link d-flex align-items-center gap-2" 
-           [class.active]="isActive('/admin/services')" 
+        <a class="nav-link d-flex align-items-center gap-2"
+           [class.active]="isActive('/admin/services')"
            routerLink="/admin/services">
           <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
           <span>Services</span>
