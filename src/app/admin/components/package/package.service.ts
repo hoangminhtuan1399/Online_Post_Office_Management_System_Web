@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PackageService {
-  private apiUrl = 'http://localhost:3001/api/package';
+  private apiUrl = 'https://onlinepostofficemanagementapi-a7csemagdjdecbbu.southeastasia-01.azurewebsites.net/api/package';
 
   constructor(private http: HttpClient) { }
 

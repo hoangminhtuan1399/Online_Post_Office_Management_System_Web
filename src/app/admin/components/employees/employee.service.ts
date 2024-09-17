@@ -10,7 +10,7 @@ import { AuthService } from '../../auth.service';
   providedIn: 'root'
 })
 export class EmployeeService {
-  private apiUrl = 'https://localhost:7029/api/Employee'; 
+  private apiUrl = 'https://onlinepostofficemanagementapi-a7csemagdjdecbbu.southeastasia-01.azurewebsites.net/api/Employee'; 
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
