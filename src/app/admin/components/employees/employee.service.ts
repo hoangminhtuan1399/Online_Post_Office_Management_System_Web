@@ -10,11 +10,10 @@ import { AuthService } from '../../auth.service';
   providedIn: 'root'
 })
 export class EmployeeService {
-  private apiUrl = 'https://onlinepostofficemanagementapi-a7csemagdjdecbbu.southeastasia-01.azurewebsites.net/api/Employee'; 
+  private apiUrl = 'https://localhost:7029/api/Employee'; 
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  // Lấy headers với token từ AuthService
   private getAuthHeaders(): HttpHeaders {
     const authToken = this.authService.getTokenFromCookies();  
 

@@ -15,13 +15,12 @@ export class OfficeService {
 
   getAllOffices(): Observable<Office[]> {
     return this.http.get<Office[]>(this.apiUrl).pipe(
-      tap(data => console.log('Offices:', data)), // Log dữ liệu nhận về để kiểm tra
-      catchError(this.handleError) // Bắt lỗi và xử lý
+      tap(data => console.log('Offices:', data)), 
+      catchError(this.handleError) 
     );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    // Bạn có thể xử lý lỗi tùy theo yêu cầu của bạn ở đây
     console.error(`Error: ${error.message}`);
     return throwError(() => new Error('Something went wrong; please try again later.'));
   }
