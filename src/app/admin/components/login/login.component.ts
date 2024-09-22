@@ -40,6 +40,7 @@ export class LoginComponent {
     this.http.post<any>(`${environment.apiBaseUrl}/api/auth/login`, { username, password }).subscribe({
       next: (response) => {
         if (response && response.token) {
+          console.log('res: ', response)
           this.toastService.showToast('Login successfully', 'success');
           document.cookie = `jwt=${response.token};path=/`;
           this.authService.setUserData(response);

@@ -6,11 +6,7 @@
   top: 0;
   left: 0;
   transition: transform 0.3s ease;
-  background: rgb(13,6,79);
-  background: -moz-linear-gradient(180deg, rgba(13,6,79,1) 30%, rgba(42,58,150,1) 70%, rgba(61,118,182,1) 100%);
-  background: -webkit-linear-gradient(180deg, rgba(13,6,79,1) 30%, rgba(42,58,150,1) 70%, rgba(61,118,182,1) 100%);
-  background: linear-gradient(180deg, rgba(13,6,79,1) 30%, rgba(42,58,150,1) 70%, rgba(61,118,182,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0d064f",endColorstr="#3d76b6",GradientType=1);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .collapsed {

@@ -3,6 +3,8 @@
   --secondary-color: #04295e;
   --primary-button-bg: var(--secondary-color);
   --primary-button-bg-hover: #0B5ED7FF;
+  --scroll-bar-bg: #d6d6d6;
+  --scroll-bar-thumb-bg: var(--secondary-color);
 }
 
 html {
@@ -60,9 +62,10 @@ p {
 }
 
 .admin-background {
-  background-image: url('./assets/img/admin-background.jpg');
+  background-image: url('https://wallpapers.com/images/hd/the-old-willingdon-post-office-h74k1225rjfde3jv.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center center;
 }
 
 .loading {
@@ -73,4 +76,18 @@ p {
 .spinner-border {
   width: 3rem;
   height: 3rem;
+}
+
+.has-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.has-scroll::-webkit-scrollbar-track {
+  background: var(--scroll-bar-bg);
+  border-radius: 4px;
+}
+
+.has-scroll::-webkit-scrollbar-thumb {
+  background: var(--scroll-bar-thumb-bg);
+  border-radius: 4px;
 }
