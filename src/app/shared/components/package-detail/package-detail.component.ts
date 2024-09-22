@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PackageDetailService } from '../../package-detail.service';
-import { PackageDetail } from '../../package-detail.model';
 
 @Component({
   selector: 'app-package-detail',
@@ -8,7 +7,7 @@ import { PackageDetail } from '../../package-detail.model';
   styleUrl: './package-detail.component.css'
 })
 export class PackageDetailComponent implements OnInit {
-  packageDetail: PackageDetail | null = null;
+  packageDetail: any | null = null;
   isVisible: boolean = false;
   isLoading: boolean = false;  // Trạng thái loading
   errorMessage: string | null = null;
