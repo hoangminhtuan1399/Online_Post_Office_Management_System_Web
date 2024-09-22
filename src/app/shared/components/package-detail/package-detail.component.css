@@ -15,14 +15,20 @@
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  max-width: 500px;
+  max-width: 600px;
   width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 4px 4px 0 0;
 }
 
 .close {
@@ -30,6 +36,7 @@
   cursor: pointer;
   border: none;
   background: none;
+  color: white;
 }
 
 .spinner {
@@ -46,4 +53,17 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #333;
 }
