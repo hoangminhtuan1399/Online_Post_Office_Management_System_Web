@@ -4,13 +4,13 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Service } from '../../models/service.model';
 import { AuthService } from '../../auth.service';
-import { environment } from "../../../../environments/environment";
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
-  private apiUrl = `${environment.apiBaseUrl}/api/service`;
+  private apiUrl = `${environment.apiBaseUrl}/api/Service`;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
