@@ -1,0 +1,33 @@
+<div class="min-vh-100 d-flex justify-content-center align-items-center bg-light admin-background">
+  <div class="card shadow login__container p-4">
+    <div class="card-body p-0">
+      <h2 class="text-center mb-3 text-3xl">Sign in</h2>
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-4">
+        <div class="form-group mb-3">
+          <label for="username" class="mb-1">Username <span class="text-danger">*</span></label>
+          <input id="username" name="username" type="text" autocomplete="username"
+                 class="form-control ps-2" placeholder="Username" formControlName="username" autofocus>
+          <div *ngIf="username?.invalid && username?.touched" class="text-danger small mt-1">
+            Please enter username
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="password" class="mb-1">Password <span class="text-danger">*</span></label>
+          <input id="password" name="password" type="password" autocomplete="current-password"
+                 class="form-control ps-2" placeholder="Password" formControlName="password">
+          <div *ngIf="password?.invalid && password?.touched" class="text-danger small mt-1">
+            Please enter password
+          </div>
+        </div>
+        <div class="mt-4">
+          <button type="submit"
+                  class="submit-btn w-100 btn btn-primary btn-block p-2"
+                  [disabled]="isSubmitting"
+          >
+            Sign in
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

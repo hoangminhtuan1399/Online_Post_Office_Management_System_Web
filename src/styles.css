@@ -1,6 +1,12 @@
 :root {
   --primary-color: #f36e2f;
   --secondary-color: #04295e;
+  --primary-button-bg: var(--secondary-color);
+  --primary-button-bg-hover: #0B5ED7FF;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -28,4 +34,43 @@ ul {
 
 img {
   max-width: 100%;
+}
+
+label {
+  font-weight: 500;
+}
+
+p {
+  margin-bottom: 0 !important;
+}
+
+.form-control:focus {
+  box-shadow: none !important;
+  border-color: var(--secondary-color) !important;
+}
+
+.submit-btn {
+  background-color: var(--primary-button-bg) !important;
+  border: none !important;
+  transition: 224ms ease-in-out !important;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-button-bg-hover) !important;
+}
+
+.admin-background {
+  background-image: url('./assets/img/admin-background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
 }

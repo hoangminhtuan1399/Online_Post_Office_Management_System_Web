@@ -1,0 +1,63 @@
+<h2>Create Employee and Account</h2>
+<form (ngSubmit)="createEmployeeAndAccount()">
+  <!-- Employee Information -->
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" [(ngModel)]="employee.name" name="name" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input id="email" [(ngModel)]="employee.email" name="email" type="email" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Phone</label>
+    <input id="phone" [(ngModel)]="employee.phone" name="phone" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="gender">Gender</label>
+    <select id="gender" [(ngModel)]="employee.gender" name="gender" class="form-control" required>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="dateOfBirth">Date of Birth</label>
+    <input id="dateOfBirth" [(ngModel)]="employee.dateOfBirth" name="dateOfBirth" type="date" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="officeId">Office</label>
+    <select id="officeId" [(ngModel)]="employee.officeId" name="officeId" class="form-control" required>
+      <option *ngFor="let office of offices" [value]="office.id">{{ office.officeName }}</option>
+    </select>
+  </div>
+
+  <!-- Account Information -->
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input id="username" [(ngModel)]="account.username" name="username" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input id="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="account.password" name="password" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <input type="checkbox" [(ngModel)]="showPassword" [ngModelOptions]="{standalone: true}"> Show Password
+  </div>
+
+  <button type="submit" class="btn btn-primary">Create Employee and Account</button>
+</form>
+
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+  {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+  {{ errorMessage }}
+</div>

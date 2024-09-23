@@ -1,4 +1,4 @@
-<nav class="header__container navbar">
+<nav class="header__container sticky-top navbar">
   <div class="container">
     <!-- Left Side -->
     <a routerLink="/" class="navbar-brand d-flex align-items-center">
@@ -19,13 +19,16 @@
             <i class="fab {{icon.classIcon}}" style="font-size: 20px;"></i>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link position-relative text-white global__hover--scale" href="/delivery">
-            <i class="fas fa-box" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="bottom"
+        <li class="nav-item position-relative">
+          <a class="nav-link position-relative text-white global__hover--scale" id="track-delivery" href="javascript:void(0);" (click)="toggleTrackingPopoverVisible()">
+            <i class="fas fa-box" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="right"
                title="Track your delivery"></i>
           </a>
+          <app-track-delivery-popover [isVisible]="isTrackingPopoverVisible$ | async"></app-track-delivery-popover>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<app-package-detail></app-package-detail>

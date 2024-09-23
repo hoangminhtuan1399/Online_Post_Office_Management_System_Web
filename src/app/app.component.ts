@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from "@angular/router";
+import { filter } from "rxjs";
+import { ToastService } from "./toast.service";
 
 @Component({
   selector: 'app-root',
@@ -24,15 +26,32 @@ export class AppComponent implements OnInit {
       classIcon: "fa-twitter"
     }
   ]
+  toastMessage: string = '';
+  toastType: 'success' | 'danger' = 'success';
+  showToast: boolean = false;
 
-  constructor(private _router: Router) {}
+  constructor(private router: Router, private toastService: ToastService) {
+    // Listen for route changes to determine if header/footer should be shown
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.checkRoute(event.urlAfterRedirects);
+      });
+  }
 
-  ngOnInit(): void {
-    this._router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        const noHeaderAndFooter = ['/admin']
-        this.showHeaderAndFooter = !noHeaderAndFooter.includes(event.url);
-      }
-    })
+  ngOnInit() {
+    this.preloadBackgroundImage();
+    this.toastService.toastMessage$.subscribe(message => this.toastMessage = message);
+    this.toastService.toastType$.subscribe(type => this.toastType = type);
+    this.toastService.showToast$.subscribe(show => this.showToast = show);
+  }
+
+  checkRoute(url: string) {
+    this.showHeaderAndFooter = !url.startsWith('/admin');
+  }
+
+  preloadBackgroundImage() {
+    const img = new Image();
+    img.src = './assets/img/admin-background.jpg';
   }
 }

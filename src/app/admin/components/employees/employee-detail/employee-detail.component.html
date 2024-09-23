@@ -1,0 +1,28 @@
+<div class="container mt-4">
+    <h2>Employee Details</h2>
+    
+    <div *ngIf="employee; else loading">
+      <div class="card">
+        <div class="card-header">
+          <h4>{{ employee.name }}</h4>
+        </div>
+        <div class="card-body">
+          <p><strong>Email:</strong> {{ employee.email }}</p>
+          <p><strong>Phone:</strong> {{ employee.phone }}</p>
+          <p><strong>Gender:</strong> {{ employee.gender }}</p>
+          <p><strong>Date of Birth:</strong> {{ employee.dateOfBirth | date }}</p>
+          <p><strong>Office Name:</strong> {{ employee.officeName }}</p>
+          <p><strong>Account ID:</strong> {{ employee.accountId }}</p>
+        </div>
+        <div class="card-footer">
+          <a [routerLink]="['/admin/employees/edit', employee.id]" class="btn btn-primary">Update</a>
+          <a [routerLink]="['/admin/employees/list']" class="btn btn-secondary">Back to List</a>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #loading>
+      <p>Loading employee details...</p>
+    </ng-template>
+  </div>
+  

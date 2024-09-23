@@ -1,0 +1,78 @@
+<div *ngIf="isVisible" class="package-detail-overlay">
+  <div class="package-detail-container">
+    <div class="card">
+      <div class="card-header">
+        Your Delivery
+        <button type="button" class="close" (click)="closeDetail()">&times;</button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="isLoading; else detailTemplate">
+          <div class="spinner"></div> <!-- Hiển thị spinner khi đang loading -->
+        </div>
+        <ng-template #detailTemplate>
+          <ng-container *ngIf="packageDetail; else errorTemplate">
+            <div class="row mb-3">
+              <div class="col-6"><strong>Delivery Number:</strong></div>
+              <div class="col-6">{{ packageDetail.id }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Receiver:</strong></div>
+              <div class="col-6">{{ packageDetail.receiver }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Weight:</strong></div>
+              <div class="col-6">{{ packageDetail.weight }} kg</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Service Name:</strong></div>
+              <div class="col-6">{{ packageDetail.serviceName }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Sender:</strong></div>
+              <div class="col-6">{{ packageDetail.senderName }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Receiver Address:</strong></div>
+              <div class="col-6">{{ packageDetail.receiverAddress }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Office Name:</strong></div>
+              <div class="col-6">{{ packageDetail.officeName }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Office Address:</strong></div>
+              <div class="col-6">{{ packageDetail.officeAddress }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Payment Status:</strong></div>
+              <div class="col-6">{{ packageDetail.paymentStatus }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Payment Cost:</strong></div>
+              <div class="col-6">{{ packageDetail.paymentCost }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Transaction Time:</strong></div>
+              <div class="col-6">{{ packageDetail.transactionTime | date:'medium' }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Delivery Status:</strong></div>
+              <div class="col-6">{{ packageDetail.deliveryStatus }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Delivery Date:</strong></div>
+              <div class="col-6">{{ packageDetail.deliveryDate | date:'medium' }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><strong>Created At:</strong></div>
+              <div class="col-6">{{ packageDetail.createdAt | date:'medium' }}</div>
+            </div>
+          </ng-container>
+          <ng-template #errorTemplate>
+            <p class="text-danger">{{ errorMessage }}</p>
+          </ng-template>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

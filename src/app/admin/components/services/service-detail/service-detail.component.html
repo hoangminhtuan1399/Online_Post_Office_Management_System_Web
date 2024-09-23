@@ -1,0 +1,28 @@
+<div class="container mt-4">
+    <h2>Service Details</h2>
+  
+    <div *ngIf="service; else loading">
+      <div class="card">
+        <div class="card-header">
+          <h4>{{ service.name }}</h4>
+        </div>
+        <div class="card-body">
+          <p><strong>Base Rate:</strong> {{ service.baseRate }}</p>
+          <p><strong>Rate Per Kg:</strong> {{ service.ratePerKg }}</p>
+          <p><strong>Rate Per Km:</strong> {{ service.ratePerKm }}</p>
+        </div>
+        <div class="card-footer">
+          <a [routerLink]="['/admin/services/list']" class="btn btn-primary">Back</a>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #loading>
+      <p>Loading service details...</p>
+    </ng-template>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
+  </div>
+  

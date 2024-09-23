@@ -1,3 +1,16 @@
 <app-header [socialIcons]="socialIcons" *ngIf="showHeaderAndFooter"></app-header>
 <router-outlet />
+
 <app-footer [socialIcons]="socialIcons" *ngIf="showHeaderAndFooter"></app-footer>
+
+<div *ngIf="showToast" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11;">
+  <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div [class]="'toast-header bg-' + toastType + ' text-white'">
+      <strong class="me-auto">Notification</strong>
+      <button type="button" class="btn-close" aria-label="Close" (click)="showToast = false"></button>
+    </div>
+    <div class="toast-body">
+      {{ toastMessage }}
+    </div>
+  </div>
+</div>

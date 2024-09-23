@@ -1,0 +1,59 @@
+<div [class.collapsed]="isCollapsed" id="sidebar" class="border-end text-white">
+  <div (click)="router.navigate(['/admin/profile'])"
+  class="user-info p-3 d-flex align-items-center border-bottom gap-2">
+  <img src="assets/img/user-avatar.jpg" alt="Avatar" class="rounded-circle me-2" width="40">
+  <span class="cursor-pointer">{{this.username}}</span>
+</div>
+
+  <nav class="nav flex-column mt-3 ps-2 pe-2">
+    <!-- Dashboard Link -->
+    <a class="nav-link d-flex align-items-center gap-2"
+       [class.active]="isActive('/admin/dashboard')"
+       routerLink="/admin/dashboard">
+      <i class="fa-solid fa-house-user fa-lg"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <!-- Payments Link -->
+    <a class="nav-link d-flex align-items-center gap-2"
+       [class.active]="isActive('/admin/payments')"
+       routerLink="/admin/payments">
+      <i class="fa-regular fa-credit-card fa-lg"></i>
+      <span>Payments</span>
+    </a>
+
+    <div *ngIf="hasAdminAccess()" class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2 parent-link" href="javascript:void(0)" role="button">
+        <i class="fa-solid fa-user-tie fa-lg"></i>
+        <span>Admin</span>
+      </a>
+      <div class="ms-3">
+        <!-- Employees Link -->
+        <a class="nav-link d-flex align-items-center gap-2"
+           [class.active]="isActive('/admin/employees/list')"
+           routerLink="/admin/employees/list">
+          <i class="fa-solid fa-clipboard-user fa-lg"></i>
+          <span>Employees</span>
+        </a>
+
+        <!-- Services Link -->
+        <a class="nav-link d-flex align-items-center gap-2"
+           [class.active]="isActive('/admin/services/list')"
+           routerLink="/admin/services/list">
+          <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
+          <span>Services</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Logout Button -->
+  <button class="siderbar__logout-btn btn btn-danger w-75" (click)="logout()">
+    <span>Sign Out</span>
+  </button>
+</div>
+
+<!-- Mobile Toggle Button -->
+<button class="sidebar__toggle-btn btn btn-primary d-md-none {{!isCollapsed ? 'active' : ''}}" (click)="isCollapsed = !isCollapsed">
+  <i class="fa-solid fa-bars"></i>
+</button>
