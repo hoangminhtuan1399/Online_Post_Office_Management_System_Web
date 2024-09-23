@@ -1,11 +1,11 @@
-<div *ngIf="isVisible" class="package-detail-overlay">
+<div *ngIf="isVisible" class="package-detail-overlay shadow">
   <div class="package-detail-container">
-    <div class="card">
+    <div class="card border-0">
       <div class="card-header">
         Your Delivery
         <button type="button" class="close" (click)="closeDetail()">&times;</button>
       </div>
-      <div class="card-body">
+      <div class="card-body has-scroll">
         <div *ngIf="isLoading; else detailTemplate">
           <div class="spinner"></div> <!-- Hiển thị spinner khi đang loading -->
         </div>
@@ -75,4 +75,5 @@
       </div>
     </div>
   </div>
+  <div class="package-detail-outside" (click)="closeDetail()"></div>
 </div>

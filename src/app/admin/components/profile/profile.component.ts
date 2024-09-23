@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from "../../../../environments/environment";
+import { AuthService } from "../../auth.service";
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {
   }
 
@@ -33,9 +35,26 @@ export class ProfileComponent implements OnInit {
     this.fetchUserData();
   }
 
+  private getAuthHeaders(): HttpHeaders {
+    const authToken = this.authService.getTokenFromCookies();
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    if (authToken) {
+      headers = headers.set('Authorization', `Bearer ${authToken}`);
+      console.log('Authorization header set with token:', authToken);
+    } else {
+      console.warn('No token found in cookies');
+    }
+
+    return headers;
+  }
+
   getUserId(): string {
     // Implement your logic to get the user ID, e.g., from a token or route param
-    return '5f2a4b8c7d1f3e4a2c9b0d8f';
+    return localStorage.getItem('userId') || '';
   }
 
   initForm() {
@@ -52,8 +71,8 @@ export class ProfileComponent implements OnInit {
   fetchUserData() {
     const layoutElement = document.querySelector('.admin-layout');
     layoutElement?.classList.add('loading');
-
-    this.http.get<any>(`${this.baseUrl}/api/Employee/${this.userId}`).subscribe({
+    const headers = this.getAuthHeaders();
+    this.http.get<any>(`${this.baseUrl}/api/Employee/${this.userId}`, { headers }).subscribe({
       next: (data) => {
         this.profileForm.patchValue({
           email: data.email,

@@ -1,4 +1,4 @@
-<div [class.collapsed]="isCollapsed" id="sidebar" class="border-end text-white">
+<div [class.collapsed]="isCollapsed" id="sidebar" class="text-white">
   <div (click)="router.navigate(['/admin/profile'])"
   class="user-info p-3 d-flex align-items-center border-bottom gap-2">
   <img src="assets/img/user-avatar.jpg" alt="Avatar" class="rounded-circle me-2" width="40">
@@ -48,7 +48,7 @@
   </nav>
 
   <!-- Logout Button -->
-  <button class="siderbar__logout-btn btn btn-danger w-75" (click)="logout()">
+  <button class="siderbar__logout-btn btn btn-danger" (click)="logout()">
     <span>Sign Out</span>
   </button>
 </div>

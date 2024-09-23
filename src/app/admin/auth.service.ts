@@ -29,6 +29,7 @@ export class AuthService {
       document.cookie = `jwt=${data.token};path=/`;
       localStorage.setItem('username', data.username);
       localStorage.setItem('userRole', data.roleName);
+      localStorage.setItem('userId', data.id);
     } else {
       console.error('No token provided in the user data.');
     }
@@ -39,5 +40,6 @@ export class AuthService {
     document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.removeItem('username');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('userId');
   }
 }

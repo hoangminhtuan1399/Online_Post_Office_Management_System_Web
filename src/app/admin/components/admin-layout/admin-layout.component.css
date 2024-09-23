@@ -1,4 +1,11 @@
+.admin-left-col {
+  width: 25%;
+  max-width: 320px;
+  flex-shrink: 0;
+}
+
 .admin-right-col {
+  flex-grow: 1;
   max-height: 100vh;
   overflow-y: auto;
 }
