@@ -26,8 +26,7 @@ export class PackageDetailComponent implements OnInit {
     });
 
     this.packageDetailService.isLoading$.subscribe(isLoading => {
-      console.log('Loading state:', isLoading); // Kiểm tra giá trị của isLoading
-      this.isLoading = isLoading; // Lắng nghe trạng thái loading
+      this.isLoading = isLoading;
     });
   }
 

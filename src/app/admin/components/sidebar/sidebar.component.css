@@ -1,6 +1,6 @@
 #sidebar {
   width: 100%;
-  max-width: 400px;
+  max-width: 320px;
   height: 100vh;
   position: fixed;
   top: 0;
@@ -15,9 +15,10 @@
 
 .siderbar__logout-btn {
   position: absolute;
-  bottom: 20px;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
+  width: calc(100% - 16px);
 }
 
 @media (min-width: 768px) {
@@ -32,7 +33,7 @@
 }
 
 a.nav-link.active {
-  background-color: #007bff;
+  background-color: var(--active-dashboard-link-bg);
   color: white;
 }
 
