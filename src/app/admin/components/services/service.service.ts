@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Employee } from '../../models/employee.model';
-import { Account } from '../../models/account.model';
+import { Service } from '../../models/service.model'; 
 import { AuthService } from '../../auth.service'; 
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeService {
-  private apiUrl = 'https://onlinepostofficemanagementapi-a7csemagdjdecbbu.southeastasia-01.azurewebsites.net/api/Employee'; 
+export class ServiceService {
+  private apiUrl = 'https://localhost:7029/api/Service';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  // Lấy headers với token từ AuthService
   private getAuthHeaders(): HttpHeaders {
     const authToken = this.authService.getTokenFromCookies();  
 
@@ -35,67 +35,61 @@ export class EmployeeService {
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
-      // Lỗi từ phía client
-      errorMessage = `Error: ${error.error.message}`;
+      errorMessage = `Error: ${error.error.message}`; // Lỗi từ phía client
     } else {
-      // Lỗi từ phía server
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`; // Lỗi từ phía server
     }
     console.error('HTTP Error:', errorMessage);
     return throwError(errorMessage);
   }
 
-  // Lấy danh sách nhân viên
-  getAllEmployees(): Observable<Employee[]> {
+  // Lấy danh sách dịch vụ
+  getAllServices(): Observable<Service[]> {
     const headers = this.getAuthHeaders();
-    console.log('GET Request Headers:', headers);  
-    console.log('Sending GET request to:', this.apiUrl);  
+    console.log('Sending GET request to:', this.apiUrl);
 
-    return this.http.get<Employee[]>(this.apiUrl, { headers })
+    return this.http.get<Service[]>(this.apiUrl, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  // Lấy nhân viên theo ID
-  getEmployeeById(id: string): Observable<Employee> {
+  // Lấy dịch vụ theo ID
+  getServiceById(id: string): Observable<Service> {
     const url = `${this.apiUrl}/${id}`;
     const headers = this.getAuthHeaders();
     
-    console.log('GET Request Headers:', headers);  
-    console.log('Sending GET request to:', url);  
+    console.log('Sending GET request to:', url);
 
-    return this.http.get<Employee>(url, { headers })
+    return this.http.get<Service>(url, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  // Tạo nhân viên mới kèm tài khoản
-  createEmployeeWithAccount(employee: Employee, account: Account): Observable<Employee> {
-    const headers = this.getAuthHeaders();
-    console.log('POST Request Headers:', headers);  
-    console.log('Sending POST request to:', this.apiUrl);  
-    console.log('Payload:', { employee, account });  
-
-    return this.http.post<Employee>(this.apiUrl, { employee, account }, { headers })
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  // Cập nhật nhân viên
-  updateEmployee(id: string, employee: Employee): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
+  // Tạo mới dịch vụ
+  createService(service: Service): Observable<Service> {
     const headers = this.getAuthHeaders();
     
-    console.log('PUT Request Headers:', headers);  
-    console.log('Sending PUT request to:', url);  
-    console.log('Payload:', employee);  
+    console.log('Sending POST request to:', this.apiUrl);
+    console.log('Payload:', service);
 
-    return this.http.put(url, employee, { headers })
+    return this.http.post<Service>(this.apiUrl, service, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
+
+  updateService(id: string, service: Service): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    const headers = this.getAuthHeaders();
+  
+    console.log('Sending PUT request to:', url);
+    console.log('Payload:', JSON.stringify(service));  
+    return this.http.put(url, service, { headers })  
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
 }

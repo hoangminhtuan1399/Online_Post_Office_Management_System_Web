@@ -1,0 +1,36 @@
+<div class="container mt-4">
+    <h2>Service List</h2>
+  
+    <!-- Nút Create -->
+    <div class="text-end mb-3">
+      <a routerLink="/admin/services/create" class="btn btn-success">Create Service</a>
+    </div>
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Service Name</th>
+          <th>Base Rate</th>
+          <th>Rate Per Kg</th>
+          <th>Rate Per Km</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of services">
+          <td>{{ service.name }}</td>
+          <td>{{ service.baseRate | currency }}</td>
+          <td>{{ service.ratePerKg | currency }}</td>
+          <td>{{ service.ratePerKm | currency }}</td>
+          <td>
+            <a [routerLink]="['/admin/services/detail', service.id]" class="btn btn-info btn-sm me-2">Detail</a>
+  
+            <a [routerLink]="['/admin/services/edit', service.id]" class="btn btn-primary btn-sm me-2">Update</a>
+  
+  
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

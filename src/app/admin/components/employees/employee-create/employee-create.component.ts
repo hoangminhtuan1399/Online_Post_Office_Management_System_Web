@@ -20,7 +20,8 @@ export class EmployeeCreateComponent implements OnInit {
     dateOfBirth: new Date(),
     officeId: '',
     accountId: '',
-    createdDate: '' // Để rỗng, giá trị này sẽ được đặt khi tạo mới
+    officeName:'',
+    createdDate: '' 
   };
 
   account: Account = {
@@ -31,7 +32,7 @@ export class EmployeeCreateComponent implements OnInit {
   };
 
   offices: Office[] = [];
-
+  showPassword: boolean = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
@@ -56,10 +57,8 @@ export class EmployeeCreateComponent implements OnInit {
     });
   }
 
-  createEmployeeAndAccount(): void {
-    // Đặt giá trị createdDate trước khi gửi yêu cầu
+  createEmployeeAndAccount(): void {           
     this.employee.createdDate = new Date().toISOString();
-
     this.employeeService.createEmployeeWithAccount(this.employee, this.account).subscribe({
       next: () => {
         this.successMessage = 'Employee and Account created successfully!';
@@ -84,7 +83,8 @@ export class EmployeeCreateComponent implements OnInit {
       dateOfBirth: new Date(),
       officeId: '',
       accountId: '',
-      createdDate: '' // Reset lại để rỗng
+      officeName:'',
+      createdDate: '' 
     };
 
     this.account = {
@@ -93,5 +93,7 @@ export class EmployeeCreateComponent implements OnInit {
       password: '',
       roleId: ''
     };
+
+    this.showPassword = false; 
   }
 }

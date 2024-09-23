@@ -8,5 +8,6 @@ export interface Employee {
     createdDate:string;
     officeId: string;
     accountId: string;
+    officeName:string;
   }
   

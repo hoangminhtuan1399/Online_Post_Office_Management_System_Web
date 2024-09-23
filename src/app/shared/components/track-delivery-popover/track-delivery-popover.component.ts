@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TrackingPopoverService } from "../../tracking-popover.service";
 import { PackageDetailService } from '../../package-detail.service';
 import { HttpClient } from '@angular/common/http';
-import { PackageDetail } from '../../package-detail.model';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -38,7 +37,7 @@ export class TrackDeliveryPopoverComponent implements OnInit {
       this.packageDetailService.setVisibility(true);
       this.packageDetailService.setLoadingState(true); // Kích hoạt trạng thái loading
 
-      this.http.get<PackageDetail>(apiUrl).subscribe(
+      this.http.get<any>(apiUrl).subscribe(
         (response) => {
           this.packageDetailService.setPackageDetail(response);         
         },
