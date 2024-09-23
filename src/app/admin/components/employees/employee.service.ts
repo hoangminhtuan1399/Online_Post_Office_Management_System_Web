@@ -5,12 +5,13 @@ import { catchError } from 'rxjs/operators';
 import { Employee } from '../../models/employee.model';
 import { Account } from '../../models/account.model';
 import { AuthService } from '../../auth.service'; 
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
-  private apiUrl = 'https://localhost:7029/api/Employee'; 
+  private apiUrl = `${environment.apiBaseUrl}/api/Employee`; 
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
