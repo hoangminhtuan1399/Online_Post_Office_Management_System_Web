@@ -1,34 +1,276 @@
-<div *ngIf="packages.length > 0; else loading">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Delivery Number</th>
-            <th>Receiver</th>
-            <th>Weight</th>
-            <th>Cost</th>
-            <th>Payment Status</th>
-            <th>Delivery Status</th>
-            <th>Current Location</th>
-            <th>Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let pkg of packages">
-            <td>{{ pkg.package.deliveryNumber }}</td>
-            <td>{{ pkg.package.receiver }}</td>
-            <td>{{ pkg.package.weight }} kg</td>
-            <td>{{ pkg.payment.cost | currency }}</td>
-            <td>{{ pkg.payment.status }}</td>
-            <td>{{ pkg.delivery.deliveryStatus }}</td>
-            <td>{{ pkg.delivery.currentLocation }}</td>
-            <td>{{ pkg.package.createdAt | date: 'short' }}</td>
-          </tr>
-        </tbody>
-      </table>
+<div class="">
+
+  <!-- Nút Create to ở giữa -->
+  <div class="d-flex justify-content-between mb-4">
+    <h3 class="text-white">Packages</h3>
+    <button class="btn btn-primary btn-primary-admin" (click)="openCreatePackageModal(createPackageModal)">Create Package</button>
+  </div>
+
+  <div class="row mb-3 row-gap-2" [formGroup]="packageFilterForm">
+    <div class="col-md-3">
+      <label for="office">Office</label>
+      <select formControlName="office" class="form-control" id="office">
+        <option value="">All Offices</option>
+        <option *ngFor="let office of officeOptions" [value]="office.id">{{ office.name }}</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="startDate">Start Date</label>
+      <input type="date" formControlName="startDate" class="form-control" id="startDate">
+    </div>
+    <div class="col-md-3">
+      <label for="paymentStatus">Payment Status</label>
+      <select formControlName="paymentStatus" class="form-control">
+        <option value="">All Status</option>
+        <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+    <div class="col-md-3 d-flex align-items-end justify-content-end">
+      <button class="btn btn-primary" (click)="onSearch()">Search</button>
     </div>
   </div>
-  <ng-template #loading>
-    <p>Loading package data...</p>
+
+  <div class="table-responsive mt-3">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 10%;">ID</th>
+          <th style="width: 15%;">Cost</th>
+          <th style="width: 15%;" style="cursor: pointer;">
+            Payment Status <span class="filter-icon">▼</span>
+
+          </th>
+          <th style="width: 15%;">Delivery Status</th>
+          <th style="width: 20%;" style="cursor: pointer;">
+            Office Name <span class="filter-icon">▼</span>
+
+          </th>
+          <th style="width: 15%;">Created At</th>
+          <th style="width: 10%;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="packages.length === 0">
+          <td colspan="7" class="text-center">No data available</td>
+        </tr>
+        <tr *ngFor="let pkg of packages">
+          <td>{{ pkg.id }}</td>
+          <td>{{ pkg.paymentCost | currency }}</td>
+          <td>{{ pkg.paymentStatus }}</td>
+          <td>{{ pkg.deliveryStatus }}</td>
+          <td>{{ pkg.officeName }}</td>
+          <td>{{ pkg.createdAt | date: 'short' }}</td>
+          <td>
+            <button class="btn btn-sm btn-info" (click)="viewPackage(pkg.id, content)">View</button>
+            <button class="btn btn-sm btn-warning"
+              (click)="openUpdatePackageModal(updatePackageModal, pkg)">Update</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paging -->
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <button class="btn btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }}</span>
+    <button class="btn btn-secondary" (click)="nextPage()" [disabled]="isLastPage">Next</button>
+  </div>
+
+  <!-- Popup detail -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Package Details</h5>
+
+    </div>
+    <div class="modal-body" *ngIf="selectedPackage">
+      <div class="package-details">
+        <p><strong>Delivery Number:</strong> {{ selectedPackage.deliveryNumber }}</p>
+        <p><strong>Receiver:</strong> {{ selectedPackage.receiver }}</p>
+        <p><strong>Office Name:</strong> {{ selectedPackage.officeName }}</p>
+        <p><strong>Office Address:</strong> {{ selectedPackage.officeAddress }}</p>
+        <p><strong>Delivery Status:</strong> {{ selectedPackage.deliveryStatus }}</p>
+        <p><strong>Payment Status:</strong> {{ selectedPackage.paymentStatus }}</p>
+        <p><strong>Transaction Time:</strong> {{ selectedPackage.transactionTime | date: 'short' }}</p>
+        <p><strong>Delivery Date:</strong> {{ selectedPackage.deliveryDate | date: 'short' }}</p>
+        <p><strong>End Office Name:</strong> {{ selectedPackage.endOfficeName }}</p>
+      </div>
+      <!-- Display COST -->
+      <div class="package-cost">
+        <strong>Total Cost:</strong> <span>{{ selectedPackage.paymentCost | currency }}</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
   </ng-template>
-  
+
+  <!-- Form Create Package trong popup -->
+  <ng-template #createPackageModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Create Package</h5>
+    </div>
+    <div class="container mt-4">
+      <h4>Package Information</h4>
+      <form [formGroup]="createPackageForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="officeId">Office</label>
+            <select class="form-control" id="officeId" formControlName="officeId" required>
+              <option value="" disabled selected>Select Office</option>
+              <option *ngFor="let office of officeOptionsForCreate" [value]="office.id">{{ office.officeName }}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="serviceId">Service</label>
+            <select class="form-control" id="serviceId" formControlName="serviceId" required>
+              <option value="" disabled selected>Select Service</option>
+              <option *ngFor="let service of serviceOptions" [value]="service.id">{{ service.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="weight">Weight (kg)</label>
+            <input type="number" class="form-control" id="weight" formControlName="weight" placeholder="Weight"
+              required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="receiver">Receiver Name</label>
+            <input type="text" class="form-control" id="receiver" formControlName="receiver" placeholder="Receiver"
+              required>
+          </div>
+        </div>
+        <hr>
+        <h4>Payment Information</h4>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="paymentStatus">Payment Status</label>
+            <select class="form-control" id="paymentStatus" formControlName="paymentStatus" required>
+              <option value="" disabled selected>Select Payment Status</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+              <option value="fail">Fail</option>
+            </select>
+          </div>
+
+        </div>
+        <hr>
+        <h4>Description Information</h4>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="descriptionText">Description</label>
+            <input type="text" class="form-control" id="descriptionText" formControlName="descriptionText"
+              placeholder="Description" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="receiverAddress">Receiver Address</label>
+            <input type="text" class="form-control" id="receiverAddress" formControlName="receiverAddress"
+              placeholder="Receiver Address" required>
+          </div>
+        </div>
+        <hr>
+        <h4>Delivery Information</h4>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="deliveryStatus">Delivery Status</label>
+            <select class="form-control" id="deliveryStatus" formControlName="deliveryStatus" required>
+              <option value="" disabled selected>Select Delivery Status</option>
+              <option value="on delivery">On Delivery</option>
+              <option value="delivered">Delivered</option>
+              <option value="declined">Declined</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="endOfficeId">End Office ID</label>
+            <select class="form-control" id="endOfficeId" formControlName="endOfficeId" required>
+              <option value="" disabled selected>Select End Office</option>
+              <option *ngFor="let office of officeOptionsForCreate" [value]="office.id">{{ office.officeName }}</option>
+            </select>
+          </div>
+        </div>
+        <hr>
+        <h4>Customer Information</h4>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label for="customerName">Customer Name</label>
+            <input type="text" class="form-control" id="customerName" formControlName="customerName"
+              placeholder="Customer Name" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="customerPhone">Customer Phone</label>
+            <input type="text" class="form-control" id="customerPhone" formControlName="customerPhone"
+              placeholder="Customer Phone" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="customerEmail">Customer Email</label>
+            <input type="email" class="form-control" id="customerEmail" formControlName="customerEmail"
+              placeholder="Customer Email" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" [disabled]="isSubmitting">Create</button>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+      </div>
+    </div>
+
+  </ng-template>
+
+  <!-- Update package modal -->
+  <ng-template #updatePackageModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Update Package</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Cross click')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="updatePackageForm" (ngSubmit)="onSubmitUpdate()">
+        <!-- Delivery Status -->
+        <div class="form-group">
+          <label for="deliveryStatus">Delivery Status</label>
+          <select class="form-control" formControlName="deliveryStatus">
+            <option value="on delivery">On Delivery</option>
+            <option value="delivered">Delivered</option>
+            <option value="declined">Declined</option>
+          </select>
+        </div>
+
+        <!-- Current Location -->
+        <div class="form-group">
+          <label for="currentLocation">Current Location</label>
+          <select class="form-control" id="currentLocation" formControlName="currentLocation" required>
+            <option value="" disabled selected>Select Office</option>
+            <option *ngFor="let office of officeOptionsForCreate" [value]="office.id">{{ office.officeName }}</option>
+          </select>
+        </div>
+
+        <!-- Weight -->
+        <div class="form-group">
+          <label for="weight">Weight (kg)</label>
+          <input type="number" class="form-control" formControlName="weight" />
+        </div>
+
+        <!-- Receiver -->
+        <div class="form-group">
+          <label for="receiver">Receiver Name</label>
+          <input type="text" class="form-control" formControlName="receiver" />
+        </div>
+
+        <!-- Payment Status -->
+        <div class="form-group">
+          <label for="paymentStatus">Payment Status</label>
+          <select class="form-control" formControlName="paymentStatus">
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="fail">Fail</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">Update</button>
+      </form>
+    </div>
+  </ng-template>
+
+</div>

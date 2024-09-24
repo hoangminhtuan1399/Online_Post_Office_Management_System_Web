@@ -17,7 +17,7 @@ export class PackageDetailComponent implements OnInit {
   ngOnInit(): void {
     this.packageDetailService.packageDetail$.subscribe(detail => {
       this.packageDetail = detail;
-      this.errorMessage = detail ? null : 'Không tìm thấy bưu phẩm';
+      this.errorMessage = detail ? null : 'Cannot find your package';
       this.isVisible = true;
     });
 
@@ -26,8 +26,7 @@ export class PackageDetailComponent implements OnInit {
     });
 
     this.packageDetailService.isLoading$.subscribe(isLoading => {
-      console.log('Loading state:', isLoading); // Kiểm tra giá trị của isLoading
-      this.isLoading = isLoading; // Lắng nghe trạng thái loading
+      this.isLoading = isLoading;
     });
   }
 
