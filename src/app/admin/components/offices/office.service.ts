@@ -9,7 +9,7 @@ import { Office } from '../../models/office.model';
 })
 export class OfficeService {
 
-  private apiUrl = 'https://localhost:7029/api/Office';
+  private apiUrl = 'https://onlinepostofficemanagementapi-a7csemagdjdecbbu.southeastasia-01.azurewebsites.net/api/Office';
 
   constructor(private http: HttpClient) { }
 
