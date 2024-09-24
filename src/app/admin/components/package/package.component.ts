@@ -86,7 +86,7 @@ export class PackageComponent implements OnInit {
         console.error('Error fetching offices', error);
       }
     );
-    this.getPackages();
+    this.onSearch();
   }
 
   getPackages(): void {
@@ -114,15 +114,15 @@ export class PackageComponent implements OnInit {
 
   nextPage(): void {
     if (!this.isLastPage) {
-      this.currentPage++;
-      this.getPackages();
+      this.packageFilterForm.get('page')?.setValue(this.currentPage + 1);
+      this.onSearch();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
-      this.currentPage--;
-      this.getPackages();
+      this.packageFilterForm.get('page')?.setValue(this.currentPage - 1);
+      this.onSearch();
     }
   }
 
@@ -130,7 +130,7 @@ export class PackageComponent implements OnInit {
     this.selectedPackage = pkg;
     this.updatePackageForm.patchValue({
       deliveryStatus: pkg.deliveryStatus,
-      currentLocation: pkg.currentLocation,
+      currentLocation: pkg.officeId,
       weight: pkg.weight,
       receiver: pkg.receiver,
       paymentStatus: pkg.paymentStatus,
@@ -150,7 +150,6 @@ export class PackageComponent implements OnInit {
     if (this.updatePackageForm.valid) {
       this.isSubmitting = true;
       const formValue = this.updatePackageForm.value;
-
       const deliveryRequestBody = {
         id: this.selectedPackage.deliveryId,
         sendDate: this.selectedPackage.sendDate,
@@ -190,7 +189,7 @@ export class PackageComponent implements OnInit {
                   console.log('All updates successful');
                   this.isSubmitting = false;
                   this.modalService.dismissAll();
-                  this.getPackages();
+                  this.onSearch();
                 },
                 (error) => {
                   console.error('Error updating payment', error);
@@ -209,6 +208,8 @@ export class PackageComponent implements OnInit {
           this.isSubmitting = false;
         }
       );
+    } else {
+      this.updatePackageForm.markAllAsTouched();
     }
   }
 
@@ -235,7 +236,6 @@ export class PackageComponent implements OnInit {
   onSubmit(): void {
     if (this.createPackageForm.valid) {
       this.isSubmitting = true;
-
       const formValue = this.createPackageForm.value;
       const requestBody = {
         package: {
@@ -285,15 +285,15 @@ export class PackageComponent implements OnInit {
           console.log('Package created:', response);
           this.modalService.dismissAll();
           this.isSubmitting = false;
-          this.getPackages();
+          this.onSearch();
         },
         (error) => {
           console.error('Error creating package', error);
           this.isSubmitting = false;
         }
       );
-
-      console.log(requestBody);
+    } else {
+      this.createPackageForm.markAllAsTouched();
     }
   }
 
@@ -326,7 +326,6 @@ export class PackageComponent implements OnInit {
       paymentStatus: [''],
       page: [1]
     });
-    console.log(this.packageFilterForm.value)
     this.onSearch();
   }
 

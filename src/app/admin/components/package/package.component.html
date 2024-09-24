@@ -59,17 +59,22 @@
   </div>
 
   <!-- Paging -->
-  <div class="d-flex justify-content-between align-items-center mt-3">
-    <button class="btn btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
-    <span>Page {{ currentPage }}</span>
-    <button class="btn btn-secondary" (click)="nextPage()" [disabled]="isLastPage">Next</button>
+  <div class="d-flex justify-content-center gap-3 align-items-center mt-3">
+    <button class="btn btn-primary-admin text-white" (click)="previousPage()"
+            [disabled]="currentPage === 1 || isLoading"><i
+      class="fa-solid fa-chevron-left"></i></button>
+    <h6 class="text-white mb-0">Page {{ currentPage }}</h6>
+    <button class="btn btn-primary-admin text-white" (click)="nextPage()" [disabled]="isLastPage || isLoading"><i
+      class="fa-solid fa-chevron-right"></i></button>
   </div>
 
   <!-- Popup detail -->
   <ng-template #content let-modal>
-    <div class="modal-header">
-      <h5 class="modal-title">Package Details</h5>
-
+    <div class="modal-header d-flex justify-content-between">
+      <h5 class="modal-title text-white">Package Details</h5>
+      <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
     </div>
     <div class="modal-body" *ngIf="selectedPackage">
       <div class="package-details">
@@ -88,177 +93,240 @@
         <strong>Total Cost:</strong> <span>{{ selectedPackage.paymentCost | currency }}</span>
       </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
-    </div>
   </ng-template>
 
   <!-- Form Create Package trong popup -->
-  <ng-template #createPackageModal let-modal>
-    <div class="modal-header">
-      <h5 class="modal-title">Create Package</h5>
+  <ng-template #createPackageModal let-modal class="modal-content">
+    <div class="modal-header d-flex justify-content-between">
+      <h5 class="modal-title text-white">Create Package</h5>
+      <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
     </div>
-    <div class="container mt-4">
-      <h4>Package Information</h4>
-      <form [formGroup]="createPackageForm" (ngSubmit)="onSubmit()">
-        <div class="row">
+    <form [formGroup]="createPackageForm" (ngSubmit)="onSubmit()">
+      <div class="container has-scroll has-scroll-admin modal-body">
+        <h4>Package Information</h4>
+        <div class="row row-gap-2">
           <div class="form-group col-md-6">
-            <label for="officeId">Office</label>
+            <label for="officeId">Office <span class="text-danger">*</span></label>
             <select class="form-control" id="officeId" formControlName="officeId" required>
               <option value="" disabled selected>Select Office</option>
               <option *ngFor="let office of officeOptionsForCreate" [value]="office.id">{{ office.officeName }}</option>
             </select>
+            <div *ngIf="createPackageForm.get('officeId')?.invalid && createPackageForm.get('officeId')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
           </div>
           <div class="form-group col-md-6">
-            <label for="serviceId">Service</label>
+            <label for="serviceId">Service <span class="text-danger">*</span></label>
             <select class="form-control" id="serviceId" formControlName="serviceId" required>
               <option value="" disabled selected>Select Service</option>
               <option *ngFor="let service of serviceOptions" [value]="service.id">{{ service.name }}</option>
             </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label for="weight">Weight (kg)</label>
-            <input type="number" class="form-control" id="weight" formControlName="weight" placeholder="Weight"
-                   required>
+            <div *ngIf="createPackageForm.get('serviceId')?.invalid && createPackageForm.get('serviceId')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
           </div>
           <div class="form-group col-md-6">
-            <label for="receiver">Receiver Name</label>
+            <label for="receiver">Receiver Name <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="receiver" formControlName="receiver" placeholder="Receiver"
                    required>
+            <div *ngIf="createPackageForm.get('receiver')?.invalid && createPackageForm.get('receiver')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="receiverAddress">Receiver Address <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="receiverAddress" formControlName="receiverAddress"
+                   placeholder="Receiver Address" required>
+            <div
+              *ngIf="createPackageForm.get('receiverAddress')?.invalid && createPackageForm.get('receiverAddress')?.touched"
+              class="text-danger small mt-1">
+              This is a required field
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="weight">Weight (kg)</label>
+            <input type="number" min="0" class="form-control" id="weight" formControlName="weight" placeholder="Weight"
+                   required>
+          </div>
+          <div *ngIf="createPackageForm.get('weight')?.invalid && createPackageForm.get('weight')?.touched"
+               class="text-danger small mt-1">
+            This is a required field
           </div>
         </div>
         <hr>
         <h4>Payment Information</h4>
-        <div class="row">
+        <div class="row row-gap-2">
           <div class="form-group col-md-6">
-            <label for="paymentStatus">Payment Status</label>
+            <label for="paymentStatus">Payment Status <span class="text-danger">*</span></label>
             <select class="form-control" id="paymentStatus" formControlName="paymentStatus" required>
               <option value="" disabled selected>Select Payment Status</option>
               <option value="paid">Paid</option>
               <option value="pending">Pending</option>
               <option value="fail">Fail</option>
             </select>
+            <div
+              *ngIf="createPackageForm.get('paymentStatus')?.invalid && createPackageForm.get('paymentStatus')?.touched"
+              class="text-danger small mt-1">
+              This is a required field
+            </div>
           </div>
-
         </div>
         <hr>
         <h4>Description Information</h4>
-        <div class="row">
+        <div class="row row-gap-2">
           <div class="form-group col-md-6">
-            <label for="descriptionText">Description</label>
+            <label for="descriptionText">Description <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="descriptionText" formControlName="descriptionText"
                    placeholder="Description" required>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="receiverAddress">Receiver Address</label>
-            <input type="text" class="form-control" id="receiverAddress" formControlName="receiverAddress"
-                   placeholder="Receiver Address" required>
+            <div
+              *ngIf="createPackageForm.get('descriptionText')?.invalid && createPackageForm.get('descriptionText')?.touched"
+              class="text-danger small mt-1">
+              This is a required field
+            </div>
           </div>
         </div>
         <hr>
         <h4>Delivery Information</h4>
-        <div class="row">
+        <div class="row row-gap-2">
           <div class="form-group col-md-6">
-            <label for="deliveryStatus">Delivery Status</label>
+            <label for="deliveryStatus">Delivery Status <span class="text-danger">*</span></label>
             <select class="form-control" id="deliveryStatus" formControlName="deliveryStatus" required>
               <option value="" disabled selected>Select Delivery Status</option>
               <option value="on delivery">On Delivery</option>
               <option value="delivered">Delivered</option>
               <option value="declined">Declined</option>
             </select>
+            <div
+              *ngIf="createPackageForm.get('deliveryStatus')?.invalid && createPackageForm.get('deliveryStatus')?.touched"
+              class="text-danger small mt-1">
+              This is a required field
+            </div>
           </div>
           <div class="form-group col-md-6">
-            <label for="endOfficeId">End Office ID</label>
+            <label for="endOfficeId">End Office ID <span class="text-danger">*</span></label>
             <select class="form-control" id="endOfficeId" formControlName="endOfficeId" required>
               <option value="" disabled selected>Select End Office</option>
               <option *ngFor="let office of officeOptionsForCreate" [value]="office.id">{{ office.officeName }}</option>
             </select>
+            <div *ngIf="createPackageForm.get('endOfficeId')?.invalid && createPackageForm.get('endOfficeId')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
           </div>
         </div>
         <hr>
         <h4>Customer Information</h4>
-        <div class="row">
+        <div class="row row-gap-2">
           <div class="form-group col-md-4">
-            <label for="customerName">Customer Name</label>
+            <label for="customerName">Customer Name <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="customerName" formControlName="customerName"
-                   placeholder="Customer Name" required>
+                   placeholder="Name" required>
           </div>
           <div class="form-group col-md-4">
-            <label for="customerPhone">Customer Phone</label>
+            <label for="customerPhone">Customer Phone <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="customerPhone" formControlName="customerPhone"
-                   placeholder="Customer Phone" required>
+                   placeholder="Phone" required>
           </div>
           <div class="form-group col-md-4">
-            <label for="customerEmail">Customer Email</label>
+            <label for="customerEmail">Customer Email <span class="text-danger">*</span></label>
             <input type="email" class="form-control" id="customerEmail" formControlName="customerEmail"
-                   placeholder="Customer Email" required>
+                   placeholder="Email" required>
           </div>
         </div>
-
-        <button type="submit" class="btn btn-primary btn-block" [disabled]="isSubmitting">Create</button>
-      </form>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
       </div>
-    </div>
-
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-primary-admin btn-block" [disabled]="isSubmitting">Create
+        </button>
+        <button type="button" class="btn btn-secondary-admin text-white" (click)="modal.dismiss()">Cancel</button>
+      </div>
+    </form>
   </ng-template>
 
   <!-- Update package modal -->
   <ng-template #updatePackageModal let-modal>
-    <div class="modal-header">
-      <h5 class="modal-title">Update Package</h5>
-      <button type="button" class="close" (click)="modal.dismiss('Cross click')">&times;</button>
+    <div class="modal-header d-flex justify-content-between">
+      <h5 class="modal-title text-white">Update Package</h5>
+      <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
     </div>
-    <div class="modal-body">
-      <form [formGroup]="updatePackageForm" (ngSubmit)="onSubmitUpdate()">
+    <form [formGroup]="updatePackageForm" (ngSubmit)="onSubmitUpdate()">
+      <div class="container has-scroll has-scroll-admin modal-body">
         <!-- Delivery Status -->
-        <div class="form-group">
-          <label for="deliveryStatus">Delivery Status</label>
-          <select class="form-control" formControlName="deliveryStatus">
-            <option value="on delivery">On Delivery</option>
-            <option value="delivered">Delivered</option>
-            <option value="declined">Declined</option>
-          </select>
-        </div>
+        <div class="row row-gap-2">
+          <div class="form-group">
+            <label for="deliveryStatus">Delivery Status <span class="text-danger">*</span></label>
+            <select class="form-control" formControlName="deliveryStatus">
+              <option value="on delivery">On Delivery</option>
+              <option value="delivered">Delivered</option>
+              <option value="declined">Declined</option>
+            </select>
+            <div *ngIf="updatePackageForm.get('deliveryStatus')?.invalid && updatePackageForm.get('deliveryStatus')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
+          </div>
 
-        <!-- Current Location -->
-        <div class="form-group">
-          <label for="currentLocation">Current Location</label>
-          <select class="form-control" id="currentLocation" formControlName="currentLocation" required>
-            <option value="" disabled selected>Select Office</option>
-            <option *ngFor="let office of officeOptionsForCreate" [value]="office.id">{{ office.officeName }}</option>
-          </select>
-        </div>
+          <!-- Current Location -->
+          <div class="form-group">
+            <label for="currentLocation">Current Location <span class="text-danger">*</span></label>
+            <select class="form-control" id="currentLocation" formControlName="currentLocation" required>
+              <option value="" disabled selected>Select Office</option>
+              <option *ngFor="let office of officeOptionsForCreate" [value]="office.id">{{ office.officeName }}</option>
+            </select>
+            <div *ngIf="updatePackageForm.get('currentLocation')?.invalid && updatePackageForm.get('currentLocation')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
+          </div>
 
-        <!-- Weight -->
-        <div class="form-group">
-          <label for="weight">Weight (kg)</label>
-          <input type="number" class="form-control" formControlName="weight" />
-        </div>
+          <!-- Weight -->
+          <div class="form-group">
+            <label for="weightUpdate">Weight (kg) <span class="text-danger">*</span></label>
+            <input type="number" min="0" class="form-control" id="weightUpdate" formControlName="weight"
+                   placeholder="Weight" required />
+            <div *ngIf="updatePackageForm.get('weight')?.invalid && updatePackageForm.get('weight')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
+          </div>
 
-        <!-- Receiver -->
-        <div class="form-group">
-          <label for="receiver">Receiver Name</label>
-          <input type="text" class="form-control" formControlName="receiver" />
-        </div>
+          <!-- Receiver -->
+          <div class="form-group">
+            <label for="receiver">Receiver Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="receiver" />
+            <div *ngIf="updatePackageForm.get('receiver')?.invalid && updatePackageForm.get('receiver')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
+          </div>
 
-        <!-- Payment Status -->
-        <div class="form-group">
-          <label for="paymentStatus">Payment Status</label>
-          <select class="form-control" formControlName="paymentStatus">
-            <option value="paid">Paid</option>
-            <option value="pending">Pending</option>
-            <option value="fail">Fail</option>
-          </select>
+          <!-- Payment Status -->
+          <div class="form-group">
+            <label for="paymentStatus">Payment Status <span class="text-danger">*</span></label>
+            <select class="form-control" formControlName="paymentStatus">
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+              <option value="fail">Fail</option>
+            </select>
+            <div *ngIf="updatePackageForm.get('paymentStatus')?.invalid && updatePackageForm.get('paymentStatus')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
+          </div>
         </div>
-
-        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">Update</button>
-      </form>
-    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-primary-admin btn-block" [disabled]="isSubmitting">Create
+        </button>
+        <button type="button" class="btn btn-secondary-admin text-white" (click)="modal.dismiss()">Cancel</button>
+      </div>
+    </form>
   </ng-template>
 </div>
 
@@ -271,10 +339,12 @@
     <td>{{ pkg.officeName }}</td>
     <td>{{ pkg.createdAt | date: 'short' }}</td>
     <td>
-      <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center" (click)="viewPackage(pkg.id, content)">
+      <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center"
+              (click)="viewPackage(pkg.id, content)">
         <i class="fa-regular fa-eye"></i>
       </button>
-      <button class="btn btn-sm update-btn d-inline-flex justify-content-center align-items-center" (click)="openUpdatePackageModal(updatePackageModal, pkg)">
+      <button class="btn btn-sm update-btn d-inline-flex justify-content-center align-items-center"
+              (click)="openUpdatePackageModal(updatePackageModal, pkg)">
         <i class="fa-regular fa-pen-to-square"></i>
       </button>
     </td>

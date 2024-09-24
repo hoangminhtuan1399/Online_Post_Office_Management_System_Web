@@ -8,20 +8,6 @@ h4 {
   margin-bottom: 15px;
 }
 
-.btn-lg {
-  font-size: 1.25rem;
-  padding: 12px 30px;
-  background-color: #007bff;
-  border-color: #007bff;
-  color: #fff;
-}
-
-.btn-lg:hover {
-  background-color: #0056b3;
-  border-color: #004085;
-}
-
-
 .table-responsive {
   margin: 20px auto;
   max-width: 100%; /* Tăng độ rộng của bảng lên 100% để chiếm toàn bộ không gian */
@@ -81,22 +67,13 @@ td .btn {
   margin-right: 8px;
 }
 
-.btn-info {
-  color: #fff;
+.modal-header {
+  background-color: var(--card-content-bg);
 }
 
-.btn-info:hover {
-  background-color: #138496;
-  border-color: #117a8b;
-}
-
-.btn-warning {
-  color: #212529;
-}
-
-.btn-warning:hover {
-  background-color: #e0a800;
-  border-color: #d39e00;
+.modal-body {
+  max-height: 72vh;
+  overflow-y: auto;
 }
 
 /* Responsive design */

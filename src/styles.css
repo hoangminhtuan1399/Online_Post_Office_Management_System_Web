@@ -5,7 +5,8 @@
   --primary-button-bg-hover: #0B5ED7FF;
   --scroll-bar-bg: #d6d6d6;
   --scroll-bar-thumb-bg: var(--secondary-color);
-  --card-content-bg: rgba(0, 0, 0, 0.8);
+  --scroll-bar-thumb-bg-admin: var(--card-content-bg);
+  --card-content-bg: rgba(0, 0, 0, 0.9);
   --bs-body-font-size: 90% !important;
   --active-dashboard-link-bg: #000;
   --btn-primary-admin-bg: #010101;
@@ -115,6 +116,11 @@ p {
   border-radius: 4px;
 }
 
+.has-scroll-admin::-webkit-scrollbar-thumb {
+  background: var(--scroll-bar-thumb-bg-admin);
+  border-radius: 4px;
+}
+
 .card-content {
   border-radius: 16px !important;
   background-color: var(--card-content-bg) !important;
@@ -160,6 +166,10 @@ p {
 
 .update-btn:hover  {
   background-color: var(--btn-update-bg-hover) !important;
+}
+
+.form-control {
+  font-size: 0.9rem !important;
 }
 
 .spinner {
