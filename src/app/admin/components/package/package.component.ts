@@ -13,7 +13,7 @@ export class PackageComponent implements OnInit {
   packages: any[] = [];
   paymentStatusFilter: string = '';
   selectedPackage: any = null;
-  statusOptions: string[] = ['paid', 'pending', 'fail', ''];
+  statusOptions: string[] = ['paid', 'pending', 'fail'];
   currentPage: number = 1;
   itemsPerPage: number = 10;
   isLastPage: boolean = false;
@@ -26,6 +26,7 @@ export class PackageComponent implements OnInit {
   officeOptions: { id: string; name: string }[] = [];
   officeOptionsForCreate: any[] = [];
   packageFilterForm: FormGroup;
+  isLoading = false;
 
   constructor(
     private packageService: PackageService,
@@ -56,21 +57,21 @@ export class PackageComponent implements OnInit {
       paymentStatus: ['', Validators.required],
     });
     this.packageFilterForm = this.fb.group({
-      office: [''],
+      officeId: [''],
       startDate: [''],
-      paymentStatus: ['']
+      paymentStatus: [''],
+      page: [1]
     });
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.packageFilterForm.patchValue({
-        office: params['office'] || '',
+        officeId: params['officeId'] || '',
         startDate: params['startDate'] || '',
-        paymentStatus: params['paymentStatus'] || ''
+        paymentStatus: params['paymentStatus'] || '',
+        page: +params['page'] || 1
       });
-      // Lấy giá trị phân trang từ URL params nếu có
-      this.currentPage = params['page'] ? +params['page'] : this.currentPage;
     })
     this.packageService.getAllOffice().subscribe(
       (offices: any[]) => {
@@ -89,6 +90,7 @@ export class PackageComponent implements OnInit {
   }
 
   getPackages(): void {
+    this.isLoading = true;
     this.packageService
       .getFilteredPackages(
         this.currentPage,
@@ -103,6 +105,9 @@ export class PackageComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching package data', error);
+        },
+        () => {
+          this.isLoading = false;
         }
       );
   }
@@ -305,16 +310,32 @@ export class PackageComponent implements OnInit {
   }
 
   onSearch() {
-    const queryParams = {
-      office: this.packageFilterForm.get('office')?.value || '',
-      startDate: this.packageFilterForm.get('startDate')?.value || '',
-      paymentStatus: this.packageFilterForm.get('paymentStatus')?.value || ''
-    };
-
+    const queryParams = this.getFilterQueryParam();
     this.router.navigate([], { queryParams });
-    this.officeIdFilter = queryParams.office;
+    this.officeIdFilter = queryParams.officeId;
     this.startDate = queryParams.startDate;
     this.paymentStatusFilter = queryParams.paymentStatus;
+    this.currentPage = queryParams.page;
     this.getPackages();
+  }
+
+  onClear() {
+    this.packageFilterForm.reset({
+      officeId: [''],
+      startDate: [''],
+      paymentStatus: [''],
+      page: [1]
+    });
+    console.log(this.packageFilterForm.value)
+    this.onSearch();
+  }
+
+  getFilterQueryParam() {
+    return {
+      officeId: this.packageFilterForm.get('officeId')?.value || '',
+      startDate: this.packageFilterForm.get('startDate')?.value || '',
+      paymentStatus: this.packageFilterForm.get('paymentStatus')?.value || '',
+      page: this.packageFilterForm.get('page')?.value || 1
+    };
   }
 }

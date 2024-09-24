@@ -8,8 +8,15 @@
   --card-content-bg: rgba(0, 0, 0, 0.8);
   --bs-body-font-size: 90% !important;
   --active-dashboard-link-bg: #000;
-  --btn-primary-admin-bg: #000;
-  --btn-primary-admin-bg-hover: #0c0c0c;
+  --btn-primary-admin-bg: #010101;
+  --btn-primary-admin-bg-hover: #1f1f1f;
+  --btn-secondary-admin-bg: #cad2c5;
+  --btn-secondary-admin-border-color: #cad2c5;
+  --btn-secondary-admin-bg-hover: #2f3e46;
+  --btn-view-bg: #2f3e46;
+  --btn-view-bg-hover: #1f1f1f;
+  --btn-update-bg: #84a98c;
+  --btn-update-bg-hover: #1f1f1f;
 }
 
 html {
@@ -122,4 +129,51 @@ p {
 
 .btn-primary-admin:hover {
   background-color: var(--btn-primary-admin-bg-hover) !important;
+}
+
+.btn-secondary-admin {
+  background-color: var(--btn-secondary-admin-bg) !important;
+  border: none !important;
+}
+
+.btn-secondary-admin:hover {
+  background-color: var(--btn-secondary-admin-bg-hover) !important;
+}
+
+.view-btn {
+  background-color: var(--btn-view-bg) !important;
+  color: #fff !important;
+  width: 30px;
+  height: 30px;
+}
+
+.view-btn:hover  {
+  background-color: var(--btn-view-bg-hover) !important;
+}
+
+.update-btn {
+  background-color: var(--btn-update-bg) !important;
+  color: #fff !important;
+  width: 30px;
+  height: 30px;
+}
+
+.update-btn:hover  {
+  background-color: var(--btn-update-bg-hover) !important;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+  z-index: 10000;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

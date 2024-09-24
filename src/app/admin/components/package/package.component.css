@@ -1,5 +1,3 @@
-
-
 h1.text-center {
   color: #333;
   margin-bottom: 20px;
@@ -25,12 +23,10 @@ h4 {
 
 
 .table-responsive {
- 
   margin: 20px auto;
   max-width: 100%; /* Tăng độ rộng của bảng lên 100% để chiếm toàn bộ không gian */
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 table {
@@ -40,18 +36,17 @@ table {
 }
 
 thead {
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   text-align: center; /* Căn giữa chữ trong tiêu đề theo chiều ngang */
 }
 
 thead th {
-  background-color: #4CAF50;
   color: white;
   font-weight: 600;
   text-align: center; /* Căn giữa chữ trong tiêu đề theo chiều ngang */
   vertical-align: middle; /* Căn giữa theo chiều dọc */
   padding: 15px;
+  background-color: var(--btn-primary-admin-bg);
 }
 
 .filter-icon {
@@ -83,13 +78,10 @@ tbody tr:nth-child(even) {
 }
 
 td .btn {
-  margin-right: 5px;
-  padding: 5px 10px;
+  margin-right: 8px;
 }
 
 .btn-info {
-  background-color: #17a2b8;
-  border-color: #17a2b8;
   color: #fff;
 }
 
@@ -99,8 +91,6 @@ td .btn {
 }
 
 .btn-warning {
-  background-color: #ffc107;
-  border-color: #ffc107;
   color: #212529;
 }
 
@@ -149,17 +139,17 @@ td .btn {
     border-radius: 5px;
     position: relative;
   }
-  
+
   .package-details p {
     margin: 5px 0;
     font-size: 14px;
     color: #333;
   }
-  
+
   .package-details strong {
     color: #000;
   }
-  
+
   .package-cost {
     position: absolute;
     bottom: 10px;
@@ -168,12 +158,12 @@ td .btn {
     font-weight: bold;
     color: #4CAF50; /* Màu xanh lá cây cho chi phí */
   }
-  
+
   .package-cost span {
     color: #d9534f; /* Màu đỏ cho số tiền */
     font-size: 28px; /* Tăng kích thước số tiền */
   }
-  
+
   .modal-footer {
     display: flex;
     justify-content: space-between;
@@ -181,19 +171,19 @@ td .btn {
     background-color: #fff;
     border-top: 1px solid #ddd;
   }
-  
+
   .modal-header {
     border-bottom: 1px solid #ddd;
     background-color: #4CAF50; /* Màu xanh lá cây cho header */
     color: white;
   }
-  
+
   .modal-header h5 {
     margin: 0;
   }
-  
+
   .modal-header .close {
     color: white;
   }
-  
+
 }

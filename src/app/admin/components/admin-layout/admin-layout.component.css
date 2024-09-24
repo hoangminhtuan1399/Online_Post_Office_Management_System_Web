@@ -2,10 +2,17 @@
   width: 25%;
   max-width: 320px;
   flex-shrink: 0;
+  z-index: 9;
 }
 
 .admin-right-col {
   flex-grow: 1;
   max-height: 100vh;
   overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  .admin-left-col {
+    width: 0;
+  }
 }

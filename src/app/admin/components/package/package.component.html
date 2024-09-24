@@ -1,15 +1,15 @@
 <div class="">
-
-  <!-- Nút Create to ở giữa -->
   <div class="d-flex justify-content-between mb-4">
-    <h3 class="text-white">Packages</h3>
-    <button class="btn btn-primary btn-primary-admin" (click)="openCreatePackageModal(createPackageModal)">Create Package</button>
+    <h3 class="">Packages</h3>
+    <button class="btn btn-primary btn-primary-admin" (click)="openCreatePackageModal(createPackageModal)">Create
+      Package
+    </button>
   </div>
 
   <div class="row mb-3 row-gap-2" [formGroup]="packageFilterForm">
     <div class="col-md-3">
       <label for="office">Office</label>
-      <select formControlName="office" class="form-control" id="office">
+      <select formControlName="officeId" class="form-control" id="office">
         <option value="">All Offices</option>
         <option *ngFor="let office of officeOptions" [value]="office.id">{{ office.name }}</option>
       </select>
@@ -25,47 +25,35 @@
         <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
       </select>
     </div>
-    <div class="col-md-3 d-flex align-items-end justify-content-end">
-      <button class="btn btn-primary" (click)="onSearch()">Search</button>
+    <div class="col-md-3 d-flex gap-2 align-items-end justify-content-end">
+      <button class="btn btn-primary btn-primary-admin" (click)="onSearch()">Search</button>
+      <button class="btn btn-secondary-admin text-white" (click)="onClear()">Clear</button>
     </div>
   </div>
 
   <div class="table-responsive mt-3">
     <table class="table table-bordered table-striped">
       <thead>
-        <tr>
-          <th style="width: 10%;">ID</th>
-          <th style="width: 15%;">Cost</th>
-          <th style="width: 15%;" style="cursor: pointer;">
-            Payment Status <span class="filter-icon">▼</span>
-
-          </th>
-          <th style="width: 15%;">Delivery Status</th>
-          <th style="width: 20%;" style="cursor: pointer;">
-            Office Name <span class="filter-icon">▼</span>
-
-          </th>
-          <th style="width: 15%;">Created At</th>
-          <th style="width: 10%;">Action</th>
-        </tr>
+      <tr>
+        <!--          <th>ID</th>-->
+        <th>Cost</th>
+        <th>Payment Status</th>
+        <th>Delivery Status</th>
+        <th>Office Name</th>
+        <th>Created At</th>
+        <th>Action</th>
+      </tr>
       </thead>
       <tbody>
-        <tr *ngIf="packages.length === 0">
-          <td colspan="7" class="text-center">No data available</td>
-        </tr>
-        <tr *ngFor="let pkg of packages">
-          <td>{{ pkg.id }}</td>
-          <td>{{ pkg.paymentCost | currency }}</td>
-          <td>{{ pkg.paymentStatus }}</td>
-          <td>{{ pkg.deliveryStatus }}</td>
-          <td>{{ pkg.officeName }}</td>
-          <td>{{ pkg.createdAt | date: 'short' }}</td>
-          <td>
-            <button class="btn btn-sm btn-info" (click)="viewPackage(pkg.id, content)">View</button>
-            <button class="btn btn-sm btn-warning"
-              (click)="openUpdatePackageModal(updatePackageModal, pkg)">Update</button>
-          </td>
-        </tr>
+      <tr *ngIf="isLoading; else packageRows">
+        <td colspan="6" class="text-center">
+          <div class="spinner"></div>
+        </td>
+      </tr>
+      <tr *ngIf="packages.length === 0 && !isLoading">
+        <td colspan="6" class="text-center">No data available</td>
+      </tr>
+
       </tbody>
     </table>
   </div>
@@ -134,12 +122,12 @@
           <div class="form-group col-md-6">
             <label for="weight">Weight (kg)</label>
             <input type="number" class="form-control" id="weight" formControlName="weight" placeholder="Weight"
-              required>
+                   required>
           </div>
           <div class="form-group col-md-6">
             <label for="receiver">Receiver Name</label>
             <input type="text" class="form-control" id="receiver" formControlName="receiver" placeholder="Receiver"
-              required>
+                   required>
           </div>
         </div>
         <hr>
@@ -162,12 +150,12 @@
           <div class="form-group col-md-6">
             <label for="descriptionText">Description</label>
             <input type="text" class="form-control" id="descriptionText" formControlName="descriptionText"
-              placeholder="Description" required>
+                   placeholder="Description" required>
           </div>
           <div class="form-group col-md-6">
             <label for="receiverAddress">Receiver Address</label>
             <input type="text" class="form-control" id="receiverAddress" formControlName="receiverAddress"
-              placeholder="Receiver Address" required>
+                   placeholder="Receiver Address" required>
           </div>
         </div>
         <hr>
@@ -196,17 +184,17 @@
           <div class="form-group col-md-4">
             <label for="customerName">Customer Name</label>
             <input type="text" class="form-control" id="customerName" formControlName="customerName"
-              placeholder="Customer Name" required>
+                   placeholder="Customer Name" required>
           </div>
           <div class="form-group col-md-4">
             <label for="customerPhone">Customer Phone</label>
             <input type="text" class="form-control" id="customerPhone" formControlName="customerPhone"
-              placeholder="Customer Phone" required>
+                   placeholder="Customer Phone" required>
           </div>
           <div class="form-group col-md-4">
             <label for="customerEmail">Customer Email</label>
             <input type="email" class="form-control" id="customerEmail" formControlName="customerEmail"
-              placeholder="Customer Email" required>
+                   placeholder="Customer Email" required>
           </div>
         </div>
 
@@ -272,5 +260,23 @@
       </form>
     </div>
   </ng-template>
-
 </div>
+
+<ng-template #packageRows>
+  <tr *ngFor="let pkg of packages">
+    <!--          <td>{{ pkg.id }}</td>-->
+    <td>{{ pkg.paymentCost | currency }}</td>
+    <td>{{ pkg.paymentStatus }}</td>
+    <td>{{ pkg.deliveryStatus }}</td>
+    <td>{{ pkg.officeName }}</td>
+    <td>{{ pkg.createdAt | date: 'short' }}</td>
+    <td>
+      <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center" (click)="viewPackage(pkg.id, content)">
+        <i class="fa-regular fa-eye"></i>
+      </button>
+      <button class="btn btn-sm update-btn d-inline-flex justify-content-center align-items-center" (click)="openUpdatePackageModal(updatePackageModal, pkg)">
+        <i class="fa-regular fa-pen-to-square"></i>
+      </button>
+    </td>
+  </tr>
+</ng-template>
