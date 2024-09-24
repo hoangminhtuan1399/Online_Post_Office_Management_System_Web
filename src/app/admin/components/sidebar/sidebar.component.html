@@ -57,3 +57,6 @@
 <button class="sidebar__toggle-btn btn btn-primary d-md-none {{!isCollapsed ? 'active' : ''}}" (click)="isCollapsed = !isCollapsed">
   <i class="fa-solid fa-bars"></i>
 </button>
+<div class="mobile-sidebar-overlay d-none position-fixed top-0 bottom-0 vw-100 bg-transparent {{!isCollapsed ? 'active' : ''}}" (click)="isCollapsed = !isCollapsed">
+
+</div>

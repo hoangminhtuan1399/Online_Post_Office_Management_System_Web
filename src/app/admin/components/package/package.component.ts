@@ -13,7 +13,7 @@ export class PackageComponent implements OnInit {
   packages: any[] = [];
   paymentStatusFilter: string = '';
   selectedPackage: any = null;
-  statusOptions: string[] = ['paid', 'pending', 'fail', ''];
+  statusOptions: string[] = ['paid', 'pending', 'fail'];
   currentPage: number = 1;
   itemsPerPage: number = 10;
   isLastPage: boolean = false;
@@ -26,6 +26,7 @@ export class PackageComponent implements OnInit {
   officeOptions: { id: string; name: string }[] = [];
   officeOptionsForCreate: any[] = [];
   packageFilterForm: FormGroup;
+  isLoading = false;
 
   constructor(
     private packageService: PackageService,
@@ -56,21 +57,21 @@ export class PackageComponent implements OnInit {
       paymentStatus: ['', Validators.required],
     });
     this.packageFilterForm = this.fb.group({
-      office: [''],
+      officeId: [''],
       startDate: [''],
-      paymentStatus: ['']
+      paymentStatus: [''],
+      page: [1]
     });
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.packageFilterForm.patchValue({
-        office: params['office'] || '',
+        officeId: params['officeId'] || '',
         startDate: params['startDate'] || '',
-        paymentStatus: params['paymentStatus'] || ''
+        paymentStatus: params['paymentStatus'] || '',
+        page: +params['page'] || 1
       });
-      // Lấy giá trị phân trang từ URL params nếu có
-      this.currentPage = params['page'] ? +params['page'] : this.currentPage;
     })
     this.packageService.getAllOffice().subscribe(
       (offices: any[]) => {
@@ -85,10 +86,11 @@ export class PackageComponent implements OnInit {
         console.error('Error fetching offices', error);
       }
     );
-    this.getPackages();
+    this.onSearch();
   }
 
   getPackages(): void {
+    this.isLoading = true;
     this.packageService
       .getFilteredPackages(
         this.currentPage,
@@ -103,21 +105,24 @@ export class PackageComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching package data', error);
+        },
+        () => {
+          this.isLoading = false;
         }
       );
   }
 
   nextPage(): void {
     if (!this.isLastPage) {
-      this.currentPage++;
-      this.getPackages();
+      this.packageFilterForm.get('page')?.setValue(this.currentPage + 1);
+      this.onSearch();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
-      this.currentPage--;
-      this.getPackages();
+      this.packageFilterForm.get('page')?.setValue(this.currentPage - 1);
+      this.onSearch();
     }
   }
 
@@ -125,7 +130,7 @@ export class PackageComponent implements OnInit {
     this.selectedPackage = pkg;
     this.updatePackageForm.patchValue({
       deliveryStatus: pkg.deliveryStatus,
-      currentLocation: pkg.currentLocation,
+      currentLocation: pkg.officeId,
       weight: pkg.weight,
       receiver: pkg.receiver,
       paymentStatus: pkg.paymentStatus,
@@ -145,7 +150,6 @@ export class PackageComponent implements OnInit {
     if (this.updatePackageForm.valid) {
       this.isSubmitting = true;
       const formValue = this.updatePackageForm.value;
-
       const deliveryRequestBody = {
         id: this.selectedPackage.deliveryId,
         sendDate: this.selectedPackage.sendDate,
@@ -185,7 +189,7 @@ export class PackageComponent implements OnInit {
                   console.log('All updates successful');
                   this.isSubmitting = false;
                   this.modalService.dismissAll();
-                  this.getPackages();
+                  this.onSearch();
                 },
                 (error) => {
                   console.error('Error updating payment', error);
@@ -204,6 +208,8 @@ export class PackageComponent implements OnInit {
           this.isSubmitting = false;
         }
       );
+    } else {
+      this.updatePackageForm.markAllAsTouched();
     }
   }
 
@@ -230,7 +236,6 @@ export class PackageComponent implements OnInit {
   onSubmit(): void {
     if (this.createPackageForm.valid) {
       this.isSubmitting = true;
-
       const formValue = this.createPackageForm.value;
       const requestBody = {
         package: {
@@ -280,15 +285,15 @@ export class PackageComponent implements OnInit {
           console.log('Package created:', response);
           this.modalService.dismissAll();
           this.isSubmitting = false;
-          this.getPackages();
+          this.onSearch();
         },
         (error) => {
           console.error('Error creating package', error);
           this.isSubmitting = false;
         }
       );
-
-      console.log(requestBody);
+    } else {
+      this.createPackageForm.markAllAsTouched();
     }
   }
 
@@ -305,16 +310,31 @@ export class PackageComponent implements OnInit {
   }
 
   onSearch() {
-    const queryParams = {
-      office: this.packageFilterForm.get('office')?.value || '',
-      startDate: this.packageFilterForm.get('startDate')?.value || '',
-      paymentStatus: this.packageFilterForm.get('paymentStatus')?.value || ''
-    };
-
+    const queryParams = this.getFilterQueryParam();
     this.router.navigate([], { queryParams });
-    this.officeIdFilter = queryParams.office;
+    this.officeIdFilter = queryParams.officeId;
     this.startDate = queryParams.startDate;
     this.paymentStatusFilter = queryParams.paymentStatus;
+    this.currentPage = queryParams.page;
     this.getPackages();
+  }
+
+  onClear() {
+    this.packageFilterForm.reset({
+      officeId: [''],
+      startDate: [''],
+      paymentStatus: [''],
+      page: [1]
+    });
+    this.onSearch();
+  }
+
+  getFilterQueryParam() {
+    return {
+      officeId: this.packageFilterForm.get('officeId')?.value || '',
+      startDate: this.packageFilterForm.get('startDate')?.value || '',
+      paymentStatus: this.packageFilterForm.get('paymentStatus')?.value || '',
+      page: this.packageFilterForm.get('page')?.value || 1
+    };
   }
 }
