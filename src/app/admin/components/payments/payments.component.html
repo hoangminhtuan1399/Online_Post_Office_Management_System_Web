@@ -1,1 +1,56 @@
-<p>payments works!</p>
+<div class="container">
+  <h1 class="text-center">Payments</h1>
+
+  <div class="table-responsive mt-3">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th (click)="togglePaymentStatusFilter()">Status
+            <span class="filter-icon">▼</span>
+          </th>
+          <th>Cost</th>
+          <th>Transaction Time</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="payments.length === 0">
+          <td colspan="5" class="text-center">No data available</td>
+        </tr>
+        <tr *ngFor="let payment of payments">
+          <td>{{ payment.id }}</td>
+          <td>{{ payment.status }}</td>
+          <td>{{ payment.cost | currency }}</td>
+          <td>{{ payment.transactionTime | date: 'short' }}</td>
+          <td>
+            <button class="btn btn-sm btn-info" (click)="viewPayment(payment.id, content)">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <button class="btn btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }}</span>
+    <button class="btn btn-secondary" (click)="nextPage()" [disabled]="isLastPage">Next</button>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Payment Details</h5>
+    </div>
+    <div class="modal-body" *ngIf="selectedPayment">
+      <div class="payment-details">
+        <p><strong>ID:</strong> {{ selectedPayment.id }}</p>
+        <p><strong>Status:</strong> {{ selectedPayment.status }}</p>
+        <p><strong>Cost:</strong> {{ selectedPayment.cost | currency }}</p>
+        <p><strong>Transaction Time:</strong> {{ selectedPayment.transactionTime | date: 'short' }}</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+</div>
