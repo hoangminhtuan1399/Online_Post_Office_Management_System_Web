@@ -7,11 +7,12 @@ import { LoginComponent } from "./admin/components/login/login.component";
 import { PaymentsComponent } from "./admin/components/payments/payments.component";
 import { BranchesComponent } from "./admin/components/branches/branches.component";
 import { ProfileComponent } from "./admin/components/profile/profile.component";
+import { ProfileUpdateComponent } from "./admin/components/profile-update/profile-update.component"; // Nhập ProfileUpdateComponent
 import { AdminLayoutComponent } from "./admin/components/admin-layout/admin-layout.component";
 import { EmployeeListComponent } from './admin/components/employees/employee-list/employee-list.component';
 import { EmployeeCreateComponent } from './admin/components/employees/employee-create/employee-create.component';
-import { EmployeeEditComponent } from './admin/components/employees/employee-edit/employee-edit.component';  // Import EmployeeEditComponent
-import { EmployeeDetailComponent } from './admin/components/employees/employee-detail/employee-detail.component'; // Import EmployeeDetailComponent
+import { EmployeeEditComponent } from './admin/components/employees/employee-edit/employee-edit.component';  
+import { EmployeeDetailComponent } from './admin/components/employees/employee-detail/employee-detail.component'; 
 
 // Import thêm các component của Service
 import { ServiceListComponent } from './admin/components/services/service-list/service-list.component';
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path: 'services/edit/:id', component: ServiceEditComponent },
       { path: 'services/detail/:id', component: ServiceDetailComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'profile-update', component: ProfileUpdateComponent }, // Thêm đường dẫn cho ProfileUpdateComponent
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', redirectTo: 'dashboard' }
     ]
