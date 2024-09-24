@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { BranchesComponent } from './components/branches/branches.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileUpdateComponent } from './components/profile-update/profile-update.component'; 
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
 import { EmployeeListComponent } from './components/employees/employee-list/employee-list.component';  
 import { EmployeeCreateComponent } from './components/employees/employee-create/employee-create.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
       { path: 'services/edit/:id', component: ServiceEditComponent }, 
       { path: 'services/detail/:id', component: ServiceDetailComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'profile-update', component: ProfileUpdateComponent },
       { path: 'employees', component: EmployeeListComponent }, 
       { path: 'employees/create', component: EmployeeCreateComponent },
       { path: 'employees/edit/:id', component: EmployeeEditComponent }, 
