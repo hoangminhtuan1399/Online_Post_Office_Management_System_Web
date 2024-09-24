@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PackageService } from './package.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: 'app-package',
@@ -13,28 +14,25 @@ export class PackageComponent implements OnInit {
   paymentStatusFilter: string = '';
   selectedPackage: any = null;
   statusOptions: string[] = ['paid', 'pending', 'fail', ''];
-  currentStatusIndex: number = 3;
   currentPage: number = 1;
-  itemsPerPage: number = 10; 
+  itemsPerPage: number = 10;
   isLastPage: boolean = false;
   isSubmitting: boolean = false;
   createPackageForm: FormGroup;
   updatePackageForm: FormGroup;
   serviceOptions: any[] = [];
   officeIdFilter: string = '';
-  officeOptions: { id: string; name: string }[] = [
-    { id: '66d9c49ed3fa15404d510f34', name: 'Main Office' },
-    { id: '66d9c4acd3fa15404d510f35', name: 'Houston Branch' },
-    { id: '66d9c4bbd3fa15404d510f36', name: 'NYC Office' },
-    { id: '', name: 'All Offices' },
-  ];
+  startDate: string = '';
+  officeOptions: { id: string; name: string }[] = [];
   officeOptionsForCreate: any[] = [];
-  currentOfficeIndex: number = 3;
+  packageFilterForm: FormGroup;
 
   constructor(
     private packageService: PackageService,
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.createPackageForm = this.fb.group({
       officeId: ['', Validators.required],
@@ -57,9 +55,36 @@ export class PackageComponent implements OnInit {
       receiver: ['', Validators.required],
       paymentStatus: ['', Validators.required],
     });
+    this.packageFilterForm = this.fb.group({
+      office: [''],
+      startDate: [''],
+      paymentStatus: ['']
+    });
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.packageFilterForm.patchValue({
+        office: params['office'] || '',
+        startDate: params['startDate'] || '',
+        paymentStatus: params['paymentStatus'] || ''
+      });
+      // Lấy giá trị phân trang từ URL params nếu có
+      this.currentPage = params['page'] ? +params['page'] : this.currentPage;
+    })
+    this.packageService.getAllOffice().subscribe(
+      (offices: any[]) => {
+        this.officeOptions = offices.map(office => {
+          return {
+            id: office.id,
+            name: office.officeName
+          }
+        });
+      },
+      (error) => {
+        console.error('Error fetching offices', error);
+      }
+    );
     this.getPackages();
   }
 
@@ -68,13 +93,13 @@ export class PackageComponent implements OnInit {
       .getFilteredPackages(
         this.currentPage,
         this.officeIdFilter,
-        '',
+        this.startDate,
         this.paymentStatusFilter
       )
       .subscribe(
         (response) => {
           this.packages = response;
-          this.isLastPage = response.length < this.itemsPerPage; 
+          this.isLastPage = response.length < this.itemsPerPage;
         },
         (error) => {
           console.error('Error fetching package data', error);
@@ -125,19 +150,19 @@ export class PackageComponent implements OnInit {
         id: this.selectedPackage.deliveryId,
         sendDate: this.selectedPackage.sendDate,
         deliveryStatus: formValue.deliveryStatus,
-        startOfficeId: this.selectedPackage.startOfficeId, 
+        startOfficeId: this.selectedPackage.startOfficeId,
         currentLocation: formValue.currentLocation,
         endOfficeId: this.selectedPackage.endOfficeId,
         deliveryDate: formValue.deliveryStatus === 'delivered' || formValue.deliveryStatus === 'declined'
-          ? new Date().toISOString() 
-          : this.selectedPackage.deliveryDate, 
+          ? new Date().toISOString()
+          : this.selectedPackage.deliveryDate,
       };
 
       const packageRequestBody = {
         id: this.selectedPackage.id,
         weight: formValue.weight,
-        distance: this.selectedPackage.distance, 
-        deliveryNumber: this.selectedPackage.deliveryNumber, 
+        distance: this.selectedPackage.distance,
+        deliveryNumber: this.selectedPackage.deliveryNumber,
         receiver: formValue.receiver,
         createdAt: this.selectedPackage.createdAt,
       };
@@ -146,9 +171,9 @@ export class PackageComponent implements OnInit {
         id: this.selectedPackage.paymentId,
         status: formValue.paymentStatus,
         transactionTime: formValue.paymentStatus === 'paid' || formValue.paymentStatus === 'fail'
-          ? new Date().toISOString() 
-          : this.selectedPackage.transactionTime, 
-        cost: this.selectedPackage.paymentCost, 
+          ? new Date().toISOString()
+          : this.selectedPackage.transactionTime,
+        cost: this.selectedPackage.paymentCost,
       };
 
       this.packageService.updateDelivery(this.selectedPackage.deliveryId, deliveryRequestBody).subscribe(
@@ -159,7 +184,7 @@ export class PackageComponent implements OnInit {
                 () => {
                   console.log('All updates successful');
                   this.isSubmitting = false;
-                  this.modalService.dismissAll(); 
+                  this.modalService.dismissAll();
                   this.getPackages();
                 },
                 (error) => {
@@ -270,8 +295,8 @@ export class PackageComponent implements OnInit {
   viewPackage(packageId: string, content: any): void {
     this.packageService.getPackageById(packageId).subscribe(
       (response) => {
-        this.selectedPackage = response; 
-        this.modalService.open(content, { centered: true }); 
+        this.selectedPackage = response;
+        this.modalService.open(content, { centered: true });
       },
       (error) => {
         console.error('Error fetching package details', error);
@@ -279,18 +304,17 @@ export class PackageComponent implements OnInit {
     );
   }
 
-  togglePaymentStatusFilter(): void {
-    this.currentStatusIndex =
-      (this.currentStatusIndex + 1) % this.statusOptions.length;
-    this.paymentStatusFilter =
-      this.statusOptions[this.currentStatusIndex].toLocaleLowerCase();
-    this.getPackages();
-  }
+  onSearch() {
+    const queryParams = {
+      office: this.packageFilterForm.get('office')?.value || '',
+      startDate: this.packageFilterForm.get('startDate')?.value || '',
+      paymentStatus: this.packageFilterForm.get('paymentStatus')?.value || ''
+    };
 
-  toggleOfficeFilter(): void {
-    this.currentOfficeIndex =
-      (this.currentOfficeIndex + 1) % this.officeOptions.length;
-    this.officeIdFilter = this.officeOptions[this.currentOfficeIndex].id;
+    this.router.navigate([], { queryParams });
+    this.officeIdFilter = queryParams.office;
+    this.startDate = queryParams.startDate;
+    this.paymentStatusFilter = queryParams.paymentStatus;
     this.getPackages();
   }
 }

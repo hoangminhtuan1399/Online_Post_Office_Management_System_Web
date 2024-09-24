@@ -8,6 +8,8 @@
   --card-content-bg: rgba(0, 0, 0, 0.8);
   --bs-body-font-size: 90% !important;
   --active-dashboard-link-bg: #000;
+  --btn-primary-admin-bg: #000;
+  --btn-primary-admin-bg-hover: #0c0c0c;
 }
 
 html {
@@ -111,4 +113,13 @@ p {
   background-color: var(--card-content-bg) !important;
   color: white !important;
   padding: 1.5rem;
+}
+
+.btn-primary-admin {
+  background-color: var(--btn-primary-admin-bg) !important;
+  border: none !important;
+}
+
+.btn-primary-admin:hover {
+  background-color: var(--btn-primary-admin-bg-hover) !important;
 }
