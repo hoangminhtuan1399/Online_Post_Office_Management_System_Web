@@ -7,7 +7,7 @@
     <div class="col-md-4">
       <label for="paymentStatus">Payment Status</label>
       <select formControlName="paymentStatus" class="form-control">
-        <option value="">All Status</option>
+        <!-- <option value="">All Status</option> -->
         <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
       </select>
     </div>
