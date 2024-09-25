@@ -10,43 +10,43 @@ h4 {
 
 .table-responsive {
   margin: 20px auto;
-  max-width: 100%; /* Tăng độ rộng của bảng lên 100% để chiếm toàn bộ không gian */
+  max-width: 100%;
   border-radius: 8px;
   overflow: hidden;
 }
 
 table {
   width: 100%;
-  table-layout: fixed; /* Đảm bảo các cột có độ rộng cố định */
+  table-layout: fixed; 
   border-collapse: collapse;
 }
 
 thead {
   letter-spacing: 0.05em;
-  text-align: center; /* Căn giữa chữ trong tiêu đề theo chiều ngang */
+  text-align: center;
 }
 
 thead th {
   color: white;
   font-weight: 600;
-  text-align: center; /* Căn giữa chữ trong tiêu đề theo chiều ngang */
-  vertical-align: middle; /* Căn giữa theo chiều dọc */
+  text-align: center;
+  vertical-align: middle; 
   padding: 15px;
   background-color: var(--btn-primary-admin-bg);
 }
 
 .filter-icon {
   margin-left: 5px;
-  font-size: 12px; /* Giảm kích thước của ký hiệu */
-  color: #fff; /* Màu trắng để nổi bật trên nền */
+  font-size: 12px; 
+  color: #fff;
 }
 
 tbody td {
   padding: 15px;
   color: #333;
-  text-align: center; /* Căn giữa chữ theo chiều ngang */
-  vertical-align: middle; /* Căn giữa theo chiều dọc */
-  word-wrap: break-word; /* Ngắt dòng nếu chữ quá dài */
+  text-align: center; 
+  vertical-align: middle; 
+  word-wrap: break-word; 
 }
 
 tbody tr {
@@ -133,12 +133,12 @@ td .btn {
     right: 20px;
     font-size: 24px;
     font-weight: bold;
-    color: #4CAF50; /* Màu xanh lá cây cho chi phí */
+    color: #4CAF50; 
   }
 
   .package-cost span {
-    color: #d9534f; /* Màu đỏ cho số tiền */
-    font-size: 28px; /* Tăng kích thước số tiền */
+    color: #d9534f; 
+    font-size: 28px;
   }
 
   .modal-footer {
@@ -151,7 +151,7 @@ td .btn {
 
   .modal-header {
     border-bottom: 1px solid #ddd;
-    background-color: #4CAF50; /* Màu xanh lá cây cho header */
+    background-color: #4CAF50; 
     color: white;
   }
 

@@ -3,19 +3,19 @@
     <h3 class="">Payments</h3>
   </div>
 
-  <div class="row mb-3 row-gap-2  " [formGroup]="paymentFilterForm">
-    <div class="col-md-3">
+  <div class="row mb-4 row-gap-2  " [formGroup]="paymentFilterForm">
+    <div class="col-md-4">
       <label for="paymentStatus">Payment Status</label>
       <select formControlName="paymentStatus" class="form-control">
         <option value="">All Status</option>
         <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
       </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <label for="startDate">Start Date</label>
       <input type="date" formControlName="startDate" class="form-control" id="startDate">
     </div>
-    <div class="col-md-3 d-flex gap-2 align-items-end">
+    <div class="col-md-4 d-flex gap-2 align-items-end justify-content-end">
       <button class="btn btn-primary btn-primary-admin" (click)="onSearch()">Search</button>
       <button class="btn btn-secondary-admin text-white" (click)="onClear()">Clear</button>
     </div>
