@@ -1,56 +1,91 @@
-<div class="container">
-  <h1 class="text-center">Payments</h1>
+<div class="">
+  <div class="d-flex justify-content-between mb-4">
+    <h3 class="">Payments</h3>
+  </div>
+
+  <div class="row mb-3 row-gap-2  " [formGroup]="paymentFilterForm">
+    <div class="col-md-3">
+      <label for="paymentStatus">Payment Status</label>
+      <select formControlName="paymentStatus" class="form-control">
+        <option value="">All Status</option>
+        <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="startDate">Start Date</label>
+      <input type="date" formControlName="startDate" class="form-control" id="startDate">
+    </div>
+    <div class="col-md-3 d-flex gap-2 align-items-end">
+      <button class="btn btn-primary btn-primary-admin" (click)="onSearch()">Search</button>
+      <button class="btn btn-secondary-admin text-white" (click)="onClear()">Clear</button>
+    </div>
+  </div>
 
   <div class="table-responsive mt-3">
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
-          <th>ID</th>
-          <th (click)="togglePaymentStatusFilter()">Status
-            <span class="filter-icon">▼</span>
-          </th>
+          <th>Delivery Code</th>
+          <th>Status</th>
           <th>Cost</th>
           <th>Transaction Time</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="payments.length === 0">
-          <td colspan="5" class="text-center">No data available</td>
-        </tr>
-        <tr *ngFor="let payment of payments">
-          <td>{{ payment.id }}</td>
-          <td>{{ payment.status }}</td>
-          <td>{{ payment.cost | currency }}</td>
-          <td>{{ payment.transactionTime | date: 'short' }}</td>
-          <td>
-            <button class="btn btn-sm btn-info" (click)="viewPayment(payment.id, content)">View</button>
+        <tr *ngIf="isLoading; else packageRows">
+          <td colspan="5" class="text-center">
+            <div class="spinner"></div>
           </td>
+        </tr>
+        <tr *ngIf="payments.length === 0 && !isLoading">
+          <td colspan="5" class="text-center">No data available</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="d-flex justify-content-between align-items-center mt-3">
-    <button class="btn btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
-    <span>Page {{ currentPage }}</span>
-    <button class="btn btn-secondary" (click)="nextPage()" [disabled]="isLastPage">Next</button>
+  <div class="d-flex justify-content-center gap-3 align-items-center mt-3">
+    <button class="btn btn-primary-admin text-white" (click)="previousPage()"
+            [disabled]="currentPage === 1 || isLoading"><i
+      class="fa-solid fa-chevron-left"></i></button>
+    <h6 class="text-white mb-0">Page {{ currentPage }}</h6>
+    <button class="btn btn-primary-admin text-white" (click)="nextPage()" [disabled]="isLastPage || isLoading"><i
+      class="fa-solid fa-chevron-right"></i></button>
   </div>
 
   <ng-template #content let-modal>
-    <div class="modal-header">
-      <h5 class="modal-title">Payment Details</h5>
+    <div class="modal-header d-flex justify-content-between">
+      <h5 class="modal-title text-white">Payment Details</h5>
+      <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
     </div>
     <div class="modal-body" *ngIf="selectedPayment">
       <div class="payment-details">
         <p><strong>ID:</strong> {{ selectedPayment.id }}</p>
         <p><strong>Status:</strong> {{ selectedPayment.status }}</p>
-        <p><strong>Cost:</strong> {{ selectedPayment.cost | currency }}</p>
         <p><strong>Transaction Time:</strong> {{ selectedPayment.transactionTime | date: 'short' }}</p>
       </div>
+      <div class="package-cost">
+        <strong>Total Cost: </strong> <span>{{ selectedPayment.cost | currency }}</span>
+      </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
-    </div>
+    
   </ng-template>
 </div>
+
+<ng-template #packageRows>
+<tr *ngFor="let payment of payments">
+  <td>{{ payment.id }}</td>
+  <td>{{ payment.status }}</td>
+  <td>{{ payment.cost | currency }}</td>
+  <td>{{ payment.transactionTime | date: 'short' }}</td>
+  <td>
+    <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center"
+              (click)="viewPayment(payment.id, content)">
+        <i class="fa-regular fa-eye"></i>
+      </button>
+  </td>
+</tr>
+</ng-template>
