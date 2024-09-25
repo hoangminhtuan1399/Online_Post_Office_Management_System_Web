@@ -35,7 +35,7 @@
     <table class="table table-bordered table-striped">
       <thead>
       <tr>
-        <!--          <th>ID</th>-->
+        <th>Delivery Code</th>
         <th>Cost</th>
         <th>Payment Status</th>
         <th>Delivery Status</th>
@@ -46,12 +46,12 @@
       </thead>
       <tbody>
       <tr *ngIf="isLoading; else packageRows">
-        <td colspan="6" class="text-center">
+        <td colspan="7" class="text-center">
           <div class="spinner"></div>
         </td>
       </tr>
       <tr *ngIf="packages.length === 0 && !isLoading">
-        <td colspan="6" class="text-center">No data available</td>
+        <td colspan="7" class="text-center">No data available</td>
       </tr>
 
       </tbody>
@@ -78,7 +78,7 @@
     </div>
     <div class="modal-body" *ngIf="selectedPackage">
       <div class="package-details">
-        <p><strong>Delivery Number:</strong> {{ selectedPackage.deliveryNumber }}</p>
+        <p><strong>Delivery Code:</strong> {{ selectedPackage.id }}</p>
         <p><strong>Receiver:</strong> {{ selectedPackage.receiver }}</p>
         <p><strong>Office Name:</strong> {{ selectedPackage.officeName }}</p>
         <p><strong>Office Address:</strong> {{ selectedPackage.officeAddress }}</p>
@@ -332,7 +332,7 @@
 
 <ng-template #packageRows>
   <tr *ngFor="let pkg of packages">
-    <!--          <td>{{ pkg.id }}</td>-->
+    <td>{{ pkg.id }}</td>
     <td>{{ pkg.paymentCost | currency }}</td>
     <td>{{ pkg.paymentStatus }}</td>
     <td>{{ pkg.deliveryStatus }}</td>
