@@ -39,7 +39,7 @@ const routes: Routes = [
       { path: 'services/edit/:id', component: ServiceEditComponent },
       { path: 'services/detail/:id', component: ServiceDetailComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'profile-update', component: ProfileUpdateComponent }, // Thêm đường dẫn cho ProfileUpdateComponent
+      { path: 'profile-update', component: ProfileUpdateComponent }, 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', redirectTo: 'dashboard' }
     ]
