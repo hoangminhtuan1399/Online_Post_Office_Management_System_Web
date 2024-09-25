@@ -80,7 +80,7 @@
   <td>{{ payment.id }}</td>
   <td>{{ payment.status }}</td>
   <td>{{ payment.cost | currency }}</td>
-  <td>{{ payment.transactionTime | date: 'short' }}</td>
+  <td>{{ payment.transactionTime | date}}</td>
   <td>
     <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center"
               (click)="viewPayment(payment.id, content)">

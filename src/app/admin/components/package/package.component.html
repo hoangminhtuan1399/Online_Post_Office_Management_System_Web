@@ -208,7 +208,7 @@
             </div>
           </div>
           <div class="form-group col-md-6">
-            <label for="endOfficeId">End Office ID <span class="text-danger">*</span></label>
+            <label for="endOfficeId">End Office<span class="text-danger">*</span></label>
             <select class="form-control" id="endOfficeId" formControlName="endOfficeId" required>
               <option value="" disabled selected>Select End Office</option>
               <option *ngFor="let office of officeOptionsForCreate" [value]="office.id">{{ office.officeName }}</option>
@@ -337,7 +337,7 @@
     <td>{{ pkg.paymentStatus }}</td>
     <td>{{ pkg.deliveryStatus }}</td>
     <td>{{ pkg.officeName }}</td>
-    <td>{{ pkg.createdAt | date: 'short' }}</td>
+    <td>{{ pkg.createdAt | date }}</td>
     <td>
       <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center"
               (click)="viewPackage(pkg.id, content)">
