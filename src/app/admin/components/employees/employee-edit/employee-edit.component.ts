@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from '../../employees/employee.service';
 import { Employee } from '../../../models/employee.model';
@@ -11,6 +11,7 @@ import { OfficeService } from '../../offices/office.service';
   styleUrls: ['./employee-edit.component.css']
 })
 export class EmployeeEditComponent implements OnInit {
+  @Input() employeeId: string | null = null;
   employee: Employee = {
     id: '',
     name: '',
@@ -23,20 +24,17 @@ export class EmployeeEditComponent implements OnInit {
     accountId: '',
     officeName: ''
   };
-  employeeId: string | null = null;
   offices: Office[] = [];
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private employeeService: EmployeeService,
     private officeService: OfficeService
   ) {}
 
   ngOnInit(): void {
-    this.employeeId = this.route.snapshot.paramMap.get('id');
     if (this.employeeId) {
       this.loadEmployeeDetails(this.employeeId);
     }

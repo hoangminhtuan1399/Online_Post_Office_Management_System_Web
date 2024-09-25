@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 import { EmployeeService } from '../../employees/employee.service';
 import { Employee } from '../../../models/employee.model';
 
@@ -9,20 +8,18 @@ import { Employee } from '../../../models/employee.model';
   styleUrls: ['./employee-detail.component.css']
 })
 export class EmployeeDetailComponent implements OnInit {
+  @Input() employeeId: string | null = null;
   employee: Employee | null = null;  
   loading: boolean = true;
   error: string | null = null;
 
   constructor(
-    private route: ActivatedRoute,
     private employeeService: EmployeeService
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    
-    if (id) {
-      this.loadEmployeeDetails(id);
+    if (this.employeeId) {
+      this.loadEmployeeDetails(this.employeeId);
     } else {
       this.error = 'No employee ID provided.';
       this.loading = false;
