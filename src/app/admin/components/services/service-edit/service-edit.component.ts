@@ -18,7 +18,10 @@ export class ServiceEditComponent implements OnInit {
   successMessage: string | null = null;
   isSubmitting: boolean = false;
 
-  constructor(private serviceService: ServiceService, private fb: FormBuilder) {
+  constructor(
+    private serviceService: ServiceService, 
+    private fb: FormBuilder
+  ) {
     this.updateServiceForm = this.fb.group({
       name: ['', Validators.required],
       baseRate: [0, [Validators.required, Validators.min(0)]],
@@ -56,29 +59,26 @@ export class ServiceEditComponent implements OnInit {
         this.isSubmitting = true;
         const formValue = this.updateServiceForm.value;
         const requestBody = {
-          id: '',
+          id: this.serviceId,
           name: formValue.name,
           baseRate: formValue.baseRate,
           ratePerKg: formValue.ratePerKg,
           ratePerKm: formValue.ratePerKm,
         };
+        console.log(requestBody);
         this.serviceService
           .updateService(this.serviceId, requestBody)
           .subscribe({
             next: (response) => {
-              if (
-                response &&
-                response.message === 'Service updated successfully.'
-              ) {
-                this.successMessage = 'Service updated successfully!';
+              
+                this.successMessage = response.message;
                 this.errorMessage = null;
                 this.isSubmitting = false;
                 this.updateSuccess.emit(); // Phát ra sự kiện khi cập nhật thành công
-              } else {
-                this.errorMessage = 'Unexpected message: ' + response.message;
-              }
+              
             },
             error: (err) => {
+              
               this.errorMessage =
                 'Failed to update service. Please try again later.';
               this.isSubmitting = false;
