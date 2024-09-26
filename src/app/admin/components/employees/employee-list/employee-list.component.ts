@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from '../../employees/employee.service';
-import { Employee } from '../../../models/employee.model';
-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OfficeService } from '../../offices/office.service';
 
@@ -11,16 +9,18 @@ import { OfficeService } from '../../offices/office.service';
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
-  employees: any [] = [];
-  filteredEmployees: any [] = [];
-  offices: any [] = [];
-  searchTerm: string = ''; 
+  employees: any[] = [];
+  filteredEmployees: any[] = [];
+  offices: any[] = [];
+  searchTermName: string = ''; // Trường tìm kiếm cho tên
+  searchTermPhone: string = ''; // Trường tìm kiếm cho số điện thoại
+  searchTermOfficeName: string = ''; // Trường tìm kiếm cho tên văn phòng
   isLoading = false;
   selectedEmployeeId: string | null = null;
-  @ViewChild('createPackageModal') createPackageModal: any;
-  @ViewChild('editPackageModal') editPackageModal: any;
-  @ViewChild('detailPackageModal') detailPackageModal: any;
-  
+
+  @ViewChild('createEmployeeModal') createEmployeeModal: any;
+  @ViewChild('editEmployeeModal') editEmployeeModal: any;
+  @ViewChild('detailEmployeeModal') detailEmployeeModal: any;
 
   constructor(
     private employeeService: EmployeeService, 
@@ -34,6 +34,8 @@ export class EmployeeListComponent implements OnInit {
 
   private loadEmployees(): void {
     this.isLoading = true;
+    
+    // Tải dữ liệu văn phòng trước
     this.officeService.getAllOffices().subscribe({
       next: (data) => {
         this.offices = data;
@@ -42,10 +44,12 @@ export class EmployeeListComponent implements OnInit {
         console.error('Error fetching offices', error);
       }
     });
+
+    // Tải dữ liệu nhân viên
     this.employeeService.getAllEmployees().subscribe(
       (data) => {
-      this.employees = data;
-      this.filteredEmployees = data;  
+        this.employees = data;
+        this.filteredEmployees = data;  
       },
       (error) => {
         console.error('Error fetching Employee data', error);
@@ -57,29 +61,41 @@ export class EmployeeListComponent implements OnInit {
   }
 
   getOfficeName(officeId: string): string {
-    const office = this.offices.find(o => o.id == officeId);
+    const office = this.offices.find(o => o.id === officeId);
     return office ? office.officeName : 'Unknown Office';
   }
 
+  // Tìm kiếm nhân viên theo name, phone, officeId hoặc officeName
   onSearch(): void {
-    const searchTermLower = this.searchTerm.toLowerCase();
-    this.filteredEmployees = this.employees.filter(employee =>
-      employee.name.toLowerCase().includes(searchTermLower) ||  
-      employee.email.toLowerCase().includes(searchTermLower)    
+    this.isLoading = true;
+
+    const name = this.searchTermName && this.searchTermName.trim() !== '' ? this.searchTermName : undefined;
+    const phone = this.searchTermPhone && this.searchTermPhone.trim() !== '' ? this.searchTermPhone : undefined;
+    const officeName = this.searchTermOfficeName && this.searchTermOfficeName.trim() !== '' ? this.searchTermOfficeName : undefined;
+
+    this.employeeService.searchEmployees(name, undefined, phone, officeName).subscribe(
+      (data) => {
+        this.filteredEmployees = data;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error searching employees', error);
+        this.isLoading = false;
+      }
     );
   }
 
-  openCreatePackageModal() {
-    this.modalService.open(this.createPackageModal);
+  openCreateEmployeeModal() {
+    this.modalService.open(this.createEmployeeModal);
   }
 
-  openDetailPackageModal(employeeId: string): void {
+  openDetailEmployeeModal(employeeId: string): void {
     this.selectedEmployeeId = employeeId;  
-    this.modalService.open(this.detailPackageModal, { centered: true });  
+    this.modalService.open(this.detailEmployeeModal, { centered: true });  
   }
   
-  openEditPackageModal(employeeId: string): void {
+  openEditEmployeeModal(employeeId: string): void {
     this.selectedEmployeeId = employeeId; 
-    this.modalService.open(this.editPackageModal, { centered: true });  
+    this.modalService.open(this.editEmployeeModal, { centered: true });  
   }
 }
