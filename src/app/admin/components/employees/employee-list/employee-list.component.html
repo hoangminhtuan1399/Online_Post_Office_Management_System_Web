@@ -10,19 +10,19 @@
     <label>Search by Name:</label>
     <input type="text" [(ngModel)]="searchTermName" placeholder="Search by name" class="form-control" />
   </div>
-  
+
   <div class="col-md-4">
     <label>Search by Phone:</label>
     <input type="text" [(ngModel)]="searchTermPhone" placeholder="Search by phone" class="form-control" />
   </div>
-  
+
   <div class="col-md-4">
     <label>Search by Office Name:</label>
     <input type="text" [(ngModel)]="searchTermOfficeName" placeholder="Search by office name" class="form-control" />
   </div>
-  
+
   <button class="btn btn-primary" (click)="onSearch()">Search</button>
-  
+
 
   <div class="table-responsive mt-3">
     <table class="table table-bordered table-striped">
@@ -74,7 +74,7 @@
 
 <ng-template #createEmployeeModal let-modal class="modal-content">
   <div class="modal-header d-flex justify-content-between">
-    <h5 class="modal-title text-white">Create Employee and Account</h5>
+    <h5 class="modal-title text-white">Create</h5>
     <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
       <i class="fa-solid fa-xmark fa-lg"></i>
     </button>

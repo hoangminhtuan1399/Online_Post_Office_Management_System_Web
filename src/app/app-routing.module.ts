@@ -11,8 +11,8 @@ import { ProfileUpdateComponent } from "./admin/components/profile-update/profil
 import { AdminLayoutComponent } from "./admin/components/admin-layout/admin-layout.component";
 import { EmployeeListComponent } from './admin/components/employees/employee-list/employee-list.component';
 import { EmployeeCreateComponent } from './admin/components/employees/employee-create/employee-create.component';
-import { EmployeeEditComponent } from './admin/components/employees/employee-edit/employee-edit.component';  
-import { EmployeeDetailComponent } from './admin/components/employees/employee-detail/employee-detail.component'; 
+import { EmployeeEditComponent } from './admin/components/employees/employee-edit/employee-edit.component';
+import { EmployeeDetailComponent } from './admin/components/employees/employee-detail/employee-detail.component';
 
 // Import thêm các component của Service
 import { ServiceListComponent } from './admin/components/services/service-list/service-list.component';
@@ -32,19 +32,20 @@ const routes: Routes = [
       { path: 'branches', component: BranchesComponent },
       { path: 'employees/list', component: EmployeeListComponent },
       { path: 'employees/create', component: EmployeeCreateComponent },
-      { path: 'employees/edit/:id', component: EmployeeEditComponent },  
-      { path: 'employees/detail/:id', component: EmployeeDetailComponent }, 
+      { path: 'employees/edit/:id', component: EmployeeEditComponent },
+      { path: 'employees/detail/:id', component: EmployeeDetailComponent },
       { path: 'services/list', component: ServiceListComponent },
       { path: 'services/create', component: ServiceCreateComponent },
       { path: 'services/edit/:id', component: ServiceEditComponent },
       { path: 'services/detail/:id', component: ServiceDetailComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'profile-update', component: ProfileUpdateComponent }, 
+      { path: 'profile-update', component: ProfileUpdateComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', redirectTo: 'dashboard' }
     ]
   },
-  { path: '', component: HomeComponent },  
+  { path: '', component: HomeComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
