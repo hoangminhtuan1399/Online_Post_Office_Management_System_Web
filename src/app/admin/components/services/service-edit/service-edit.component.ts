@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceService } from '../../services/service.service';
 import { Service } from '../../../models/service.model';
@@ -9,6 +9,7 @@ import { Service } from '../../../models/service.model';
   styleUrls: ['./service-edit.component.css']
 })
 export class ServiceEditComponent implements OnInit {
+  @Input() serviceId: string | null = null;
   service: Service = {
     id: '',
     name: '',
@@ -16,7 +17,6 @@ export class ServiceEditComponent implements OnInit {
     ratePerKg: 0,
     ratePerKm: 0
   };
-  serviceId: string | null = null;
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
@@ -27,8 +27,6 @@ export class ServiceEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Lấy ID của service từ URL
-    this.serviceId = this.route.snapshot.paramMap.get('id');
     if (this.serviceId) {
       this.loadServiceDetails(this.serviceId);
     }

@@ -74,12 +74,12 @@ export class EmployeeListComponent implements OnInit {
   }
 
   openDetailPackageModal(employeeId: string): void {
-    this.selectedEmployeeId = employeeId;  // Lưu ID của nhân viên
-    this.modalService.open(this.detailPackageModal, { centered: true });  // Mở modal
+    this.selectedEmployeeId = employeeId;  
+    this.modalService.open(this.detailPackageModal, { centered: true });  
   }
   
   openEditPackageModal(employeeId: string): void {
-    this.selectedEmployeeId = employeeId;  // Lưu ID của nhân viên
-    this.modalService.open(this.editPackageModal, { centered: true });  // Mở modal
+    this.selectedEmployeeId = employeeId; 
+    this.modalService.open(this.editPackageModal, { centered: true });  
   }
 }
