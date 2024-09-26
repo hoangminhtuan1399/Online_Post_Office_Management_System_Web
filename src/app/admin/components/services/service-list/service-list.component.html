@@ -58,7 +58,7 @@
       <i class="fa-solid fa-xmark fa-lg"></i>
     </button>
   </div>
-  <app-service-create></app-service-create>
+  <app-service-create (createSuccess)="closeDetailServiceModal()"></app-service-create>
 </ng-template>
 
 <!-- Modal chỉnh sửa dịch vụ -->

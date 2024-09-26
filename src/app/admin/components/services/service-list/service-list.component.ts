@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ServiceService } from '../../services/service.service';
 import { Service } from '../../../models/service.model';
 import { Router } from '@angular/router';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-service-list',
@@ -13,7 +13,6 @@ export class ServiceListComponent implements OnInit {
   services: Service[] = [];
   isLoading = false;
   selectedServiceId: string | null = null;
-  modalRef: NgbModalRef | null = null; // Quản lý tham chiếu modal
 
   @ViewChild('createServiceModal') createServiceModal: any;
   @ViewChild('editServiceModal') editServiceModal: any;
@@ -49,26 +48,16 @@ export class ServiceListComponent implements OnInit {
   }
 
   openDetailServiceModal(serviceId: string): void {
-    this.selectedServiceId = serviceId;  
-    this.modalRef = this.modalService.open(this.detailServiceModal, { centered: true });  
+    this.selectedServiceId = serviceId;
+    this.modalService.open(this.detailServiceModal, { centered: true });
   }
 
   openEditServiceModal(serviceId: string): void {
-    this.selectedServiceId = serviceId; 
-    this.modalRef = this.modalService.open(this.editServiceModal, { centered: true });  
+    this.selectedServiceId = serviceId;
+    this.modalService.open(this.editServiceModal, { centered: true });
   }
 
   closeDetailServiceModal(): void {
-    if (this.modalRef) {
-      this.modalRef.close();
-      this.modalRef = null;
-  
-      
-      window.location.reload();
-    }
+    window.location.reload();
   }
-  
-  }
-  
-
-
+}

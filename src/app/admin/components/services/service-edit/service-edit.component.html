@@ -1,43 +1,47 @@
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="updateServiceForm" (ngSubmit)="onSubmit()">
   <div class="container has-scroll has-scroll-admin modal-body">
     <div class="row row-gap-2">
       <div class="form-group">
         <label for="name">Service Name <span class="text-danger">*</span></label>
-        <input id="name" [(ngModel)]="service.name" name="name" #serviceName="ngModel" class="form-control" required>
-        <div *ngIf="serviceName.invalid && serviceName.touched" class="text-danger small mt-1">
+        <input id="name" formControlName="name" name="name" class="form-control" required>
+        <div *ngIf="updateServiceForm.get('name')?.invalid && updateServiceForm.get('name')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group">
         <label for="baseRate">Base Rate <span class="text-danger">*</span></label>
-        <input id="baseRate" [(ngModel)]="service.baseRate" #baseRate="ngModel"  name="baseRate" type="number" class="form-control" required>
-        <div *ngIf="baseRate.invalid && baseRate.touched" class="text-danger small mt-1">
+        <input id="baseRate" formControlName="baseRate" name="baseRate" type="number" class="form-control" required>
+        <div *ngIf="updateServiceForm.get('baseRate')?.invalid && updateServiceForm.get('baseRate')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group">
         <label for="ratePerKg">Rate Per Kg <span class="text-danger">*</span></label>
-        <input id="ratePerKg" [(ngModel)]="service.ratePerKg" #kg="ngModel" name="ratePerKg" type="number" class="form-control"
+        <input id="ratePerKg" formControlName="ratePerKg" name="ratePerKg" type="number" class="form-control"
           required>
-        <div *ngIf="kg.invalid && kg.touched" class="text-danger small mt-1">
+          <div *ngIf="updateServiceForm.get('ratePerKg')?.invalid && updateServiceForm.get('ratePerKg')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group">
         <label for="ratePerKm">Rate Per Km <span class="text-danger">*</span></label>
-        <input id="ratePerKm" [(ngModel)]="service.ratePerKm" #km="ngModel" name="ratePerKm" type="number" class="form-control"
+        <input id="ratePerKm" formControlName="ratePerKm" name="ratePerKm" type="number" class="form-control"
           required>
-        <div *ngIf="km.invalid && km.touched" class="text-danger small mt-1">
+          <div *ngIf="updateServiceForm.get('ratePerKm')?.invalid && updateServiceForm.get('ratePerKm')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary btn-primary-admin btn-block">Save Changes</button>
+    <button type="submit" [disabled]="isSubmitting" class="btn btn-primary btn-primary-admin btn-block">Save Changes</button>
   </div>
 </form>
 
