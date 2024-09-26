@@ -1,12 +1,13 @@
-<div class="container mt-4">
-    <h2>Service List</h2>
-  
-    <!-- Nút Create -->
-    <div class="text-end mb-3">
-      <a routerLink="/admin/services/create" class="btn btn-success">Create Service</a>
-    </div>
-  
-    <table class="table table-striped">
+<div class="">
+  <div class="d-flex justify-content-between mb-4">
+    <h3 class="">Services List</h3>
+    <button class="btn btn-primary btn-primary-admin" (click)="openCreateServiceModal()">
+      Create Service
+    </button>
+  </div>
+
+  <div class="table-responsive mt-3">
+    <table class="table table-bordered table-striped">
       <thead>
         <tr>
           <th>Service Name</th>
@@ -17,20 +18,64 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let service of services">
-          <td>{{ service.name }}</td>
-          <td>{{ service.baseRate | currency }}</td>
-          <td>{{ service.ratePerKg | currency }}</td>
-          <td>{{ service.ratePerKm | currency }}</td>
-          <td>
-            <a [routerLink]="['/admin/services/detail', service.id]" class="btn btn-info btn-sm me-2">Detail</a>
-  
-            <a [routerLink]="['/admin/services/edit', service.id]" class="btn btn-primary btn-sm me-2">Update</a>
-  
-  
+        <tr *ngIf="isLoading; else serviceRows">
+          <td colspan="5" class="text-center">
+            <div class="spinner"></div>
           </td>
+        </tr>
+        <tr *ngIf="services.length === 0 && !isLoading">
+          <td colspan="5" class="text-center">No data available</td>
         </tr>
       </tbody>
     </table>
   </div>
-  
+</div>
+
+<ng-template #serviceRows>
+  <tr *ngFor="let service of services">
+    <td>{{ service.name }}</td>
+    <td>{{ service.baseRate | currency }}</td>
+    <td>{{ service.ratePerKg | currency }}</td>
+    <td>{{ service.ratePerKm | currency }}</td>
+    <td>
+      <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center"
+              (click)="openDetailServiceModal(service.id)">
+        <i class="fa-regular fa-eye"></i>
+      </button>
+      <button class="btn btn-sm update-btn d-inline-flex justify-content-center align-items-center"
+              (click)="openEditServiceModal(service.id)">
+        <i class="fa-regular fa-pen-to-square"></i>
+      </button>
+    </td>
+  </tr>
+</ng-template>
+
+<ng-template #createServiceModal let-modal class="modal-content">
+  <div class="modal-header d-flex justify-content-between">
+    <h5 class="modal-title text-white">Create Service</h5>
+    <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+      <i class="fa-solid fa-xmark fa-lg"></i>
+    </button>
+  </div>
+  <app-service-create></app-service-create>
+</ng-template>
+
+<ng-template #editServiceModal let-modal>
+  <div class="modal-header d-flex justify-content-between">
+    <h5 class="modal-title text-white">Update Service</h5>
+    <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+      <i class="fa-solid fa-xmark fa-lg"></i>
+    </button>
+  </div>
+  <app-service-edit [serviceId]="selectedServiceId"></app-service-edit>
+</ng-template>
+
+<ng-template #detailServiceModal let-modal>
+  <div class="modal-header d-flex justify-content-between">
+    <h5 class="modal-title text-white">Service Details</h5>
+    <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+      <i class="fa-solid fa-xmark fa-lg"></i>
+    </button>
+  </div>
+  <app-service-detail [serviceId]="selectedServiceId"></app-service-detail>
+</ng-template>

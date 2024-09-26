@@ -12,19 +12,18 @@ export class PaymentsService {
 
   constructor(private http: HttpClient) { }
 
-  getPayments(pageNumber: number, pageSize: number, paymentStatus?: string, startDate?: string): Observable<any> {
+  getFilteredPayments(pageNumber: number, pageSize: number, paymentStatus: string, startDate: string): Observable<any> {
     let params = new HttpParams()
-      .set('PageNumber', pageNumber.toString())
-      .set('PageSize', pageSize.toString());
-
-    if (paymentStatus && paymentStatus.trim() !== '') {
-      params = params.set('PaymentStatus', paymentStatus);
-    }
-
-    if (startDate && startDate.trim() !== '') {
-      params = params.set('StartDate', startDate);
-    }
-
+      .set('PageNumber', pageNumber.toString())  
+      .set('PageSize', pageSize.toString())     
+      if (paymentStatus && paymentStatus.trim() !== '') {
+        params = params.set('PaymentStatus', paymentStatus);
+      }
+  
+      if (startDate && startDate.trim() !== '') {
+        params = params.set('StartDate', startDate);
+      }         
+  
     return this.http.get<any>(this.apiUrl, { params });
   }
 

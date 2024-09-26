@@ -1,37 +1,51 @@
-<div class="container mt-4">
-    <h2>Create New Service</h2>
-    
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="name">Service Name</label>
-        <input id="name" [(ngModel)]="service.name" name="name" class="form-control" required>
+<form (ngSubmit)="onSubmit()">
+  <div class="container has-scroll has-scroll-admin modal-body">
+    <div class="row row-gap-2">
+      <div class="form-group col-md-12">
+        <label for="name">Service Name <span class="text-danger">*</span></label>
+        <input id="name" [(ngModel)]="service.name" name="name" class="form-control" placeholder="Service"
+          #serviceName="ngModel" required>
+        <div *ngIf="serviceName.invalid && serviceName.touched" class="text-danger small mt-1">
+          This is a required field
+        </div>
       </div>
-  
       <div class="form-group">
-        <label for="baseRate">Base Rate</label>
-        <input id="baseRate" [(ngModel)]="service.baseRate" name="baseRate" type="number" class="form-control" required>
+        <label for="baseRate">Base Rate <span class="text-danger">*</span></label>
+        <input id="baseRate" [(ngModel)]="service.baseRate" name="baseRate" type="number" class="form-control"
+          placeholder="Base Rate" #baseRate="ngModel" required>
+        <div *ngIf="baseRate.invalid && baseRate.touched" class="text-danger small mt-1">
+          This is a required field
+        </div>
       </div>
-  
       <div class="form-group">
-        <label for="ratePerKg">Rate Per Kg</label>
-        <input id="ratePerKg" [(ngModel)]="service.ratePerKg" name="ratePerKg" type="number" class="form-control" required>
+        <label for="ratePerKg">Rate Per Kg <span class="text-danger">*</span></label>
+        <input id="ratePerKg" [(ngModel)]="service.ratePerKg" name="ratePerKg" type="number" class="form-control"
+          placeholder="Rate Per Kg" #kg="ngModel" required>
+        <div *ngIf="kg.invalid && kg.touched" class="text-danger small mt-1">
+          This is a required field
+        </div>
       </div>
-  
       <div class="form-group">
-        <label for="ratePerKm">Rate Per Km</label>
-        <input id="ratePerKm" [(ngModel)]="service.ratePerKm" name="ratePerKm" type="number" class="form-control" required>
+        <label for="ratePerKm">Rate Per Km <span class="text-danger">*</span></label>
+        <input id="ratePerKm" [(ngModel)]="service.ratePerKm" name="ratePerKm" type="number" class="form-control"
+          placeholder="Rate Per Km" #km="ngModel" required>
+        <div *ngIf="km.invalid && km.touched" class="text-danger small mt-1">
+          This is a required field
+        </div>
       </div>
-  
-      <button type="submit" class="btn btn-primary mt-3">Create Service</button>
-      <a [routerLink]="['/admin/services']" class="btn btn-secondary mt-3">Cancel</a>
-    </form>
-  
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-      {{ errorMessage }}
-    </div>
-    
-    <div *ngIf="successMessage" class="alert alert-success mt-3">
-      {{ successMessage }}
     </div>
   </div>
-  
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary btn-primary-admin btn-block">Create Service</button>
+  </div>
+</form>
+
+
+
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+  {{ successMessage }}
+</div>

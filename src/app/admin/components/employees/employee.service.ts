@@ -40,12 +40,12 @@ export class EmployeeService {
   }
 
   // Lấy nhân viên theo ID
-  getEmployeeById(id: string): Observable<Employee> {
+  getEmployeeById(id: string): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     
     console.log('Sending GET request to:', url);  
 
-    return this.http.get<Employee>(url) // Không cần thêm headers
+    return this.http.get<any>(url) // Không cần thêm headers
       .pipe(
         catchError(this.handleError)
       );

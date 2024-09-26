@@ -4,6 +4,7 @@ import { OfficeService } from '../../offices/office.service';
 import { Employee } from '../../../models/employee.model';
 import { Office } from '../../../models/office.model';
 import { Account } from '../../../models/account.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-employee-create',
@@ -95,5 +96,9 @@ export class EmployeeCreateComponent implements OnInit {
     };
 
     this.showPassword = false; 
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }
