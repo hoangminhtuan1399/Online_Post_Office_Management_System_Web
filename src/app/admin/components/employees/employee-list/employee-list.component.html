@@ -70,10 +70,22 @@
   <app-employee-create></app-employee-create>
 </ng-template>
 
-<ng-template #editPackageModal>
+<ng-template #editPackageModal let-modal>
+  <div class="modal-header d-flex justify-content-between">
+    <h5 class="modal-title text-white">Update Employee</h5>
+    <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+      <i class="fa-solid fa-xmark fa-lg"></i>
+    </button>
+  </div>
   <app-employee-edit [employeeId]="selectedEmployeeId"></app-employee-edit>
 </ng-template>
 
-<ng-template #detailPackageModal>
+<ng-template #detailPackageModal let-modal>
+  <div class="modal-header d-flex justify-content-between">
+    <h5 class="modal-title text-white">Employee Details</h5>
+    <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
+      <i class="fa-solid fa-xmark fa-lg"></i>
+    </button>
+  </div>
   <app-employee-detail [employeeId]="selectedEmployeeId"></app-employee-detail>
 </ng-template>

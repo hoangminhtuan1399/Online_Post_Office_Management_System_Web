@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EmployeeService } from '../../employees/employee.service';
-import { Employee } from '../../../models/employee.model';
+import { OfficeService } from '../../offices/office.service';
 
 @Component({
   selector: 'app-employee-detail',
@@ -9,12 +9,14 @@ import { Employee } from '../../../models/employee.model';
 })
 export class EmployeeDetailComponent implements OnInit {
   @Input() employeeId: string | null = null;
-  employee: Employee | null = null;  
+  employee: any | null = null;  
+  offices: any [] = [];
   loading: boolean = true;
   error: string | null = null;
 
   constructor(
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private officeService: OfficeService
   ) { }
 
   ngOnInit(): void {
@@ -27,16 +29,30 @@ export class EmployeeDetailComponent implements OnInit {
   }
 
   private loadEmployeeDetails(id: string): void {
+    this.officeService.getAllOffices().subscribe({
+      next: (data) => {
+        this.offices = data;
+      },
+      error: (error) => {
+        console.error('Error fetching offices', error);
+      }
+    });
     this.employeeService.getEmployeeById(id).subscribe({
       next: (data) => {
         this.employee = data;
         this.loading = false;
+        console.log(data)
       },
       error: (err) => {
         this.handleError(err);
         this.loading = false;
       }
     });
+  }
+
+  getOfficeName(officeId: string): string {
+    const office = this.offices.find(o => o.id == officeId);
+    return office ? office.officeName : 'Unknown Office';
   }
 
   private handleError(err: any): void {
