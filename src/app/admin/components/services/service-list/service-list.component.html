@@ -50,6 +50,7 @@
   </tr>
 </ng-template>
 
+<!-- Modal tạo dịch vụ -->
 <ng-template #createServiceModal let-modal class="modal-content">
   <div class="modal-header d-flex justify-content-between">
     <h5 class="modal-title text-white">Create Service</h5>
@@ -60,6 +61,7 @@
   <app-service-create></app-service-create>
 </ng-template>
 
+<!-- Modal chỉnh sửa dịch vụ -->
 <ng-template #editServiceModal let-modal>
   <div class="modal-header d-flex justify-content-between">
     <h5 class="modal-title text-white">Update Service</h5>
@@ -67,9 +69,11 @@
       <i class="fa-solid fa-xmark fa-lg"></i>
     </button>
   </div>
-  <app-service-edit [serviceId]="selectedServiceId"></app-service-edit>
+  <!-- Khi cập nhật thành công, gọi hàm closeDetailServiceModal() -->
+  <app-service-edit [serviceId]="selectedServiceId" (updateSuccess)="closeDetailServiceModal()"></app-service-edit>
 </ng-template>
 
+<!-- Modal chi tiết dịch vụ -->
 <ng-template #detailServiceModal let-modal>
   <div class="modal-header d-flex justify-content-between">
     <h5 class="modal-title text-white">Service Details</h5>

@@ -1,16 +1,28 @@
 <div class="">
   <div class="d-flex justify-content-between mb-4">
     <h3 class="">Employees</h3>
-    <button class="btn btn-primary btn-primary-admin" (click)="openCreatePackageModal()">
+    <button class="btn btn-primary btn-primary-admin" (click)="openCreateEmployeeModal()">
       Create Employee
     </button>
   </div>
 
-  <div class="col-md-4">
-    <label>Search:</label>
-    <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search by name or email"
-      class="form-control" />
+  <<div class="col-md-4">
+    <label>Search by Name:</label>
+    <input type="text" [(ngModel)]="searchTermName" placeholder="Search by name" class="form-control" />
   </div>
+  
+  <div class="col-md-4">
+    <label>Search by Phone:</label>
+    <input type="text" [(ngModel)]="searchTermPhone" placeholder="Search by phone" class="form-control" />
+  </div>
+  
+  <div class="col-md-4">
+    <label>Search by Office Name:</label>
+    <input type="text" [(ngModel)]="searchTermOfficeName" placeholder="Search by office name" class="form-control" />
+  </div>
+  
+  <button class="btn btn-primary" (click)="onSearch()">Search</button>
+  
 
   <div class="table-responsive mt-3">
     <table class="table table-bordered table-striped">
@@ -31,7 +43,7 @@
             <div class="spinner"></div>
           </td>
         </tr>
-        <tr *ngIf="employees.length === 0 && !isLoading">
+        <tr *ngIf="filteredEmployees.length === 0 && !isLoading">
           <td colspan="7" class="text-center">No data available</td>
         </tr>
       </tbody>
@@ -49,18 +61,18 @@
     <td>{{ getOfficeName(employee.officeId) }}</td>
     <td>
       <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center"
-              (click)="openDetailPackageModal(employee.id)">
+              (click)="openDetailEmployeeModal(employee.id)">
         <i class="fa-regular fa-eye"></i>
       </button>
       <button class="btn btn-sm update-btn d-inline-flex justify-content-center align-items-center"
-              (click)="openEditPackageModal(employee.id)">
+              (click)="openEditEmployeeModal(employee.id)">
         <i class="fa-regular fa-pen-to-square"></i>
       </button>
     </td>
   </tr>
 </ng-template>
 
-<ng-template #createPackageModal let-modal class="modal-content">
+<ng-template #createEmployeeModal let-modal class="modal-content">
   <div class="modal-header d-flex justify-content-between">
     <h5 class="modal-title text-white">Create Employee and Account</h5>
     <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
@@ -70,7 +82,7 @@
   <app-employee-create></app-employee-create>
 </ng-template>
 
-<ng-template #editPackageModal let-modal>
+<ng-template #editEmployeeModal let-modal>
   <div class="modal-header d-flex justify-content-between">
     <h5 class="modal-title text-white">Update Employee</h5>
     <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">
@@ -80,7 +92,7 @@
   <app-employee-edit [employeeId]="selectedEmployeeId"></app-employee-edit>
 </ng-template>
 
-<ng-template #detailPackageModal let-modal>
+<ng-template #detailEmployeeModal let-modal>
   <div class="modal-header d-flex justify-content-between">
     <h5 class="modal-title text-white">Employee Details</h5>
     <button class="text-white btn bg-transparent border-0" (click)="modal.dismiss()">

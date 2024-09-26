@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceService } from '../../services/service.service';
 import { Service } from '../../../models/service.model';
@@ -10,6 +10,7 @@ import { Service } from '../../../models/service.model';
 })
 export class ServiceEditComponent implements OnInit {
   @Input() serviceId: string | null = null;
+  @Output() updateSuccess: EventEmitter<void> = new EventEmitter<void>(); // Phát ra sự kiện khi cập nhật thành công
   service: Service = {
     id: '',
     name: '',
@@ -21,8 +22,6 @@ export class ServiceEditComponent implements OnInit {
   successMessage: string | null = null;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private serviceService: ServiceService
   ) {}
 
@@ -32,15 +31,12 @@ export class ServiceEditComponent implements OnInit {
     }
   }
 
-  // Hàm lấy chi tiết service từ server
   private loadServiceDetails(id: string): void {
     this.serviceService.getServiceById(id).subscribe({
       next: (data) => {
         this.service = data;
-        console.log('Loaded service data:', this.service);  
       },
       error: (err) => {
-        console.error('Error loading service details:', err);
         this.errorMessage = 'Failed to load service details. Please try again later.';
       }
     });
@@ -48,33 +44,18 @@ export class ServiceEditComponent implements OnInit {
 
   onSubmit(): void {
     if (this.serviceId) {
-      console.log('Submitting service data with ID:', this.serviceId);
-  
       this.serviceService.updateService(this.serviceId, this.service).subscribe({
         next: (response) => {
-          console.log('Update response:', response);
-  
-          // Xử lý khi phản hồi là chuỗi thay vì JSON
-          if (typeof response === 'string') {
-            // Kiểm tra nếu phản hồi chứa thông báo thành công
-            if (response.includes('Service updated successfully')) {
-              this.successMessage = 'Service updated successfully!';
-              this.errorMessage = null;
-            } else {
-              this.errorMessage = 'Unexpected response: ' + response;
-            }
+          if (response && response.message === 'Service updated successfully.') {
+            this.successMessage = 'Service updated successfully!';
+            this.errorMessage = null;
+            this.updateSuccess.emit(); // Phát ra sự kiện khi cập nhật thành công
           } else {
-            this.errorMessage = 'Unexpected response format.';
+            this.errorMessage = 'Unexpected message: ' + response.message;
           }
-  
-          setTimeout(() => {
-            this.router.navigate(['/admin/services/list']);
-          });
         },
         error: (err) => {
-          console.error('Error updating service:', err);
           this.errorMessage = 'Failed to update service. Please try again later.';
-          this.successMessage = null;
         }
       });
     }
