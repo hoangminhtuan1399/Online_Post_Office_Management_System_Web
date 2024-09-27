@@ -6,23 +6,27 @@
     </button>
   </div>
 
-  <<div class="col-md-4">
-    <label>Search by Name:</label>
-    <input type="text" [(ngModel)]="searchTermName" placeholder="Search by name" class="form-control" />
+  <div class="row mb-3 row-gap-2" [formGroup]="empFilterForm">
+    <div class="col-md-3">
+      <label for="name">Search by Name:</label>
+      <input type="text" id="name" formControlName="name" placeholder="Search by name" class="form-control" />
+    </div>
+    <div class="col-md-3">
+      <label for="phone">Search by Phone:</label>
+      <input type="text" id="phone" formControlName="phone" placeholder="Search by phone" class="form-control" />
+    </div>
+    <div class="col-md-3">
+      <label for="officeName">Select Office:</label>
+      <select formControlName="officeName" class="form-control" id="officeName">
+        <option value="">All Offices</option>
+        <option *ngFor="let office of offices" [value]="office.officeName">{{ office.officeName }}</option>
+      </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2 align-items-end justify-content-end">
+      <button class="btn btn-primary btn-primary-admin" (click)="onSearch()">Search</button>
+      <button class="btn btn-secondary-admin text-white" (click)="onClear()">Clear</button>
+    </div>
   </div>
-
-  <div class="col-md-4">
-    <label>Search by Phone:</label>
-    <input type="text" [(ngModel)]="searchTermPhone" placeholder="Search by phone" class="form-control" />
-  </div>
-
-  <div class="col-md-4">
-    <label>Search by Office Name:</label>
-    <input type="text" [(ngModel)]="searchTermOfficeName" placeholder="Search by office name" class="form-control" />
-  </div>
-
-  <button class="btn btn-primary" (click)="onSearch()">Search</button>
-
 
   <div class="table-responsive mt-3">
     <table class="table table-bordered table-striped">
@@ -43,16 +47,25 @@
             <div class="spinner"></div>
           </td>
         </tr>
-        <tr *ngIf="filteredEmployees.length === 0 && !isLoading">
+        <tr *ngIf="employees.length === 0 && !isLoading">
           <td colspan="7" class="text-center">No data available</td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
+<!-- Paging -->
+<div class="d-flex justify-content-center gap-3 align-items-center mt-3">
+  <button class="btn btn-primary-admin text-white" (click)="previousPage()"
+          [disabled]="currentPage === 1 || isLoading"><i
+    class="fa-solid fa-chevron-left"></i></button>
+  <h6 class="text-white mb-0">Page {{ currentPage }}</h6>
+  <button class="btn btn-primary-admin text-white" (click)="nextPage()" [disabled]="isLastPage || isLoading"><i
+    class="fa-solid fa-chevron-right"></i></button>
+</div>
 
 <ng-template #employeeRows>
-  <tr *ngFor="let employee of filteredEmployees">
+  <tr *ngFor="let employee of employees">
     <td>{{ employee.name }}</td>
     <td>{{ employee.email }}</td>
     <td>{{ employee.phone }}</td>
@@ -61,11 +74,11 @@
     <td>{{ getOfficeName(employee.officeId) }}</td>
     <td>
       <button class="btn btn-sm view-btn d-inline-flex justify-content-center align-items-center"
-              (click)="openDetailEmployeeModal(employee.id)">
+        (click)="openDetailEmployeeModal(employee.id)">
         <i class="fa-regular fa-eye"></i>
       </button>
       <button class="btn btn-sm update-btn d-inline-flex justify-content-center align-items-center"
-              (click)="openEditEmployeeModal(employee.id)">
+        (click)="openEditEmployeeModal(employee.id)">
         <i class="fa-regular fa-pen-to-square"></i>
       </button>
     </td>
@@ -79,7 +92,7 @@
       <i class="fa-solid fa-xmark fa-lg"></i>
     </button>
   </div>
-  <app-employee-create></app-employee-create>
+  <app-employee-create (createSuccess)="closeModal(modal)"></app-employee-create>
 </ng-template>
 
 <ng-template #editEmployeeModal let-modal>
@@ -89,7 +102,7 @@
       <i class="fa-solid fa-xmark fa-lg"></i>
     </button>
   </div>
-  <app-employee-edit [employeeId]="selectedEmployeeId"></app-employee-edit>
+  <app-employee-edit [employeeId]="selectedEmployeeId"  (updateSuccess)="closeModal(modal)"></app-employee-edit>
 </ng-template>
 
 <ng-template #detailEmployeeModal let-modal>

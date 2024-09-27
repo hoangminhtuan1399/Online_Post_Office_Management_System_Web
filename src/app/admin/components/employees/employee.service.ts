@@ -45,7 +45,7 @@ export class EmployeeService {
   }
 
   // Tạo nhân viên mới kèm tài khoản
-  createEmployeeWithAccount(employee: Employee, account: Account): Observable<Employee> {
+  createEmployeeWithAccount(employee: any, account: any): Observable<Employee> {
     return this.http.post<Employee>(this.apiUrl, { employee, account })
       .pipe(
         catchError(this.handleError)
@@ -53,7 +53,7 @@ export class EmployeeService {
   }
 
   // Cập nhật nhân viên
-  updateEmployee(id: string, employee: Employee): Observable<Employee> {
+  updateEmployee(id: string, employee: any): Observable<Employee> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.put<Employee>(url, employee)
       .pipe(
@@ -62,20 +62,20 @@ export class EmployeeService {
   }
 
   // Tìm kiếm nhân viên
-  searchEmployees(name?: string, officeId?: string, phone?: string, officeName?: string): Observable<Employee[]> {
-    let params = new HttpParams();
-
-    if (name && name.trim()) params = params.set('name', name.trim());
-    if (officeId && officeId.trim()) params = params.set('officeId', officeId.trim());
-    if (phone && phone.trim()) params = params.set('phone', phone.trim());
-    if (officeName && officeName.trim()) params = params.set('officeName', officeName.trim());
+  searchEmployees(name: string, officeId: string, phone: string, officeName: string, pageNumber: number): Observable<any> {
+    const params = new HttpParams()
+    .set('name', name)
+    .set('officeId', officeId)
+    .set('phone', phone)
+    .set('officeName', officeName)
+    .set('pageNumber', pageNumber.toString());
 
     const url = `${this.apiUrl}/search`;
     
   
     console.log('Search Params:', params.toString());
 
-    return this.http.get<Employee[]>(url, { params })
+    return this.http.get<any>(url, { params })
       .pipe(
         catchError(this.handleError)
       );

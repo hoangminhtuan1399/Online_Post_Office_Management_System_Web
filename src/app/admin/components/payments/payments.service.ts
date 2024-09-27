@@ -16,13 +16,8 @@ export class PaymentsService {
     let params = new HttpParams()
       .set('PageNumber', pageNumber.toString())  
       .set('PageSize', pageSize.toString())     
-      if (paymentStatus && paymentStatus.trim() !== '') {
-        params = params.set('PaymentStatus', paymentStatus);
-      }
-  
-      if (startDate && startDate.trim() !== '') {
-        params = params.set('StartDate', startDate);
-      }         
+      .set('PaymentStatus', paymentStatus)
+      .set('StartDate', startDate);     
   
     return this.http.get<any>(this.apiUrl, { params });
   }

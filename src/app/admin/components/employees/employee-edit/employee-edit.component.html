@@ -1,68 +1,81 @@
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="updateEmpForm" (ngSubmit)="onSubmit()">
   <div class="container has-scroll has-scroll-admin modal-body">
     <div class="row row-gap-2">
       <div class="form-group">
         <label for="name">Name <span class="text-danger">*</span></label>
-        <input id="name" [(ngModel)]="employee.name" name="name" #name="ngModel" class="form-control" required>
-        <div *ngIf="name.invalid && name.touched" class="text-danger small mt-1">
+        <input id="name" formControlName="name" name="name" class="form-control" required>
+        <div *ngIf="updateEmpForm.get('name')?.invalid && updateEmpForm.get('name')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group">
         <label for="email">Email <span class="text-danger">*</span></label>
-        <input id="email" #email="ngModel" [(ngModel)]="employee.email" name="email" type="email" class="form-control"
+        <input id="email" formControlName="email" name="email" type="email" class="form-control"
           required>
-        <div *ngIf="email.invalid && email.touched" class="text-danger small mt-1">
+        <div *ngIf="updateEmpForm.get('email')?.invalid && updateEmpForm.get('email')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group">
         <label for="phone">Phone <span class="text-danger">*</span></label>
-        <input id="phone" #phone="ngModel" [(ngModel)]="employee.phone" name="phone" class="form-control" required>
-        <div *ngIf="phone.invalid && phone.touched" class="text-danger small mt-1">
+        <input id="phone" formControlName="phone" name="phone" class="form-control" required>
+        <div *ngIf="updateEmpForm.get('phone')?.invalid && updateEmpForm.get('phone')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group">
         <label for="gender">Gender <span class="text-danger">*</span></label>
-        <select id="gender" #gender="ngModel" [(ngModel)]="employee.gender" name="gender" class="form-control" required>
+        <select id="gender" formControlName="gender" name="gender" class="form-control" required>
+          <option value="" disabled selected> Choose Gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Other">Other</option>
         </select>
-        <div *ngIf="gender.invalid && gender.touched" class="text-danger small mt-1">
+        <div *ngIf="updateEmpForm.get('gender')?.invalid && updateEmpForm.get('gender')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group">
         <label for="dateOfBirth">Date of Birth <span class="text-danger">*</span></label>
-        <input id="dateOfBirth" [(ngModel)]="employee.dateOfBirth" name="dateOfBirth" type="date" class="form-control"
-          #dob="ngModel" required>
-        <div *ngIf="dob.invalid && dob.touched" class="text-danger small mt-1">
+        <input id="dateOfBirth" formControlName="dateOfBirth" name="dateOfBirth" type="date" class="form-control"
+           required>
+        <div *ngIf="updateEmpForm.get('dateOfBirth')?.invalid && updateEmpForm.get('dateOfBirth')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group">
         <label for="officeId">Office <span class="text-danger">*</span></label>
-        <select id="officeId" #office="ngModel" [(ngModel)]="employee.officeId" name="officeId" class="form-control" required>
+        <select id="officeId" formControlName="officeId" name="officeId" class="form-control"
+          required>
+          <option value="" disabled selected>Office</option>
           <option *ngFor="let office of offices" [value]="office.id">{{ office.officeName }}</option>
         </select>
-        <div *ngIf="office.invalid && office.touched" class="text-danger small mt-1">
+        <div *ngIf="updateEmpForm.get('officeId')?.invalid && updateEmpForm.get('officeId')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary btn-primary-admin btn-block">Update Employee</button>
+    <button type="submit" [disabled]="isSubmitting" class="btn btn-primary btn-primary-admin btn-block">Update Employee</button>
   </div>
 </form>
 
 <div *ngIf="errorMessage" class="alert alert-danger mt-3">
   {{ errorMessage }}
+</div>
+
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+  {{ successMessage }}
 </div>

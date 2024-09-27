@@ -81,7 +81,7 @@ export class ServiceService {
       );
   }
 
-  updateService(id: string, service: Service): Observable<any> {
+  updateService(id: string, service: any): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     const headers = this.getAuthHeaders();
 

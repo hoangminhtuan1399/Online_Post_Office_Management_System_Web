@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from '../../employees/employee.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OfficeService } from '../../offices/office.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-list',
@@ -17,6 +19,14 @@ export class EmployeeListComponent implements OnInit {
   searchTermOfficeName: string = ''; // Trường tìm kiếm cho tên văn phòng
   isLoading = false;
   selectedEmployeeId: string | null = null;
+  empFilterForm: FormGroup;
+  nameFilter: string = '';
+  phoneFilter: string = '';
+  officeFilter: string = '';
+  officeIdFilter: string = '';
+  currentPage: number = 1;
+  isLastPage: boolean = false;
+  itemsPerPage: number = 10;
 
   @ViewChild('createEmployeeModal') createEmployeeModal: any;
   @ViewChild('editEmployeeModal') editEmployeeModal: any;
@@ -25,11 +35,31 @@ export class EmployeeListComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService, 
     private modalService: NgbModal,
-    private officeService: OfficeService
-  ) { }
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private officeService: OfficeService,
+    private router: Router
+  ) { 
+    this.empFilterForm = this.fb.group({
+      name: [''],
+      officeId: [''],
+      phone: [''],
+      officeName: [''],
+      page: [1]
+    });
+  }
 
   ngOnInit(): void {
     this.loadEmployees();
+    this.route.queryParams.subscribe(params => {
+      this.empFilterForm.patchValue({
+        name: params['name'] || '',
+        officeId: params['officeId'] || '',
+        phone: params['phone'] || '',
+        officeName: params['officeName'] || '',
+        page: +params['page'] || 1
+      });
+    })
   }
 
   private loadEmployees(): void {
@@ -46,10 +76,10 @@ export class EmployeeListComponent implements OnInit {
     });
 
     // Tải dữ liệu nhân viên
-    this.employeeService.getAllEmployees().subscribe(
+    this.employeeService.searchEmployees(this.nameFilter, this.officeIdFilter, this.phoneFilter, this.officeFilter, this.currentPage).subscribe(
       (data) => {
         this.employees = data;
-        this.filteredEmployees = data;  
+        this.isLastPage = data.length < this.itemsPerPage;
       },
       (error) => {
         console.error('Error fetching Employee data', error);
@@ -60,6 +90,19 @@ export class EmployeeListComponent implements OnInit {
     );
   }
 
+  nextPage(): void {
+    if (!this.isLastPage) {
+      this.empFilterForm.get('page')?.setValue(this.currentPage + 1);
+      this.onSearch();
+    }
+  }
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.empFilterForm.get('page')?.setValue(this.currentPage - 1);
+      this.onSearch();
+    }
+  }
+
   getOfficeName(officeId: string): string {
     const office = this.offices.find(o => o.id === officeId);
     return office ? office.officeName : 'Unknown Office';
@@ -67,22 +110,35 @@ export class EmployeeListComponent implements OnInit {
 
   // Tìm kiếm nhân viên theo name, phone, officeId hoặc officeName
   onSearch(): void {
-    this.isLoading = true;
+    const queryParams = this.getFilterQueryParam();
+    this.router.navigate([], { queryParams });
+    this.nameFilter = queryParams.name;
+    this.officeIdFilter = queryParams.officeId;
+    this.phoneFilter = queryParams.phone;
+    this.officeFilter = queryParams.officeName;
+    this.currentPage = queryParams.page;
+    this.loadEmployees();
+  }
 
-    const name = this.searchTermName && this.searchTermName.trim() !== '' ? this.searchTermName : undefined;
-    const phone = this.searchTermPhone && this.searchTermPhone.trim() !== '' ? this.searchTermPhone : undefined;
-    const officeName = this.searchTermOfficeName && this.searchTermOfficeName.trim() !== '' ? this.searchTermOfficeName : undefined;
+  onClear() {
+    this.empFilterForm.reset({
+      name: [''],
+      officeId: [''],
+      phone: [''],
+      officeName: [''],
+      page: [1]
+    });
+    this.onSearch();
+  }
 
-    this.employeeService.searchEmployees(name, undefined, phone, officeName).subscribe(
-      (data) => {
-        this.filteredEmployees = data;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error searching employees', error);
-        this.isLoading = false;
-      }
-    );
+  getFilterQueryParam() {
+    return {
+      name: this.empFilterForm.get('name')?.value || '',
+      officeId: this.empFilterForm.get('officeId')?.value || '',
+      phone: this.empFilterForm.get('phone')?.value || '',
+      officeName: this.empFilterForm.get('officeName')?.value || '',
+      page: this.empFilterForm.get('page')?.value || 1
+    };
   }
 
   openCreateEmployeeModal() {
@@ -97,5 +153,10 @@ export class EmployeeListComponent implements OnInit {
   openEditEmployeeModal(employeeId: string): void {
     this.selectedEmployeeId = employeeId; 
     this.modalService.open(this.editEmployeeModal, { centered: true });  
+  }
+
+  closeModal(modal: any): void {
+    modal.close();
+    this.loadEmployees();
   }
 }
