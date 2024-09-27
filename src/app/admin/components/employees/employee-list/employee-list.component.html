@@ -92,7 +92,7 @@
       <i class="fa-solid fa-xmark fa-lg"></i>
     </button>
   </div>
-  <app-employee-create (createSuccess)="closeModal()"></app-employee-create>
+  <app-employee-create (createSuccess)="closeModal(modal)"></app-employee-create>
 </ng-template>
 
 <ng-template #editEmployeeModal let-modal>
@@ -102,7 +102,7 @@
       <i class="fa-solid fa-xmark fa-lg"></i>
     </button>
   </div>
-  <app-employee-edit [employeeId]="selectedEmployeeId"  (updateSuccess)="closeModal()"></app-employee-edit>
+  <app-employee-edit [employeeId]="selectedEmployeeId"  (updateSuccess)="closeModal(modal)"></app-employee-edit>
 </ng-template>
 
 <ng-template #detailEmployeeModal let-modal>

@@ -57,7 +57,8 @@ export class ServiceListComponent implements OnInit {
     this.modalService.open(this.editServiceModal, { centered: true });
   }
 
-  closeDetailServiceModal(): void {
-    window.location.reload();
+  closeDetailServiceModal(modal: any): void {
+    modal.close();
+    this.loadServices();
   }
 }

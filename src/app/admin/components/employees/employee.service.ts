@@ -45,7 +45,7 @@ export class EmployeeService {
   }
 
   // Tạo nhân viên mới kèm tài khoản
-  createEmployeeWithAccount(employee: Employee, account: Account): Observable<Employee> {
+  createEmployeeWithAccount(employee: any, account: any): Observable<Employee> {
     return this.http.post<Employee>(this.apiUrl, { employee, account })
       .pipe(
         catchError(this.handleError)

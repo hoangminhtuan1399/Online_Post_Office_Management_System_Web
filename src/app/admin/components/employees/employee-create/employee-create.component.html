@@ -1,28 +1,30 @@
-<form (ngSubmit)="createEmployeeAndAccount()">
+<form [formGroup]="createEmpForm" (ngSubmit)="createEmployeeAndAccount()">
   <div class="container has-scroll has-scroll-admin modal-body">
     <!-- Account Information -->
     <h4>Account Information</h4>
     <div class="row row-gap-2">
       <div class="form-group col-md-12">
         <label for="username">Username <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" id="username" [(ngModel)]="account.username" name="username"
-          placeholder="Enter Username" #username="ngModel" required>
-        <div *ngIf="username.invalid && username.touched" class="text-danger small mt-1">
+        <input type="text" class="form-control" id="username" formControlName="username" name="username"
+          placeholder="Enter Username" required>
+          <div *ngIf="createEmpForm.get('username')?.invalid && createEmpForm.get('username')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
       <div class="form-group col-md-12">
         <label for="password">Password <span class="text-danger">*</span></label>
         <div class="input-group">
-          <input id="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="account.password"
-            name="password" class="form-control" placeholder="Enter Password" #password="ngModel" required>
+          <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" 
+            name="password" class="form-control" placeholder="Enter Password" required>
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
               <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
             </button>
           </div>
         </div>
-        <div *ngIf="password.invalid && password.touched" class="text-danger small mt-1">
+        <div *ngIf="createEmpForm.get('password')?.invalid && createEmpForm.get('password')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
@@ -33,65 +35,74 @@
     <div class="row row-gap-2">
       <div class="form-group col-md-6">
         <label for="name">Name <span class="text-danger">*</span></label>
-        <input id="name" [(ngModel)]="employee.name" name="name" class="form-control" placeholder="Employee Name"
-          #name="ngModel" required>
-        <div *ngIf="name.invalid && name.touched" class="text-danger small mt-1">
+        <input id="name" formControlName="name" name="name" class="form-control" placeholder="Employee Name"
+           required>
+          <div *ngIf="createEmpForm.get('name')?.invalid && createEmpForm.get('name')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group col-md-6">
         <label for="phone">Phone <span class="text-danger">*</span></label>
-        <input id="phone" [(ngModel)]="employee.phone" name="phone" class="form-control" placeholder="Phone Number"
-          #phone="ngModel" required>
-        <div *ngIf="phone.invalid && phone.touched" class="text-danger small mt-1">
+        <input id="phone" formControlName="phone" name="phone" class="form-control" placeholder="Phone Number"
+           required>
+          <div *ngIf="createEmpForm.get('phone')?.invalid && createEmpForm.get('phone')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group col-md-12">
         <label for="email">Email <span class="text-danger">*</span></label>
-        <input id="email" [(ngModel)]="employee.email" name="email" type="email" class="form-control"
-          placeholder="Enter Email" #email="ngModel" required>
-        <div *ngIf="phone.invalid && phone.touched" class="text-danger small mt-1">
+        <input id="email" formControlName="email" name="email" type="email" class="form-control"
+          placeholder="Enter Email" required>
+          <div *ngIf="createEmpForm.get('email')?.invalid && createEmpForm.get('email')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group col-md-6">
         <label for="gender">Gender <span class="text-danger">*</span></label>
-        <select id="gender" [(ngModel)]="employee.gender" name="gender" class="form-control" #gender="ngModel" required>
+        <select id="gender" formControlName="gender" name="gender" class="form-control" required>
           <option value="" disabled selected>Select Gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Other">Other</option>
         </select>
-        <div *ngIf="gender.invalid && gender.touched" class="text-danger small mt-1">
+        <div *ngIf="createEmpForm.get('gender')?.invalid && createEmpForm.get('gender')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group col-md-6">
         <label for="dateOfBirth">Date of Birth <span class="text-danger">*</span></label>
-        <input id="dateOfBirth" [(ngModel)]="employee.dateOfBirth" name="dateOfBirth" type="date" class="form-control"
-          #dob="ngModel" required>
-        <div *ngIf="dob.invalid && dob.touched" class="text-danger small mt-1">
+        <input id="dateOfBirth" formControlName="dateOfBirth" name="dateOfBirth" type="date" class="form-control"
+          required>
+          <div *ngIf="createEmpForm.get('dateOfBirth')?.invalid && createEmpForm.get('dateOfBirth')?.touched"
+          class="text-danger small mt-1">
           This is a required field
         </div>
       </div>
 
       <div class="form-group col-md-6">
         <label for="officeId">Office <span class="text-danger">*</span></label>
-        <select id="officeId" [(ngModel)]="employee.officeId" name="officeId" class="form-control" #office="ngModel"
+        <select id="officeId" formControlName="officeId" name="officeId" class="form-control" 
           required>
           <option value="" disabled selected>Select Office</option>
           <option *ngFor="let office of offices" [value]="office.id">{{ office.officeName }}</option>
         </select>
+        <div *ngIf="createEmpForm.get('officeId')?.invalid && createEmpForm.get('officeId')?.touched"
+          class="text-danger small mt-1">
+          This is a required field
+        </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary btn-primary-admin btn-block">Create</button>
+    <button type="submit" [disabled]="isSubmitting" class="btn btn-primary btn-primary-admin btn-block">Create</button>
   </div>
 </form>
 

@@ -58,7 +58,7 @@
       <i class="fa-solid fa-xmark fa-lg"></i>
     </button>
   </div>
-  <app-service-create (createSuccess)="closeDetailServiceModal()"></app-service-create>
+  <app-service-create (createSuccess)="closeDetailServiceModal(modal)"></app-service-create>
 </ng-template>
 
 <!-- Modal chỉnh sửa dịch vụ -->
@@ -70,7 +70,7 @@
     </button>
   </div>
   <!-- Khi cập nhật thành công, gọi hàm closeDetailServiceModal() -->
-  <app-service-edit [serviceId]="selectedServiceId" (updateSuccess)="closeDetailServiceModal()"></app-service-edit>
+  <app-service-edit [serviceId]="selectedServiceId" (updateSuccess)="closeDetailServiceModal(modal)"></app-service-edit>
 </ng-template>
 
 <!-- Modal chi tiết dịch vụ -->

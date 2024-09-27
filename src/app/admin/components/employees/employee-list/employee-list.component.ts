@@ -155,7 +155,8 @@ export class EmployeeListComponent implements OnInit {
     this.modalService.open(this.editEmployeeModal, { centered: true });  
   }
 
-  closeModal(): void {
-    window.location.reload();
+  closeModal(modal: any): void {
+    modal.close();
+    this.loadEmployees();
   }
 }
