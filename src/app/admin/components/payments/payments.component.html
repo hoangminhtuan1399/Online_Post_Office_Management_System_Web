@@ -7,7 +7,7 @@
     <div class="col-md-4">
       <label for="paymentStatus">Payment Status</label>
       <select formControlName="paymentStatus" class="form-control">
-        <option value="" selected>All Status</option>
+        <option value="" disabled selected>All Status</option>
         <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
       </select>
     </div>
@@ -71,7 +71,7 @@
         <strong>Total Cost: </strong> <span>{{ selectedPayment.cost | currency }}</span>
       </div>
     </div>
-    
+
   </ng-template>
 </div>
 

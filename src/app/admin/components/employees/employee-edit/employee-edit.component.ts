@@ -53,7 +53,7 @@ export class EmployeeEditComponent implements OnInit {
           email: data.email,
           phone: data.phone,
           gender: data.gender,
-          dateOfBirth: new Date(data.dateOfBirth),
+          dateOfBirth: this.formatDate(new Date(data.dateOfBirth).toString()),
           officeId: data.officeId,
           officeName: data.officeName,
         });
@@ -124,5 +124,14 @@ export class EmployeeEditComponent implements OnInit {
         this.updateEmpForm.markAllAsTouched();
       }
     }
+  }
+
+  private formatDate(dateString: string): string {
+    const date = new Date(dateString);
+
+    const year = date.getUTCFullYear();
+    const month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+    const day = ('0' + date.getUTCDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 }

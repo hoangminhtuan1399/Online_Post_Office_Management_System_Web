@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators'; // Import thêm các operator từ rxjs
-import { Office } from '../../models/office.model'; 
+import { Office } from '../../models/office.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,7 @@ export class OfficeService {
 
   getAllOffices(): Observable<Office[]> {
     return this.http.get<Office[]>(this.apiUrl).pipe(
-      tap(data => console.log('Offices:', data)), 
-      catchError(this.handleError) 
+      catchError(this.handleError)
     );
   }
 

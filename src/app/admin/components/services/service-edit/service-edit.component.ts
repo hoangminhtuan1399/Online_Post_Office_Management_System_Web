@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceService } from '../../services/service.service';
-import { Service } from '../../../models/service.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -19,7 +17,7 @@ export class ServiceEditComponent implements OnInit {
   isSubmitting: boolean = false;
 
   constructor(
-    private serviceService: ServiceService, 
+    private serviceService: ServiceService,
     private fb: FormBuilder
   ) {
     this.updateServiceForm = this.fb.group({
@@ -70,15 +68,15 @@ export class ServiceEditComponent implements OnInit {
           .updateService(this.serviceId, requestBody)
           .subscribe({
             next: (response) => {
-              
+
                 this.successMessage = response.message;
                 this.errorMessage = null;
                 this.isSubmitting = false;
                 this.updateSuccess.emit(); // Phát ra sự kiện khi cập nhật thành công
-              
+
             },
             error: (err) => {
-              
+
               this.errorMessage =
                 'Failed to update service. Please try again later.';
               this.isSubmitting = false;

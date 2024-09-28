@@ -63,10 +63,6 @@ tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-td .btn {
-  margin-right: 8px;
-}
-
 .modal-header {
   background-color: var(--card-content-bg);
 }

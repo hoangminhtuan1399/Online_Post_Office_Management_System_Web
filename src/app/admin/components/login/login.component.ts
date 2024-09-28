@@ -14,6 +14,7 @@ import { environment } from "../../../../environments/environment";
 export class LoginComponent {
   loginForm: FormGroup;
   isSubmitting: boolean = false;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -67,5 +68,9 @@ export class LoginComponent {
 
   get password() {
     return this.loginForm.get('password');
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

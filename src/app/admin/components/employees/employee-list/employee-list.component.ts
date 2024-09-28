@@ -12,11 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class EmployeeListComponent implements OnInit {
   employees: any[] = [];
-  filteredEmployees: any[] = [];
   offices: any[] = [];
-  searchTermName: string = ''; // Trường tìm kiếm cho tên
-  searchTermPhone: string = ''; // Trường tìm kiếm cho số điện thoại
-  searchTermOfficeName: string = ''; // Trường tìm kiếm cho tên văn phòng
   isLoading = false;
   selectedEmployeeId: string | null = null;
   empFilterForm: FormGroup;
@@ -31,15 +27,16 @@ export class EmployeeListComponent implements OnInit {
   @ViewChild('createEmployeeModal') createEmployeeModal: any;
   @ViewChild('editEmployeeModal') editEmployeeModal: any;
   @ViewChild('detailEmployeeModal') detailEmployeeModal: any;
+  @ViewChild('deleteConfirmModal') deleteConfirmModal: any;
 
   constructor(
-    private employeeService: EmployeeService, 
+    private employeeService: EmployeeService,
     private modalService: NgbModal,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private officeService: OfficeService,
     private router: Router
-  ) { 
+  ) {
     this.empFilterForm = this.fb.group({
       name: [''],
       officeId: [''],
@@ -64,7 +61,7 @@ export class EmployeeListComponent implements OnInit {
 
   private loadEmployees(): void {
     this.isLoading = true;
-    
+
     // Tải dữ liệu văn phòng trước
     this.officeService.getAllOffices().subscribe({
       next: (data) => {
@@ -92,13 +89,13 @@ export class EmployeeListComponent implements OnInit {
 
   nextPage(): void {
     if (!this.isLastPage) {
-      this.empFilterForm.get('page')?.setValue(this.currentPage + 1);
+      this.empFilterForm.get('page')?.setValue(+this.currentPage + 1);
       this.onSearch();
     }
   }
   previousPage(): void {
     if (this.currentPage > 1) {
-      this.empFilterForm.get('page')?.setValue(this.currentPage - 1);
+      this.empFilterForm.get('page')?.setValue(+this.currentPage - 1);
       this.onSearch();
     }
   }
@@ -126,7 +123,7 @@ export class EmployeeListComponent implements OnInit {
       officeId: [''],
       phone: [''],
       officeName: [''],
-      page: [1]
+      page: 1
     });
     this.onSearch();
   }
@@ -146,17 +143,41 @@ export class EmployeeListComponent implements OnInit {
   }
 
   openDetailEmployeeModal(employeeId: string): void {
-    this.selectedEmployeeId = employeeId;  
-    this.modalService.open(this.detailEmployeeModal, { centered: true });  
+    this.selectedEmployeeId = employeeId;
+    this.modalService.open(this.detailEmployeeModal, { centered: true });
   }
-  
+
   openEditEmployeeModal(employeeId: string): void {
-    this.selectedEmployeeId = employeeId; 
-    this.modalService.open(this.editEmployeeModal, { centered: true });  
+    this.selectedEmployeeId = employeeId;
+    this.modalService.open(this.editEmployeeModal, { centered: true });
   }
 
   closeModal(modal: any): void {
     modal.close();
     this.loadEmployees();
+  }
+
+  openDeleteConfirmModal(employeeId: string) {
+    this.selectedEmployeeId = employeeId;
+    this.modalService.open(this.deleteConfirmModal, { centered: true });
+  }
+
+  deleteEmployee(modal: any): void {
+    if (this.selectedEmployeeId) {
+      this.employeeService.deleteEmployee(this.selectedEmployeeId).subscribe({
+        next: () => {
+          modal.close();
+          this.loadEmployees();
+        },
+        error: (err) => {
+          console.error('Failed to delete employee:', err);
+          modal.dismiss();
+          this.loadEmployees();
+        },
+        complete: () => {
+          this.loadEmployees();
+        }
+      });
+    }
   }
 }

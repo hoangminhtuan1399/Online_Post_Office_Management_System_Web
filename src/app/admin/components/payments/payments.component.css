@@ -17,7 +17,7 @@ h4 {
 
 table {
   width: 100%;
-  table-layout: fixed; 
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
@@ -30,23 +30,23 @@ thead th {
   color: white;
   font-weight: 600;
   text-align: center;
-  vertical-align: middle; 
+  vertical-align: middle;
   padding: 15px;
   background-color: var(--btn-primary-admin-bg);
 }
 
 .filter-icon {
   margin-left: 5px;
-  font-size: 12px; 
+  font-size: 12px;
   color: #fff;
 }
 
 tbody td {
   padding: 15px;
   color: #333;
-  text-align: center; 
-  vertical-align: middle; 
-  word-wrap: break-word; 
+  text-align: center;
+  vertical-align: middle;
+  word-wrap: break-word;
 }
 
 tbody tr {
@@ -61,10 +61,6 @@ tbody tr:hover {
 
 tbody tr:nth-child(even) {
   background-color: #f2f2f2;
-}
-
-td .btn {
-  margin-right: 8px;
 }
 
 .modal-header {
@@ -133,11 +129,11 @@ td .btn {
     right: 20px;
     font-size: 24px;
     font-weight: bold;
-    color: #4CAF50; 
+    color: #4CAF50;
   }
 
   .package-cost span {
-    color: #d9534f; 
+    color: #d9534f;
     font-size: 28px;
   }
 
@@ -151,7 +147,7 @@ td .btn {
 
   .modal-header {
     border-bottom: 1px solid #ddd;
-    background-color: #4CAF50; 
+    background-color: #4CAF50;
     color: white;
   }
 

@@ -114,20 +114,21 @@ export class PackageComponent implements OnInit {
 
   nextPage(): void {
     if (!this.isLastPage) {
-      this.packageFilterForm.get('page')?.setValue(this.currentPage + 1);
+      this.packageFilterForm.get('page')?.setValue(+this.currentPage + 1);
       this.onSearch();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
-      this.packageFilterForm.get('page')?.setValue(this.currentPage - 1);
+      this.packageFilterForm.get('page')?.setValue(+this.currentPage - 1);
       this.onSearch();
     }
   }
 
   openUpdatePackageModal(content: any, pkg: any): void {
     this.selectedPackage = pkg;
+    console.log('pkg: ', pkg)
     this.updatePackageForm.patchValue({
       deliveryStatus: pkg.deliveryStatus,
       currentLocation: pkg.officeId,
@@ -324,7 +325,7 @@ export class PackageComponent implements OnInit {
       officeId: [''],
       startDate: [''],
       paymentStatus: [''],
-      page: [1]
+      page: 1
     });
     this.onSearch();
   }
