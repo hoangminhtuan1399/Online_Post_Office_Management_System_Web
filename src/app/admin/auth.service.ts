@@ -16,7 +16,6 @@ export class AuthService {
       let c = ca[i].trim();
       if (c.indexOf(name) === 0) {
         const token = c.substring(name.length, c.length);
-        console.log('Token retrieved from cookie:', token); // Log để kiểm tra
         return token;
       }
     }

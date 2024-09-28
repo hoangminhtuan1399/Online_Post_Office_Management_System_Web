@@ -61,6 +61,10 @@ export class EmployeeService {
       );
   }
 
+  deleteEmployee(employeeId: string) {
+    return this.http.delete(`${environment.apiBaseUrl}/api/Employee/${employeeId}`);
+  }
+
   // Tìm kiếm nhân viên
   searchEmployees(name: string, officeId: string, phone: string, officeName: string, pageNumber: number): Observable<any> {
     const params = new HttpParams()
@@ -71,8 +75,8 @@ export class EmployeeService {
     .set('pageNumber', pageNumber.toString());
 
     const url = `${this.apiUrl}/search`;
-    
-  
+
+
     console.log('Search Params:', params.toString());
 
     return this.http.get<any>(url, { params })

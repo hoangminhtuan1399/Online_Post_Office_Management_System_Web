@@ -1,23 +1,23 @@
 .input-group {
     position: relative;
   }
-  
+
   .input-group-append button {
     background: none;
     border: none;
     cursor: pointer;
   }
-  
+
   .input-group-append i {
     font-size: 1.25rem;
     color: #6c757d;
   }
-  
+
   .input-group-append button:focus {
     outline: none;
     box-shadow: none;
   }
-  
+
 
 h1.text-center {
     color: #333;
@@ -92,10 +92,6 @@ tbody tr:hover {
 
 tbody tr:nth-child(even) {
     background-color: #f2f2f2;
-}
-
-td .btn {
-    margin-right: 8px;
 }
 
 .modal-header {

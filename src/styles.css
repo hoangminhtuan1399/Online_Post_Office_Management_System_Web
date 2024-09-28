@@ -253,10 +253,6 @@ tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-td .btn {
-  margin-right: 8px;
-}
-
 .modal-header {
   background-color: var(--card-content-bg);
 }
@@ -264,6 +260,27 @@ td .btn {
 .modal-body {
   max-height: 72vh;
   overflow-y: auto;
+}
+
+.form-label {
+  margin-bottom: 0.25rem !important;
+}
+
+.no-background {
+  background-image: none !important;
+}
+
+.password-toggle-btn {
+  background-color: transparent !important;
+  outline: none !important;
+  border: none !important;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.password-toggle-btn:hover {
+  color: initial !important;
 }
 
 /* Responsive design */

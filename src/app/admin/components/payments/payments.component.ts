@@ -52,9 +52,9 @@ export class PaymentsComponent implements OnInit {
     this.isLoading = true;
     this.paymentsService
       .getFilteredPayments(
-        this.currentPage, 
-        this.itemsPerPage, 
-        this.paymentStatusFilter, 
+        this.currentPage,
+        this.itemsPerPage,
+        this.paymentStatusFilter,
         this.startDate
       )
       .subscribe(
@@ -72,18 +72,18 @@ export class PaymentsComponent implements OnInit {
         }
       );
   }
-  
+
 
   nextPage(): void {
     if (!this.isLastPage) {
-      this.paymentFilterForm.get('page')?.setValue(this.currentPage + 1);
+      this.paymentFilterForm.get('page')?.setValue(+this.currentPage + 1);
       this.onSearch();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
-      this.paymentFilterForm.get('page')?.setValue(this.currentPage - 1);
+      this.paymentFilterForm.get('page')?.setValue(+this.currentPage - 1);
       this.onSearch();
     }
   }
@@ -101,7 +101,7 @@ export class PaymentsComponent implements OnInit {
     this.paymentFilterForm.reset({
       startDate: [''],
       paymentStatus: [''],
-      page: [1]
+      page: 1
     });
     this.onSearch();
   }
@@ -128,7 +128,7 @@ export class PaymentsComponent implements OnInit {
 
   togglePaymentStatusFilter(): void {
     this.currentStatusIndex = (this.currentStatusIndex + 1) % this.statusOptions.length;
-    this.paymentStatusFilter = this.statusOptions[this.currentStatusIndex].toLocaleLowerCase() || 'paid'; 
+    this.paymentStatusFilter = this.statusOptions[this.currentStatusIndex].toLocaleLowerCase() || 'paid';
     this.getPayments();
   }
 }

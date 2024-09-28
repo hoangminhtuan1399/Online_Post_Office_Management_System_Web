@@ -5,7 +5,7 @@ import { Employee } from '../../../models/employee.model';
 import { Office } from '../../../models/office.model';
 import { Account } from '../../../models/account.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-create',
@@ -13,10 +13,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./employee-create.component.css'],
 })
 export class EmployeeCreateComponent implements OnInit {
-  @Output() createSuccess: EventEmitter<void> = new EventEmitter<void>(); 
+  @Output() createSuccess: EventEmitter<void> = new EventEmitter<void>();
   createEmpForm: FormGroup;
   offices: Office[] = [];
   showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
   isSubmitting: boolean = false;
@@ -29,13 +30,26 @@ export class EmployeeCreateComponent implements OnInit {
     this.createEmpForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       gender: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       officeId: ['', Validators.required],
+    },  {
+      validator: this.passwordsMatchValidator  // Thêm custom validator
     });
+  }
+
+  private passwordsMatchValidator(control: AbstractControl): void | null {
+    const password = control.get('password')?.value || '';
+    const confirmPassword = control.get('confirmPassword')?.value || '!!@@##$$';
+    if (password !== confirmPassword) {
+      control.get('confirmPassword')?.setErrors({ mismatch: true });
+    } else {
+      return null;
+    }
   }
 
   ngOnInit(): void {
@@ -76,7 +90,7 @@ export class EmployeeCreateComponent implements OnInit {
         accountId: '',
         officeName: '',
       };
-      
+
       this.employeeService
         .createEmployeeWithAccount(requestEmployee, requestAccount)
         .subscribe({
@@ -93,14 +107,16 @@ export class EmployeeCreateComponent implements OnInit {
             this.isSubmitting = false;
           },
         });
-    }else {
+    } else {
       this.createEmpForm.markAllAsTouched();
     }
   }
 
-  
-
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }

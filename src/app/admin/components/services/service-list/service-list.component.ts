@@ -3,6 +3,7 @@ import { ServiceService } from '../../services/service.service';
 import { Service } from '../../../models/service.model';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Modal } from "bootstrap";
 
 @Component({
   selector: 'app-service-list',
@@ -17,6 +18,7 @@ export class ServiceListComponent implements OnInit {
   @ViewChild('createServiceModal') createServiceModal: any;
   @ViewChild('editServiceModal') editServiceModal: any;
   @ViewChild('detailServiceModal') detailServiceModal: any;
+  @ViewChild('deletelServiceModal') deletelServiceModal: any;
 
   constructor(
     private serviceService: ServiceService,
@@ -60,5 +62,29 @@ export class ServiceListComponent implements OnInit {
   closeDetailServiceModal(modal: any): void {
     modal.close();
     this.loadServices();
+  }
+
+  openDeleteConfirmModal(serviceId: string) {
+    this.selectedServiceId = serviceId;
+    this.modalService.open(this.deletelServiceModal, { centered: true });
+  }
+
+  deleteService(modal: any): void {
+    if (this.selectedServiceId) {
+      this.serviceService.deleteService(this.selectedServiceId).subscribe({
+        next: () => {
+          modal.close();
+          this.loadServices();
+        },
+        error: (err) => {
+          console.error('Failed to delete service: ', err);
+          modal.close();
+          this.loadServices();
+        },
+        complete: () => {
+          this.loadServices();
+        }
+      })
+    }
   }
 }

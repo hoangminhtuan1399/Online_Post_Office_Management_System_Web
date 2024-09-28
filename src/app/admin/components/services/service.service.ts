@@ -93,4 +93,13 @@ export class ServiceService {
       );
   }
 
+  deleteService(id: string): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    const headers = this.getAuthHeaders();
+
+    return this.http.delete(url, { headers })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }
