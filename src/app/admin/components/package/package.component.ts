@@ -39,6 +39,7 @@ export class PackageComponent implements OnInit {
       officeId: ['', Validators.required],
       serviceId: ['', Validators.required],
       weight: [0, [Validators.required, Validators.min(0)]],
+      distance: [0, [Validators.required, Validators.min(0)]],
       receiver: ['', Validators.required],
       paymentStatus: ['', Validators.required],
       descriptionText: ['', Validators.required],
@@ -53,6 +54,7 @@ export class PackageComponent implements OnInit {
       deliveryStatus: ['', Validators.required],
       currentLocation: ['', Validators.required],
       weight: [0, [Validators.required, Validators.min(0)]],
+      distance: [0, [Validators.required, Validators.min(0)]],
       receiver: ['', Validators.required],
       paymentStatus: ['', Validators.required],
     });
@@ -133,6 +135,7 @@ export class PackageComponent implements OnInit {
       deliveryStatus: pkg.deliveryStatus,
       currentLocation: pkg.officeId,
       weight: pkg.weight,
+      distance: pkg.distance,
       receiver: pkg.receiver,
       paymentStatus: pkg.paymentStatus,
     });
@@ -155,9 +158,9 @@ export class PackageComponent implements OnInit {
         id: this.selectedPackage.deliveryId,
         sendDate: this.selectedPackage.sendDate,
         deliveryStatus: formValue.deliveryStatus,
-        startOfficeId: this.selectedPackage.startOfficeId,
+        startOfficeId: this.selectedPackage.officeId,
         currentLocation: formValue.currentLocation,
-        endOfficeId: this.selectedPackage.endOfficeId,
+        endOfficeId: this.selectedPackage.endOfficeName,
         deliveryDate: formValue.deliveryStatus === 'delivered' || formValue.deliveryStatus === 'declined'
           ? new Date().toISOString()
           : this.selectedPackage.deliveryDate,
@@ -166,7 +169,7 @@ export class PackageComponent implements OnInit {
       const packageRequestBody = {
         id: this.selectedPackage.id,
         weight: formValue.weight,
-        distance: this.selectedPackage.distance,
+        distance: formValue.distance,
         deliveryNumber: this.selectedPackage.deliveryNumber,
         receiver: formValue.receiver,
         createdAt: this.selectedPackage.createdAt,
@@ -180,6 +183,10 @@ export class PackageComponent implements OnInit {
           : this.selectedPackage.transactionTime,
         cost: this.selectedPackage.paymentCost,
       };
+      console.log(deliveryRequestBody)
+      console.log(packageRequestBody)
+      console.log(paymentRequestBody)
+
 
       this.packageService.updateDelivery(this.selectedPackage.deliveryId, deliveryRequestBody).subscribe(
         () => {
@@ -245,7 +252,7 @@ export class PackageComponent implements OnInit {
           senderId: '',
           serviceId: formValue.serviceId,
           weight: formValue.weight,
-          distance: 0,
+          distance: formValue.distance,
           deliveryNumber: '',
           descriptionId: '',
           paymentId: '',

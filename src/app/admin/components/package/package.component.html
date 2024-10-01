@@ -156,6 +156,15 @@
                class="text-danger small mt-1">
             This is a required field
           </div>
+          <div class="form-group col-md-6">
+            <label for="distance">Distance (km)</label>
+            <input type="number" min="0" class="form-control" id="distance" formControlName="distance" placeholder="distance"
+                   required>
+          </div>
+          <div *ngIf="createPackageForm.get('distance')?.invalid && createPackageForm.get('distance')?.touched"
+               class="text-danger small mt-1">
+            This is a required field
+          </div>
         </div>
         <hr>
         <h4>Payment</h4>
@@ -305,6 +314,17 @@
             <input type="number" min="0" class="form-control" id="weightUpdate" formControlName="weight"
                    placeholder="Weight" required />
             <div *ngIf="updatePackageForm.get('weight')?.invalid && updatePackageForm.get('weight')?.touched"
+                 class="text-danger small mt-1">
+              This is a required field
+            </div>
+          </div>
+
+          <!-- Distance -->
+          <div class="form-group">
+            <label for="distanceUpdate">Distance (km) <span class="text-danger">*</span></label>
+            <input type="number" min="0" class="form-control" id="distanceUpdate" formControlName="distance"
+                   placeholder="distance" required />
+            <div *ngIf="updatePackageForm.get('distance')?.invalid && updatePackageForm.get('distance')?.touched"
                  class="text-danger small mt-1">
               This is a required field
             </div>
