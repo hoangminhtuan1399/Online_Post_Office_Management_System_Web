@@ -5,6 +5,7 @@ import { Employee } from '../../../models/employee.model';
 import { Office } from '../../../models/office.model';
 import { OfficeService } from '../../offices/office.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from '../../../../toast.service';
 
 @Component({
   selector: 'app-employee-edit',
@@ -17,15 +18,14 @@ export class EmployeeEditComponent implements OnInit {
   employee: any;
   offices: any[] = [];
   updateEmpForm: FormGroup;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
   isSubmitting: boolean = false;
 
   constructor(
     private router: Router,
     private employeeService: EmployeeService,
     private fb: FormBuilder,
-    private officeService: OfficeService
+    private officeService: OfficeService,
+    private toastService: ToastService
   ) {
     this.updateEmpForm = this.fb.group({
       name: ['', Validators.required],
@@ -60,8 +60,7 @@ export class EmployeeEditComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error loading employee details:', err);
-        this.errorMessage =
-          'Failed to load employee details. Please try again later.';
+        this.toastService.showToast('An unexpected error occurred', 'danger');
       },
     });
   }
@@ -78,8 +77,7 @@ export class EmployeeEditComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error loading office data:', err);
-        this.errorMessage =
-          'Failed to load office data. Please try again later.';
+        this.toastService.showToast('An unexpected error occurred', 'danger');
       },
     });
   }
@@ -107,16 +105,13 @@ export class EmployeeEditComponent implements OnInit {
           .updateEmployee(this.employeeId, requestBody)
           .subscribe({
             next: () => {
-              this.successMessage = 'Employee updated successfully!';
-              this.errorMessage = null;
+              this.toastService.showToast('Update successfully', 'success');
               this.isSubmitting = false;
               this.updateSuccess.emit();
             },
             error: (err) => {
               console.error('Error updating employee:', err);
-              this.errorMessage =
-                'Failed to update employee. Please try again later.';
-              this.successMessage = null;
+              this.toastService.showToast('An unexpected error occurred', 'danger');
               this.isSubmitting = false;
             },
           });

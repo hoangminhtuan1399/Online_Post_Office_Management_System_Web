@@ -4,6 +4,7 @@ import { Service } from '../../../models/service.model';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Modal } from "bootstrap";
+import { ToastService } from '../../../../toast.service';
 
 @Component({
   selector: 'app-service-list',
@@ -23,7 +24,8 @@ export class ServiceListComponent implements OnInit {
   constructor(
     private serviceService: ServiceService,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastService: ToastService 
   ) {}
 
   ngOnInit(): void {
@@ -74,14 +76,13 @@ export class ServiceListComponent implements OnInit {
       this.serviceService.deleteService(this.selectedServiceId).subscribe({
         next: () => {
           modal.close();
-          this.loadServices();
+          this.toastService.showToast('Delete successfully', 'success');
+          this.loadServices();      
         },
         error: (err) => {
           console.error('Failed to delete service: ', err);
           modal.close();
-          this.loadServices();
-        },
-        complete: () => {
+          this.toastService.showToast('An unexpected error occurred', 'danger');
           this.loadServices();
         }
       })

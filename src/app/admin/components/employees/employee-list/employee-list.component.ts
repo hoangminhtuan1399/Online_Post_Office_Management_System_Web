@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OfficeService } from '../../offices/office.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from '../../../../toast.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -35,7 +36,8 @@ export class EmployeeListComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private officeService: OfficeService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService 
   ) {
     this.empFilterForm = this.fb.group({
       name: [''],
@@ -167,14 +169,13 @@ export class EmployeeListComponent implements OnInit {
       this.employeeService.deleteEmployee(this.selectedEmployeeId).subscribe({
         next: () => {
           modal.close();
+          this.toastService.showToast('Login successfully', 'success');
           this.loadEmployees();
         },
         error: (err) => {
           console.error('Failed to delete employee:', err);
           modal.dismiss();
-          this.loadEmployees();
-        },
-        complete: () => {
+          this.toastService.showToast('An unexpected error occurred', 'danger')
           this.loadEmployees();
         }
       });
