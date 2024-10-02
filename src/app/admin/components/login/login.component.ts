@@ -21,7 +21,7 @@ export class LoginComponent {
     private http: HttpClient,
     private router: Router,
     private authService: AuthService,
-    private toastService: ToastService
+    private toastService: ToastService 
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -42,7 +42,7 @@ export class LoginComponent {
       next: (response) => {
         if (response && response.token) {
           console.log('res: ', response)
-          this.toastService.showToast('Login successfully', 'success');
+           this.toastService.showToast('Login successfully', 'success');
           document.cookie = `jwt=${response.token};path=/`;
           this.authService.setUserData(response);
           this.router.navigate(['/admin/dashboard']);
@@ -50,9 +50,9 @@ export class LoginComponent {
       },
       error: (errorResponse) => {
         if (errorResponse.status >= 400 && errorResponse.error) {
-          this.toastService.showToast(errorResponse.error, 'danger');
+           this.toastService.showToast(errorResponse.error, 'danger');
         } else {
-          this.toastService.showToast('An unexpected error occurred', 'danger');
+           this.toastService.showToast('An unexpected error occurred', 'danger');
         }
         this.isSubmitting = false;
       },

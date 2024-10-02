@@ -3,6 +3,7 @@ import { PackageService } from './package.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastService } from '../../../toast.service';
 
 @Component({
   selector: 'app-package',
@@ -33,7 +34,8 @@ export class PackageComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.createPackageForm = this.fb.group({
       officeId: ['', Validators.required],
@@ -183,9 +185,6 @@ export class PackageComponent implements OnInit {
           : this.selectedPackage.transactionTime,
         cost: this.selectedPackage.paymentCost,
       };
-      console.log(deliveryRequestBody)
-      console.log(packageRequestBody)
-      console.log(paymentRequestBody)
 
 
       this.packageService.updateDelivery(this.selectedPackage.deliveryId, deliveryRequestBody).subscribe(
@@ -194,24 +193,27 @@ export class PackageComponent implements OnInit {
             () => {
               this.packageService.updatePayment(this.selectedPackage.paymentId, paymentRequestBody).subscribe(
                 () => {
-                  console.log('All updates successful');
+                  this.toastService.showToast('Update successfully', 'success');
                   this.isSubmitting = false;
                   this.modalService.dismissAll();
                   this.onSearch();
                 },
                 (error) => {
+                  this.toastService.showToast('An unexpected error occurred', 'danger');
                   console.error('Error updating payment', error);
                   this.isSubmitting = false;
                 }
               );
             },
             (error) => {
+              this.toastService.showToast('An unexpected error occurred', 'danger');
               console.error('Error updating package', error);
               this.isSubmitting = false;
             }
           );
         },
         (error) => {
+          this.toastService.showToast('An unexpected error occurred', 'danger');
           console.error('Error updating delivery', error);
           this.isSubmitting = false;
         }
@@ -290,12 +292,13 @@ export class PackageComponent implements OnInit {
 
       this.packageService.createPackage(requestBody).subscribe(
         (response) => {
-          console.log('Package created:', response);
+          this.toastService.showToast('Create successfully', 'success');
           this.modalService.dismissAll();
           this.isSubmitting = false;
           this.onSearch();
         },
         (error) => {
+          this.toastService.showToast('An unexpected error occurred', 'danger');
           console.error('Error creating package', error);
           this.isSubmitting = false;
         }

@@ -6,6 +6,7 @@ import { Office } from '../../../models/office.model';
 import { Account } from '../../../models/account.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from '../../../../toast.service';
 
 @Component({
   selector: 'app-employee-create',
@@ -18,14 +19,13 @@ export class EmployeeCreateComponent implements OnInit {
   offices: Office[] = [];
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
-  successMessage: string | null = null;
-  errorMessage: string | null = null;
   isSubmitting: boolean = false;
 
   constructor(
     private employeeService: EmployeeService,
     private officeService: OfficeService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastService: ToastService 
   ) {
     this.createEmpForm = this.fb.group({
       username: ['', Validators.required],
@@ -62,7 +62,7 @@ export class EmployeeCreateComponent implements OnInit {
         this.offices = offices;
       },
       error: (error) => {
-        this.errorMessage = 'Failed to load offices. Please try again.';
+        this.toastService.showToast('An unexpected error occurred', 'danger');
         console.error('Error fetching offices', error);
       },
     });
@@ -95,15 +95,12 @@ export class EmployeeCreateComponent implements OnInit {
         .createEmployeeWithAccount(requestEmployee, requestAccount)
         .subscribe({
           next: () => {
-            this.successMessage = 'Employee and Account created successfully!';
-            this.errorMessage = null;
+            this.toastService.showToast('Create successfully', 'success');
             this.isSubmitting = false;
             this.createSuccess.emit();
           },
           error: (error) => {
-            this.errorMessage =
-              'Failed to create employee and account. Please try again.';
-            this.successMessage = null;
+            this.toastService.showToast('An unexpected error occurred', 'danger');
             this.isSubmitting = false;
           },
         });

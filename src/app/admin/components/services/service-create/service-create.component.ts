@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ServiceService } from '../../services/service.service'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceListComponent } from '../service-list/service-list.component';
+import { ToastService } from '../../../../toast.service';
 
 @Component({
   selector: 'app-service-create',
@@ -9,17 +10,15 @@ import { ServiceListComponent } from '../service-list/service-list.component';
   styleUrls: ['./service-create.component.css'],
 })
 export class ServiceCreateComponent {
-  @Output() createSuccess: EventEmitter<void> = new EventEmitter<void>(); // Phát ra sự kiện khi cập nhật thành công
-
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
+  @Output() createSuccess: EventEmitter<void> = new EventEmitter<void>();
   createServiceForm: FormGroup;
   isSubmitting: boolean = false;
 
   constructor(
     private serviceService: ServiceService,
     private serviceList: ServiceListComponent,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastService: ToastService 
   ) {
     this.createServiceForm = this.fb.group({
       name: ['', Validators.required],
@@ -42,15 +41,13 @@ export class ServiceCreateComponent {
       };
       this.serviceService.createService(requestBody).subscribe({
         next: () => {
-          this.successMessage = 'Service created successfully!';
-          this.errorMessage = null;
+          this.toastService.showToast('Create successfully', 'success');
           this.isSubmitting = false;
           this.createSuccess.emit();
         },
         error: (err) => {
           console.error('Error creating service:', err);
-          this.errorMessage = 'Failed to create service. Please try again.';
-          this.successMessage = null;
+          this.toastService.showToast('An unexpected error occurred', 'danger');
           this.isSubmitting = false;
         },
       });

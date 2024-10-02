@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ServiceService } from '../../services/service.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from '../../../../toast.service';
 
 @Component({
   selector: 'app-service-edit',
@@ -12,13 +13,12 @@ export class ServiceEditComponent implements OnInit {
   @Output() updateSuccess: EventEmitter<void> = new EventEmitter<void>(); // Phát ra sự kiện khi cập nhật thành công
 
   updateServiceForm: FormGroup;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
   isSubmitting: boolean = false;
 
   constructor(
     private serviceService: ServiceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastService: ToastService
   ) {
     this.updateServiceForm = this.fb.group({
       name: ['', Validators.required],
@@ -45,8 +45,7 @@ export class ServiceEditComponent implements OnInit {
         });
       },
       error: (err) => {
-        this.errorMessage =
-          'Failed to load service details. Please try again later.';
+        this.toastService.showToast('An unexpected error occurred', 'danger');
       },
     });
   }
@@ -68,17 +67,12 @@ export class ServiceEditComponent implements OnInit {
           .updateService(this.serviceId, requestBody)
           .subscribe({
             next: (response) => {
-
-                this.successMessage = response.message;
-                this.errorMessage = null;
-                this.isSubmitting = false;
-                this.updateSuccess.emit(); // Phát ra sự kiện khi cập nhật thành công
-
+              this.toastService.showToast('Update successfully', 'success');
+              this.isSubmitting = false;
+              this.updateSuccess.emit(); // Phát ra sự kiện khi cập nhật thành công
             },
             error: (err) => {
-
-              this.errorMessage =
-                'Failed to update service. Please try again later.';
+              this.toastService.showToast('An unexpected error occurred', 'danger');
               this.isSubmitting = false;
             },
           });
