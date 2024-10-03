@@ -33,7 +33,7 @@
       <input id="phone" formControlName="phone" class="form-control"
              [ngClass]="{'is-invalid': updateForm.get('phone')?.invalid && updateForm.get('phone')?.touched}">
       <div *ngIf="updateForm.get('phone')?.invalid && updateForm.get('phone')?.touched" class="invalid-feedback">
-        This is a required field
+        Please enter a valid phone number
       </div>
     </div>
 

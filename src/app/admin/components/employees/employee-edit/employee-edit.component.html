@@ -16,7 +16,7 @@
           required>
         <div *ngIf="updateEmpForm.get('email')?.invalid && updateEmpForm.get('email')?.touched"
           class="text-danger small mt-1">
-          This is a required field
+          Please enter a valid email
         </div>
       </div>
 
@@ -25,7 +25,7 @@
         <input id="phone" formControlName="phone" name="phone" class="form-control" required>
         <div *ngIf="updateEmpForm.get('phone')?.invalid && updateEmpForm.get('phone')?.touched"
           class="text-danger small mt-1">
-          This is a required field
+          Please enter a valid phone number
         </div>
       </div>
 
@@ -68,6 +68,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" [disabled]="isSubmitting" class="btn btn-primary btn-primary-admin btn-block">Update Employee</button>
+    <button type="submit" [disabled]="isSubmitting" class="btn btn-primary btn-primary-admin btn-block">Update</button>
   </div>
 </form>
