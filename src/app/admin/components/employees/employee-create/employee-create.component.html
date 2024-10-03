@@ -62,7 +62,7 @@
                required>
         <div *ngIf="createEmpForm.get('phone')?.invalid && createEmpForm.get('phone')?.touched"
              class="text-danger small mt-1">
-          This is a required field
+          Please enter a valid phone number
         </div>
       </div>
 
@@ -72,7 +72,7 @@
                placeholder="Enter Email" required>
         <div *ngIf="createEmpForm.get('email')?.invalid && createEmpForm.get('email')?.touched"
              class="text-danger small mt-1">
-          This is a required field
+          Please enter a valid email
         </div>
       </div>
 
