@@ -320,6 +320,16 @@ export class PackageComponent implements OnInit {
     );
   }
 
+  onSearchButtonClick() {
+    this.packageFilterForm.setValue({
+      ...this.packageFilterForm.value,
+      page: 1
+    }, {
+      onlySelf: true
+    })
+    this.onSearch();
+  }
+
   onSearch() {
     const queryParams = this.getFilterQueryParam();
     this.router.navigate([], { queryParams });
