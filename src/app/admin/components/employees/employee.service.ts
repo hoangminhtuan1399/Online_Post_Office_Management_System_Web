@@ -1,58 +1,35 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Employee } from '../../models/employee.model';
 import { Account } from '../../models/account.model';
-import { AuthService } from '../../auth.service'; 
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
-  private apiUrl = `${environment.apiBaseUrl}/api/Employee`; 
+  private apiUrl = `${environment.apiBaseUrl}/api/Employee`;
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
-
-  private getAuthHeaders(): HttpHeaders {
-    const authToken = this.authService.getTokenFromCookies();  
-
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-
-    if (authToken) {
-      headers = headers.set('Authorization', `Bearer ${authToken}`);
-      console.log('Authorization header set with token:', authToken);  
-    } else {
-      console.warn('No token found in cookies');
-    }
-
-    return headers;
-  }
+  constructor(private http: HttpClient) {}
 
   // Xử lý lỗi trong các yêu cầu HTTP
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
       // Lỗi từ phía client
-      errorMessage = `Error: ${error.error.message}`;
+      errorMessage = `Client Error: ${error.error.message}`;
     } else {
       // Lỗi từ phía server
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      errorMessage = `Server Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.error('HTTP Error:', errorMessage);
     return throwError(errorMessage);
   }
 
   // Lấy danh sách nhân viên
   getAllEmployees(): Observable<Employee[]> {
-    const headers = this.getAuthHeaders();
-    console.log('GET Request Headers:', headers);  
-    console.log('Sending GET request to:', this.apiUrl);  
-
-    return this.http.get<Employee[]>(this.apiUrl, { headers })
+    return this.http.get<Employee[]>(this.apiUrl)
       .pipe(
         catchError(this.handleError)
       );
@@ -61,40 +38,48 @@ export class EmployeeService {
   // Lấy nhân viên theo ID
   getEmployeeById(id: string): Observable<Employee> {
     const url = `${this.apiUrl}/${id}`;
-    const headers = this.getAuthHeaders();
-    
-    console.log('GET Request Headers:', headers);  
-    console.log('Sending GET request to:', url);  
-
-    return this.http.get<Employee>(url, { headers })
+    return this.http.get<Employee>(url)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   // Tạo nhân viên mới kèm tài khoản
-  createEmployeeWithAccount(employee: Employee, account: Account): Observable<Employee> {
-    const headers = this.getAuthHeaders();
-    console.log('POST Request Headers:', headers);  
-    console.log('Sending POST request to:', this.apiUrl);  
-    console.log('Payload:', { employee, account });  
-
-    return this.http.post<Employee>(this.apiUrl, { employee, account }, { headers })
+  createEmployeeWithAccount(employee: any, account: any): Observable<Employee> {
+    return this.http.post<Employee>(this.apiUrl, { employee, account })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   // Cập nhật nhân viên
-  updateEmployee(id: string, employee: Employee): Observable<any> {
+  updateEmployee(id: string, employee: any): Observable<Employee> {
     const url = `${this.apiUrl}/${id}`;
-    const headers = this.getAuthHeaders();
-    
-    console.log('PUT Request Headers:', headers);  
-    console.log('Sending PUT request to:', url);  
-    console.log('Payload:', employee);  
+    return this.http.put<Employee>(url, employee)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
-    return this.http.put(url, employee, { headers })
+  deleteEmployee(employeeId: string) {
+    return this.http.delete(`${environment.apiBaseUrl}/api/Employee/${employeeId}`);
+  }
+
+  // Tìm kiếm nhân viên
+  searchEmployees(name: string, officeId: string, phone: string, officeName: string, pageNumber: number): Observable<any> {
+    const params = new HttpParams()
+    .set('name', name)
+    .set('officeId', officeId)
+    .set('phone', phone)
+    .set('officeName', officeName)
+    .set('pageNumber', pageNumber.toString());
+
+    const url = `${this.apiUrl}/search`;
+
+
+    console.log('Search Params:', params.toString());
+
+    return this.http.get<any>(url, { params })
       .pipe(
         catchError(this.handleError)
       );

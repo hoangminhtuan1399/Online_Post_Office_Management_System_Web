@@ -1,63 +1,121 @@
-<h2>Create Employee and Account</h2>
-<form (ngSubmit)="createEmployeeAndAccount()">
-  <!-- Employee Information -->
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input id="name" [(ngModel)]="employee.name" name="name" class="form-control" required>
-  </div>
+<form [formGroup]="createEmpForm" (ngSubmit)="createEmployeeAndAccount()">
+  <div class="container has-scroll has-scroll-admin modal-body">
+    <!-- Account Information -->
+    <h4>Account Information</h4>
+    <div class="row row-gap-2">
+      <div class="form-group col-md-12">
+        <label for="username">Username <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="username" formControlName="username" name="username"
+               placeholder="Enter Username" required>
+        <div *ngIf="createEmpForm.get('username')?.invalid && createEmpForm.get('username')?.touched"
+             class="text-danger small mt-1">
+          This is a required field
+        </div>
+      </div>
+      <div class="form-group col-md-12">
+        <label for="password" class="form-label">Password</label>
+        <div class="position-relative">
+          <input id="password" formControlName="password" type="{{showPassword ? 'text' : 'password'}}" class="form-control no-background"
+                 placeholder="Enter Password" [ngClass]="{'is-invalid': createEmpForm.get('password')?.invalid && createEmpForm.get('password')?.touched}">
+          <div *ngIf="createEmpForm.get('password')?.invalid && createEmpForm.get('password')?.touched" class="invalid-feedback">
+            This is a required field
+          </div>
+          <button tabindex="-1" class="btn btn-outline-secondary password-toggle-btn" type="button" (click)="togglePasswordVisibility()">
+            <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+          </button>
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input id="email" [(ngModel)]="employee.email" name="email" type="email" class="form-control" required>
-  </div>
+      <div class="form-group col-md-12">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <div class="position-relative">
+          <input id="confirmPassword" formControlName="confirmPassword" type="{{showConfirmPassword ? 'text' : 'password'}}" class="form-control no-background"
+                 placeholder="Confirm Password" [ngClass]="{'is-invalid': createEmpForm.get('confirmPassword')?.invalid && createEmpForm.get('confirmPassword')?.touched}">
+          <div
+            *ngIf="createEmpForm.get('confirmPassword')?.hasError('mismatch') && createEmpForm.get('confirmPassword')?.touched"
+            class="invalid-feedback">
+            Passwords do not match
+          </div>
+          <button tabindex="-1" class="btn btn-outline-secondary password-toggle-btn" type="button" (click)="toggleConfirmPasswordVisibility()">
+            <i [class]="showConfirmPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <!-- Employee Information -->
+    <h4>Employee Information</h4>
+    <div class="row row-gap-2">
+      <div class="form-group col-md-6">
+        <label for="name">Name <span class="text-danger">*</span></label>
+        <input id="name" formControlName="name" name="name" class="form-control" placeholder="Employee Name"
+               required>
+        <div *ngIf="createEmpForm.get('name')?.invalid && createEmpForm.get('name')?.touched"
+             class="text-danger small mt-1">
+          This is a required field
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label for="phone">Phone</label>
-    <input id="phone" [(ngModel)]="employee.phone" name="phone" class="form-control" required>
-  </div>
+      <div class="form-group col-md-6">
+        <label for="phone">Phone <span class="text-danger">*</span></label>
+        <input id="phone" formControlName="phone" name="phone" class="form-control" placeholder="Phone Number"
+               required>
+        <div *ngIf="createEmpForm.get('phone')?.invalid && createEmpForm.get('phone')?.touched"
+             class="text-danger small mt-1">
+          This is a required field
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label for="gender">Gender</label>
-    <select id="gender" [(ngModel)]="employee.gender" name="gender" class="form-control" required>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
+      <div class="form-group col-md-6">
+        <label for="email">Email <span class="text-danger">*</span></label>
+        <input id="email" formControlName="email" name="email" type="email" class="form-control"
+               placeholder="Enter Email" required>
+        <div *ngIf="createEmpForm.get('email')?.invalid && createEmpForm.get('email')?.touched"
+             class="text-danger small mt-1">
+          This is a required field
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label for="dateOfBirth">Date of Birth</label>
-    <input id="dateOfBirth" [(ngModel)]="employee.dateOfBirth" name="dateOfBirth" type="date" class="form-control" required>
-  </div>
+      <div class="form-group col-md-6">
+        <label for="gender">Gender <span class="text-danger">*</span></label>
+        <select id="gender" formControlName="gender" name="gender" class="form-control" required>
+          <option value="" disabled selected>Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+        <div *ngIf="createEmpForm.get('gender')?.invalid && createEmpForm.get('gender')?.touched"
+             class="text-danger small mt-1">
+          This is a required field
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label for="officeId">Office</label>
-    <select id="officeId" [(ngModel)]="employee.officeId" name="officeId" class="form-control" required>
-      <option *ngFor="let office of offices" [value]="office.id">{{ office.officeName }}</option>
-    </select>
-  </div>
+      <div class="form-group col-md-6">
+        <label for="dateOfBirth">Date of Birth <span class="text-danger">*</span></label>
+        <input id="dateOfBirth" formControlName="dateOfBirth" name="dateOfBirth" type="date" class="form-control"
+               required>
+        <div *ngIf="createEmpForm.get('dateOfBirth')?.invalid && createEmpForm.get('dateOfBirth')?.touched"
+             class="text-danger small mt-1">
+          This is a required field
+        </div>
+      </div>
 
-  <!-- Account Information -->
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input id="username" [(ngModel)]="account.username" name="username" class="form-control" required>
+      <div class="form-group col-md-6">
+        <label for="officeId">Office <span class="text-danger">*</span></label>
+        <select id="officeId" formControlName="officeId" name="officeId" class="form-control"
+                required>
+          <option value="" disabled selected>Select Office</option>
+          <option *ngFor="let office of offices" [value]="office.id">{{ office.officeName }}</option>
+        </select>
+        <div *ngIf="createEmpForm.get('officeId')?.invalid && createEmpForm.get('officeId')?.touched"
+             class="text-danger small mt-1">
+          This is a required field
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input id="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="account.password" name="password" class="form-control" required>
+  <div class="modal-footer">
+    <button type="submit" [disabled]="isSubmitting" class="btn btn-primary btn-primary-admin btn-block">Create</button>
   </div>
-
-  <div class="form-group">
-    <input type="checkbox" [(ngModel)]="showPassword" [ngModelOptions]="{standalone: true}"> Show Password
-  </div>
-
-  <button type="submit" class="btn btn-primary">Create Employee and Account</button>
 </form>
 
-<div *ngIf="successMessage" class="alert alert-success mt-3">
-  {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger mt-3">
-  {{ errorMessage }}
-</div>

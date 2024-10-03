@@ -21,6 +21,7 @@ import { ServiceEditComponent } from './components/services/service-edit/service
 import { ServiceDetailComponent } from './components/services/service-detail/service-detail.component';
 import { ServiceListComponent } from './components/services/service-list/service-list.component';
 import { ServiceCreateComponent } from './components/services/service-create/service-create.component';
+import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -39,7 +40,8 @@ import { ServiceCreateComponent } from './components/services/service-create/ser
     ServiceEditComponent,
     ServiceDetailComponent,
     ServiceListComponent,
-    ServiceCreateComponent
+    ServiceCreateComponent,
+    ProfileUpdateComponent
   ],
   imports: [
     CommonModule,

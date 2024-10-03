@@ -3,6 +3,21 @@
   --secondary-color: #04295e;
   --primary-button-bg: var(--secondary-color);
   --primary-button-bg-hover: #0B5ED7FF;
+  --scroll-bar-bg: #d6d6d6;
+  --scroll-bar-thumb-bg: var(--secondary-color);
+  --scroll-bar-thumb-bg-admin: var(--card-content-bg);
+  --card-content-bg: rgba(0, 0, 0, 0.9);
+  --bs-body-font-size: 90% !important;
+  --active-dashboard-link-bg: #000;
+  --btn-primary-admin-bg: #010101;
+  --btn-primary-admin-bg-hover: #1f1f1f;
+  --btn-secondary-admin-bg: #cad2c5;
+  --btn-secondary-admin-border-color: #cad2c5;
+  --btn-secondary-admin-bg-hover: #2f3e46;
+  --btn-view-bg: #2f3e46;
+  --btn-view-bg-hover: #1f1f1f;
+  --btn-update-bg: #84a98c;
+  --btn-update-bg-hover: #1f1f1f;
 }
 
 html {
@@ -59,10 +74,22 @@ p {
   background-color: var(--primary-button-bg-hover) !important;
 }
 
-.admin-background {
+.admin-background:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   background-image: url('./assets/img/admin-background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center center;
+  /*-webkit-filter: blur(2px);*/
+  /*-moz-filter: blur(2px);*/
+  /*-o-filter: blur(2px);*/
+  /*-ms-filter: blur(2px);*/
+  /*filter: blur(2px);*/
 }
 
 .loading {
@@ -71,6 +98,276 @@ p {
 }
 
 .spinner-border {
-  width: 3rem;
-  height: 3rem;
+  border-color: var(--secondary-color) !important;
+  border-right-color: transparent !important;
+}
+
+.has-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.has-scroll::-webkit-scrollbar-track {
+  background: var(--scroll-bar-bg);
+  border-radius: 4px;
+}
+
+.has-scroll::-webkit-scrollbar-thumb {
+  background: var(--scroll-bar-thumb-bg);
+  border-radius: 4px;
+}
+
+.has-scroll-admin::-webkit-scrollbar-thumb {
+  background: var(--scroll-bar-thumb-bg-admin);
+  border-radius: 4px;
+}
+
+.card-content {
+  border-radius: 16px !important;
+  background-color: var(--card-content-bg) !important;
+  color: white !important;
+  padding: 1.5rem;
+}
+
+.btn-primary-admin {
+  background-color: var(--btn-primary-admin-bg) !important;
+  border: none !important;
+}
+
+.btn-primary-admin:hover {
+  background-color: var(--btn-primary-admin-bg-hover) !important;
+}
+
+.btn-secondary-admin {
+  background-color: var(--btn-secondary-admin-bg) !important;
+  border: none !important;
+}
+
+.btn-secondary-admin:hover {
+  background-color: var(--btn-secondary-admin-bg-hover) !important;
+}
+
+.view-btn {
+  background-color: var(--btn-view-bg) !important;
+  color: #fff !important;
+  width: 30px;
+  height: 30px;
+}
+
+.view-btn:hover  {
+  background-color: var(--btn-view-bg-hover) !important;
+}
+
+.update-btn {
+  background-color: var(--btn-update-bg) !important;
+  color: #fff !important;
+  width: 30px;
+  height: 30px;
+}
+
+.update-btn:hover  {
+  background-color: var(--btn-update-bg-hover) !important;
+}
+
+.form-control {
+  font-size: 0.9rem !important;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+  z-index: 10000;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+h1.text-center {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+h4 {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+}
+
+.table-responsive {
+  margin: 20px auto;
+  max-width: 100%; /* Tăng độ rộng của bảng lên 100% để chiếm toàn bộ không gian */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed; /* Đảm bảo các cột có độ rộng cố định */
+  border-collapse: collapse;
+}
+
+thead {
+  letter-spacing: 0.05em;
+  text-align: center; /* Căn giữa chữ trong tiêu đề theo chiều ngang */
+}
+
+thead th {
+  color: white;
+  font-weight: 600;
+  text-align: center; /* Căn giữa chữ trong tiêu đề theo chiều ngang */
+  vertical-align: middle; /* Căn giữa theo chiều dọc */
+  padding: 15px;
+  background-color: var(--btn-primary-admin-bg);
+}
+
+.filter-icon {
+  margin-left: 5px;
+  font-size: 12px; /* Giảm kích thước của ký hiệu */
+  color: #fff; /* Màu trắng để nổi bật trên nền */
+}
+
+tbody td {
+  padding: 15px;
+  color: #333;
+  text-align: center; /* Căn giữa chữ theo chiều ngang */
+  vertical-align: middle; /* Căn giữa theo chiều dọc */
+  word-wrap: break-word; /* Ngắt dòng nếu chữ quá dài */
+}
+
+tbody tr {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.modal-header {
+  background-color: var(--card-content-bg);
+}
+
+.modal-body {
+  max-height: 72vh;
+  overflow-y: auto;
+}
+
+.form-label {
+  margin-bottom: 0.25rem !important;
+}
+
+.no-background {
+  background-image: none !important;
+}
+
+.password-toggle-btn {
+  background-color: transparent !important;
+  outline: none !important;
+  border: none !important;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.password-toggle-btn:hover {
+  color: initial !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  thead {
+      display: none;
+  }
+
+  tr {
+      display: block;
+      margin-bottom: 15px;
+  }
+
+  td {
+      display: block;
+      text-align: right;
+      font-size: 14px;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+      padding-left: 50%;
+  }
+
+  td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-left: 15px;
+      font-weight: bold;
+      text-align: left;
+      color: #555;
+  }
+
+  td:last-child {
+      border-bottom: 0;
+  }
+  .modal-body {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    position: relative;
+  }
+
+  .package-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .package-details strong {
+    color: #000;
+  }
+
+  .package-cost {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50; /* Màu xanh lá cây cho chi phí */
+  }
+
+  .package-cost span {
+    color: #d9534f; /* Màu đỏ cho số tiền */
+    font-size: 28px; /* Tăng kích thước số tiền */
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+  }
+
+  .modal-header {
+    border-bottom: 1px solid #ddd;
+    background-color: #4CAF50; /* Màu xanh lá cây cho header */
+    color: white;
+  }
+
+  .modal-header h5 {
+    margin: 0;
+  }
+
+  .modal-header .close {
+    color: white;
+  }
+
 }

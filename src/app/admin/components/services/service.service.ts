@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Service } from '../../models/service.model'; 
-import { AuthService } from '../../auth.service'; 
+import { Service } from '../../models/service.model';
+import { AuthService } from '../../auth.service';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class ServiceService {
 
   // Lấy headers với token từ AuthService
   private getAuthHeaders(): HttpHeaders {
-    const authToken = this.authService.getTokenFromCookies();  
+    const authToken = this.authService.getTokenFromCookies();
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export class ServiceService {
 
     if (authToken) {
       headers = headers.set('Authorization', `Bearer ${authToken}`);
-      console.log('Authorization header set with token:', authToken);  
+      console.log('Authorization header set with token:', authToken);
     } else {
       console.warn('No token found in cookies');
     }
@@ -59,7 +59,7 @@ export class ServiceService {
   getServiceById(id: string): Observable<Service> {
     const url = `${this.apiUrl}/${id}`;
     const headers = this.getAuthHeaders();
-    
+
     console.log('Sending GET request to:', url);
 
     return this.http.get<Service>(url, { headers })
@@ -71,7 +71,7 @@ export class ServiceService {
   // Tạo mới dịch vụ
   createService(service: Service): Observable<Service> {
     const headers = this.getAuthHeaders();
-    
+
     console.log('Sending POST request to:', this.apiUrl);
     console.log('Payload:', service);
 
@@ -81,16 +81,25 @@ export class ServiceService {
       );
   }
 
-  updateService(id: string, service: Service): Observable<any> {
+  updateService(id: string, service: any): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     const headers = this.getAuthHeaders();
-  
+
     console.log('Sending PUT request to:', url);
-    console.log('Payload:', JSON.stringify(service));  
-    return this.http.put(url, service, { headers })  
+    console.log('Payload:', JSON.stringify(service));
+    return this.http.put(url, service, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
 
+  deleteService(id: string): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    const headers = this.getAuthHeaders();
+
+    return this.http.delete(url, { headers })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }

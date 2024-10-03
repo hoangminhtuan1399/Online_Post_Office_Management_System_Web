@@ -1,0 +1,162 @@
+h1.text-center {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+h4 {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+}
+
+.table-responsive {
+  margin: 20px auto;
+  max-width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+thead {
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+thead th {
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  vertical-align: middle;
+  padding: 15px;
+  background-color: var(--btn-primary-admin-bg);
+}
+
+.filter-icon {
+  margin-left: 5px;
+  font-size: 12px;
+  color: #fff;
+}
+
+tbody td {
+  padding: 15px;
+  color: #333;
+  text-align: center;
+  vertical-align: middle;
+  word-wrap: break-word;
+}
+
+tbody tr {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.modal-header {
+  background-color: var(--card-content-bg);
+}
+
+.modal-body {
+  max-height: 72vh;
+  overflow-y: auto;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  thead {
+      display: none;
+  }
+
+  tr {
+      display: block;
+      margin-bottom: 15px;
+  }
+
+  td {
+      display: block;
+      text-align: right;
+      font-size: 14px;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+      padding-left: 50%;
+  }
+
+  td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-left: 15px;
+      font-weight: bold;
+      text-align: left;
+      color: #555;
+  }
+
+  td:last-child {
+      border-bottom: 0;
+  }
+  .modal-body {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    position: relative;
+  }
+
+  .package-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .package-details strong {
+    color: #000;
+  }
+
+  .package-cost {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+  }
+
+  .package-cost span {
+    color: #d9534f;
+    font-size: 28px;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+  }
+
+  .modal-header {
+    border-bottom: 1px solid #ddd;
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .modal-header h5 {
+    margin: 0;
+  }
+
+  .modal-header .close {
+    color: white;
+  }
+
+}

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PackageService } from './package.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from "@angular/router";
+import { ToastService } from '../../../toast.service';
 
 @Component({
   selector: 'app-package',
@@ -12,34 +14,34 @@ export class PackageComponent implements OnInit {
   packages: any[] = [];
   paymentStatusFilter: string = '';
   selectedPackage: any = null;
-  statusOptions: string[] = ['paid', 'pending', 'fail', ''];
-  currentStatusIndex: number = 3;
+  statusOptions: string[] = ['paid', 'pending', 'fail'];
   currentPage: number = 1;
-  itemsPerPage: number = 10; 
+  itemsPerPage: number = 10;
   isLastPage: boolean = false;
   isSubmitting: boolean = false;
   createPackageForm: FormGroup;
   updatePackageForm: FormGroup;
   serviceOptions: any[] = [];
   officeIdFilter: string = '';
-  officeOptions: { id: string; name: string }[] = [
-    { id: '66d9c49ed3fa15404d510f34', name: 'Main Office' },
-    { id: '66d9c4acd3fa15404d510f35', name: 'Houston Branch' },
-    { id: '66d9c4bbd3fa15404d510f36', name: 'NYC Office' },
-    { id: '', name: 'All Offices' },
-  ];
+  startDate: string = '';
+  officeOptions: { id: string; name: string }[] = [];
   officeOptionsForCreate: any[] = [];
-  currentOfficeIndex: number = 3;
+  packageFilterForm: FormGroup;
+  isLoading = false;
 
   constructor(
     private packageService: PackageService,
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.createPackageForm = this.fb.group({
       officeId: ['', Validators.required],
       serviceId: ['', Validators.required],
       weight: [0, [Validators.required, Validators.min(0)]],
+      distance: [0, [Validators.required, Validators.min(0)]],
       receiver: ['', Validators.required],
       paymentStatus: ['', Validators.required],
       descriptionText: ['', Validators.required],
@@ -54,54 +56,88 @@ export class PackageComponent implements OnInit {
       deliveryStatus: ['', Validators.required],
       currentLocation: ['', Validators.required],
       weight: [0, [Validators.required, Validators.min(0)]],
+      distance: [0, [Validators.required, Validators.min(0)]],
       receiver: ['', Validators.required],
       paymentStatus: ['', Validators.required],
+    });
+    this.packageFilterForm = this.fb.group({
+      officeId: [''],
+      startDate: [''],
+      paymentStatus: [''],
+      page: [1]
     });
   }
 
   ngOnInit(): void {
-    this.getPackages();
+    this.route.queryParams.subscribe(params => {
+      this.packageFilterForm.patchValue({
+        officeId: params['officeId'] || '',
+        startDate: params['startDate'] || '',
+        paymentStatus: params['paymentStatus'] || '',
+        page: +params['page'] || 1
+      });
+    })
+    this.packageService.getAllOffice().subscribe(
+      (offices: any[]) => {
+        this.officeOptions = offices.map(office => {
+          return {
+            id: office.id,
+            name: office.officeName
+          }
+        });
+      },
+      (error) => {
+        console.error('Error fetching offices', error);
+      }
+    );
+    this.onSearch();
   }
 
   getPackages(): void {
+    this.isLoading = true;
     this.packageService
       .getFilteredPackages(
         this.currentPage,
         this.officeIdFilter,
-        '',
+        this.startDate,
         this.paymentStatusFilter
       )
       .subscribe(
         (response) => {
           this.packages = response;
-          this.isLastPage = response.length < this.itemsPerPage; 
+          this.isLastPage = response.length < this.itemsPerPage;
         },
         (error) => {
           console.error('Error fetching package data', error);
+        },
+        () => {
+          this.isLoading = false;
         }
       );
   }
 
   nextPage(): void {
     if (!this.isLastPage) {
-      this.currentPage++;
-      this.getPackages();
+      this.packageFilterForm.get('page')?.setValue(+this.currentPage + 1);
+      this.onSearch();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
-      this.currentPage--;
-      this.getPackages();
+      this.packageFilterForm.get('page')?.setValue(+this.currentPage - 1);
+      this.onSearch();
     }
   }
 
   openUpdatePackageModal(content: any, pkg: any): void {
     this.selectedPackage = pkg;
+    console.log('pkg: ', pkg)
     this.updatePackageForm.patchValue({
       deliveryStatus: pkg.deliveryStatus,
-      currentLocation: pkg.currentLocation,
+      currentLocation: pkg.officeId,
       weight: pkg.weight,
+      distance: pkg.distance,
       receiver: pkg.receiver,
       paymentStatus: pkg.paymentStatus,
     });
@@ -120,24 +156,23 @@ export class PackageComponent implements OnInit {
     if (this.updatePackageForm.valid) {
       this.isSubmitting = true;
       const formValue = this.updatePackageForm.value;
-
       const deliveryRequestBody = {
         id: this.selectedPackage.deliveryId,
         sendDate: this.selectedPackage.sendDate,
         deliveryStatus: formValue.deliveryStatus,
-        startOfficeId: this.selectedPackage.startOfficeId, 
+        startOfficeId: this.selectedPackage.officeId,
         currentLocation: formValue.currentLocation,
-        endOfficeId: this.selectedPackage.endOfficeId,
+        endOfficeId: this.selectedPackage.endOfficeName,
         deliveryDate: formValue.deliveryStatus === 'delivered' || formValue.deliveryStatus === 'declined'
-          ? new Date().toISOString() 
-          : this.selectedPackage.deliveryDate, 
+          ? new Date().toISOString()
+          : this.selectedPackage.deliveryDate,
       };
 
       const packageRequestBody = {
         id: this.selectedPackage.id,
         weight: formValue.weight,
-        distance: this.selectedPackage.distance, 
-        deliveryNumber: this.selectedPackage.deliveryNumber, 
+        distance: formValue.distance,
+        deliveryNumber: this.selectedPackage.deliveryNumber,
         receiver: formValue.receiver,
         createdAt: this.selectedPackage.createdAt,
       };
@@ -146,10 +181,11 @@ export class PackageComponent implements OnInit {
         id: this.selectedPackage.paymentId,
         status: formValue.paymentStatus,
         transactionTime: formValue.paymentStatus === 'paid' || formValue.paymentStatus === 'fail'
-          ? new Date().toISOString() 
-          : this.selectedPackage.transactionTime, 
-        cost: this.selectedPackage.paymentCost, 
+          ? new Date().toISOString()
+          : this.selectedPackage.transactionTime,
+        cost: this.selectedPackage.paymentCost,
       };
+
 
       this.packageService.updateDelivery(this.selectedPackage.deliveryId, deliveryRequestBody).subscribe(
         () => {
@@ -157,28 +193,33 @@ export class PackageComponent implements OnInit {
             () => {
               this.packageService.updatePayment(this.selectedPackage.paymentId, paymentRequestBody).subscribe(
                 () => {
-                  console.log('All updates successful');
+                  this.toastService.showToast('Update successfully', 'success');
                   this.isSubmitting = false;
-                  this.modalService.dismissAll(); 
-                  this.getPackages();
+                  this.modalService.dismissAll();
+                  this.onSearch();
                 },
                 (error) => {
+                  this.toastService.showToast('An unexpected error occurred', 'danger');
                   console.error('Error updating payment', error);
                   this.isSubmitting = false;
                 }
               );
             },
             (error) => {
+              this.toastService.showToast('An unexpected error occurred', 'danger');
               console.error('Error updating package', error);
               this.isSubmitting = false;
             }
           );
         },
         (error) => {
+          this.toastService.showToast('An unexpected error occurred', 'danger');
           console.error('Error updating delivery', error);
           this.isSubmitting = false;
         }
       );
+    } else {
+      this.updatePackageForm.markAllAsTouched();
     }
   }
 
@@ -205,7 +246,6 @@ export class PackageComponent implements OnInit {
   onSubmit(): void {
     if (this.createPackageForm.valid) {
       this.isSubmitting = true;
-
       const formValue = this.createPackageForm.value;
       const requestBody = {
         package: {
@@ -214,7 +254,7 @@ export class PackageComponent implements OnInit {
           senderId: '',
           serviceId: formValue.serviceId,
           weight: formValue.weight,
-          distance: 0,
+          distance: formValue.distance,
           deliveryNumber: '',
           descriptionId: '',
           paymentId: '',
@@ -252,26 +292,27 @@ export class PackageComponent implements OnInit {
 
       this.packageService.createPackage(requestBody).subscribe(
         (response) => {
-          console.log('Package created:', response);
+          this.toastService.showToast('Create successfully', 'success');
           this.modalService.dismissAll();
           this.isSubmitting = false;
-          this.getPackages();
+          this.onSearch();
         },
         (error) => {
+          this.toastService.showToast('An unexpected error occurred', 'danger');
           console.error('Error creating package', error);
           this.isSubmitting = false;
         }
       );
-
-      console.log(requestBody);
+    } else {
+      this.createPackageForm.markAllAsTouched();
     }
   }
 
   viewPackage(packageId: string, content: any): void {
     this.packageService.getPackageById(packageId).subscribe(
       (response) => {
-        this.selectedPackage = response; 
-        this.modalService.open(content, { centered: true }); 
+        this.selectedPackage = response;
+        this.modalService.open(content, { centered: true });
       },
       (error) => {
         console.error('Error fetching package details', error);
@@ -279,18 +320,32 @@ export class PackageComponent implements OnInit {
     );
   }
 
-  togglePaymentStatusFilter(): void {
-    this.currentStatusIndex =
-      (this.currentStatusIndex + 1) % this.statusOptions.length;
-    this.paymentStatusFilter =
-      this.statusOptions[this.currentStatusIndex].toLocaleLowerCase();
+  onSearch() {
+    const queryParams = this.getFilterQueryParam();
+    this.router.navigate([], { queryParams });
+    this.officeIdFilter = queryParams.officeId;
+    this.startDate = queryParams.startDate;
+    this.paymentStatusFilter = queryParams.paymentStatus;
+    this.currentPage = queryParams.page;
     this.getPackages();
   }
 
-  toggleOfficeFilter(): void {
-    this.currentOfficeIndex =
-      (this.currentOfficeIndex + 1) % this.officeOptions.length;
-    this.officeIdFilter = this.officeOptions[this.currentOfficeIndex].id;
-    this.getPackages();
+  onClear() {
+    this.packageFilterForm.reset({
+      officeId: [''],
+      startDate: [''],
+      paymentStatus: [''],
+      page: 1
+    });
+    this.onSearch();
+  }
+
+  getFilterQueryParam() {
+    return {
+      officeId: this.packageFilterForm.get('officeId')?.value || '',
+      startDate: this.packageFilterForm.get('startDate')?.value || '',
+      paymentStatus: this.packageFilterForm.get('paymentStatus')?.value || '',
+      page: this.packageFilterForm.get('page')?.value || 1
+    };
   }
 }

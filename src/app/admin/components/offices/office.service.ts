@@ -2,21 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators'; // Import thêm các operator từ rxjs
-import { Office } from '../../models/office.model'; 
+import { Office } from '../../models/office.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OfficeService {
 
-  private apiUrl = 'https://localhost:7029/api/Office';
+  private apiUrl = 'https://onlinepostofficemanagementapi-a7csemagdjdecbbu.southeastasia-01.azurewebsites.net/api/Office';
 
   constructor(private http: HttpClient) { }
 
   getAllOffices(): Observable<Office[]> {
     return this.http.get<Office[]>(this.apiUrl).pipe(
-      tap(data => console.log('Offices:', data)), 
-      catchError(this.handleError) 
+      catchError(this.handleError)
     );
   }
 

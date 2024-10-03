@@ -1,84 +1,84 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ServiceService } from '../../services/service.service';
-import { Service } from '../../../models/service.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from '../../../../toast.service';
 
 @Component({
   selector: 'app-service-edit',
   templateUrl: './service-edit.component.html',
-  styleUrls: ['./service-edit.component.css']
+  styleUrls: ['./service-edit.component.css'],
 })
 export class ServiceEditComponent implements OnInit {
-  service: Service = {
-    id: '',
-    name: '',
-    baseRate: 0,
-    ratePerKg: 0,
-    ratePerKm: 0
-  };
-  serviceId: string | null = null;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
+  @Input() serviceId: string | null = null;
+  @Output() updateSuccess: EventEmitter<void> = new EventEmitter<void>(); // Phát ra sự kiện khi cập nhật thành công
+
+  updateServiceForm: FormGroup;
+  isSubmitting: boolean = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private serviceService: ServiceService
-  ) {}
+    private serviceService: ServiceService,
+    private fb: FormBuilder,
+    private toastService: ToastService
+  ) {
+    this.updateServiceForm = this.fb.group({
+      name: ['', Validators.required],
+      baseRate: [0, [Validators.required, Validators.min(0)]],
+      ratePerKg: [0, [Validators.required, Validators.min(0)]],
+      ratePerKm: [0, [Validators.required, Validators.min(0)]],
+    });
+  }
 
   ngOnInit(): void {
-    // Lấy ID của service từ URL
-    this.serviceId = this.route.snapshot.paramMap.get('id');
     if (this.serviceId) {
       this.loadServiceDetails(this.serviceId);
     }
   }
 
-  // Hàm lấy chi tiết service từ server
   private loadServiceDetails(id: string): void {
     this.serviceService.getServiceById(id).subscribe({
       next: (data) => {
-        this.service = data;
-        console.log('Loaded service data:', this.service);  
+        this.updateServiceForm.patchValue({
+          name: data.name,
+          baseRate: data.baseRate,
+          ratePerKg: data.ratePerKg,
+          ratePerKm: data.ratePerKm,
+        });
       },
       error: (err) => {
-        console.error('Error loading service details:', err);
-        this.errorMessage = 'Failed to load service details. Please try again later.';
-      }
+        this.toastService.showToast('An unexpected error occurred', 'danger');
+      },
     });
   }
 
   onSubmit(): void {
     if (this.serviceId) {
-      console.log('Submitting service data with ID:', this.serviceId);
-  
-      this.serviceService.updateService(this.serviceId, this.service).subscribe({
-        next: (response) => {
-          console.log('Update response:', response);
-  
-          // Xử lý khi phản hồi là chuỗi thay vì JSON
-          if (typeof response === 'string') {
-            // Kiểm tra nếu phản hồi chứa thông báo thành công
-            if (response.includes('Service updated successfully')) {
-              this.successMessage = 'Service updated successfully!';
-              this.errorMessage = null;
-            } else {
-              this.errorMessage = 'Unexpected response: ' + response;
-            }
-          } else {
-            this.errorMessage = 'Unexpected response format.';
-          }
-  
-          setTimeout(() => {
-            this.router.navigate(['/admin/services/list']);
+      if (this.updateServiceForm.valid) {
+        this.isSubmitting = true;
+        const formValue = this.updateServiceForm.value;
+        const requestBody = {
+          id: this.serviceId,
+          name: formValue.name,
+          baseRate: formValue.baseRate,
+          ratePerKg: formValue.ratePerKg,
+          ratePerKm: formValue.ratePerKm,
+        };
+        console.log(requestBody);
+        this.serviceService
+          .updateService(this.serviceId, requestBody)
+          .subscribe({
+            next: (response) => {
+              this.toastService.showToast('Update successfully', 'success');
+              this.isSubmitting = false;
+              this.updateSuccess.emit(); // Phát ra sự kiện khi cập nhật thành công
+            },
+            error: (err) => {
+              this.toastService.showToast('An unexpected error occurred', 'danger');
+              this.isSubmitting = false;
+            },
           });
-        },
-        error: (err) => {
-          console.error('Error updating service:', err);
-          this.errorMessage = 'Failed to update service. Please try again later.';
-          this.successMessage = null;
-        }
-      });
+      } else {
+        this.updateServiceForm.markAllAsTouched();
+      }
     }
   }
 }

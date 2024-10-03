@@ -14,13 +14,14 @@ import { environment } from "../../../../environments/environment";
 export class LoginComponent {
   loginForm: FormGroup;
   isSubmitting: boolean = false;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private authService: AuthService,
-    private toastService: ToastService
+    private toastService: ToastService 
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -40,7 +41,8 @@ export class LoginComponent {
     this.http.post<any>(`${environment.apiBaseUrl}/api/auth/login`, { username, password }).subscribe({
       next: (response) => {
         if (response && response.token) {
-          this.toastService.showToast('Login successfully', 'success');
+          console.log('res: ', response)
+           this.toastService.showToast('Login successfully', 'success');
           document.cookie = `jwt=${response.token};path=/`;
           this.authService.setUserData(response);
           this.router.navigate(['/admin/dashboard']);
@@ -48,9 +50,9 @@ export class LoginComponent {
       },
       error: (errorResponse) => {
         if (errorResponse.status >= 400 && errorResponse.error) {
-          this.toastService.showToast(errorResponse.error, 'danger');
+           this.toastService.showToast(errorResponse.error, 'danger');
         } else {
-          this.toastService.showToast('An unexpected error occurred', 'danger');
+           this.toastService.showToast('An unexpected error occurred', 'danger');
         }
         this.isSubmitting = false;
       },
@@ -66,5 +68,9 @@ export class LoginComponent {
 
   get password() {
     return this.loginForm.get('password');
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

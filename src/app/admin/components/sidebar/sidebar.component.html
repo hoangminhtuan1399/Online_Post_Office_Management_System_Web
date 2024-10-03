@@ -1,5 +1,5 @@
-<div [class.collapsed]="isCollapsed" id="sidebar" class="border-end text-white">
-  <div (click)="router.navigate(['/admin/profile'])"
+<div [class.collapsed]="isCollapsed" id="sidebar" class="text-white">
+  <div (click)="router.navigate(['/admin/profile-update'])"
   class="user-info p-3 d-flex align-items-center border-bottom gap-2">
   <img src="assets/img/user-avatar.jpg" alt="Avatar" class="rounded-circle me-2" width="40">
   <span class="cursor-pointer">{{this.username}}</span>
@@ -9,6 +9,7 @@
     <!-- Dashboard Link -->
     <a class="nav-link d-flex align-items-center gap-2"
        [class.active]="isActive('/admin/dashboard')"
+       (click)="isCollapsed = !isCollapsed"
        routerLink="/admin/dashboard">
       <i class="fa-solid fa-house-user fa-lg"></i>
       <span>Dashboard</span>
@@ -17,7 +18,9 @@
     <!-- Payments Link -->
     <a class="nav-link d-flex align-items-center gap-2"
        [class.active]="isActive('/admin/payments')"
-       routerLink="/admin/payments">
+       routerLink="/admin/payments"
+       (click)="isCollapsed = !isCollapsed"
+    >
       <i class="fa-regular fa-credit-card fa-lg"></i>
       <span>Payments</span>
     </a>
@@ -31,6 +34,7 @@
         <!-- Employees Link -->
         <a class="nav-link d-flex align-items-center gap-2"
            [class.active]="isActive('/admin/employees/list')"
+           (click)="isCollapsed = !isCollapsed"
            routerLink="/admin/employees/list">
           <i class="fa-solid fa-clipboard-user fa-lg"></i>
           <span>Employees</span>
@@ -39,6 +43,7 @@
         <!-- Services Link -->
         <a class="nav-link d-flex align-items-center gap-2"
            [class.active]="isActive('/admin/services/list')"
+           (click)="isCollapsed = !isCollapsed"
            routerLink="/admin/services/list">
           <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
           <span>Services</span>
@@ -48,7 +53,7 @@
   </nav>
 
   <!-- Logout Button -->
-  <button class="siderbar__logout-btn btn btn-danger w-75" (click)="logout()">
+  <button class="siderbar__logout-btn btn btn-danger" (click)="logout()">
     <span>Sign Out</span>
   </button>
 </div>
@@ -57,3 +62,6 @@
 <button class="sidebar__toggle-btn btn btn-primary d-md-none {{!isCollapsed ? 'active' : ''}}" (click)="isCollapsed = !isCollapsed">
   <i class="fa-solid fa-bars"></i>
 </button>
+<div class="mobile-sidebar-overlay d-none position-fixed top-0 bottom-0 vw-100 bg-transparent {{!isCollapsed ? 'active' : ''}}" (click)="isCollapsed = !isCollapsed">
+
+</div>

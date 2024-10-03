@@ -1,4 +1,18 @@
+.admin-left-col {
+  width: 25%;
+  max-width: 320px;
+  flex-shrink: 0;
+  z-index: 9;
+}
+
 .admin-right-col {
-  max-height: 100vh;
+  flex-grow: 1;
+  height: 100vh;
   overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  .admin-left-col {
+    width: 0;
+  }
 }

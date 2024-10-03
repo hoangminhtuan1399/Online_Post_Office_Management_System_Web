@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceService } from '../../services/service.service';
 import { Service } from '../../../models/service.model';
@@ -9,8 +9,8 @@ import { Service } from '../../../models/service.model';
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
+  @Input() serviceId: string | null = null;
   service: Service | null = null; 
-  serviceId: string | null = null;
   errorMessage: string | null = null;
 
   constructor(
@@ -20,7 +20,6 @@ export class ServiceDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.serviceId = this.route.snapshot.paramMap.get('id');
     if (this.serviceId) {
       this.loadServiceDetails(this.serviceId);
     }
