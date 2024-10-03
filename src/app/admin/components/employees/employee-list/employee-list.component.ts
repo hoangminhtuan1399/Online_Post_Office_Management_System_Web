@@ -37,7 +37,7 @@ export class EmployeeListComponent implements OnInit {
     private route: ActivatedRoute,
     private officeService: OfficeService,
     private router: Router,
-    private toastService: ToastService 
+    private toastService: ToastService
   ) {
     this.empFilterForm = this.fb.group({
       name: [''],
@@ -77,6 +77,7 @@ export class EmployeeListComponent implements OnInit {
     // Tải dữ liệu nhân viên
     this.employeeService.searchEmployees(this.nameFilter, this.officeIdFilter, this.phoneFilter, this.officeFilter, this.currentPage).subscribe(
       (data) => {
+        console.log('data: ', data);
         this.employees = data;
         this.isLastPage = data.length < this.itemsPerPage;
       },
@@ -105,6 +106,16 @@ export class EmployeeListComponent implements OnInit {
   getOfficeName(officeId: string): string {
     const office = this.offices.find(o => o.id === officeId);
     return office ? office.officeName : 'Unknown Office';
+  }
+
+  onSearchButtonClick() {
+    this.empFilterForm.setValue({
+      ...this.empFilterForm.value,
+      page: 1
+    }, {
+      onlySelf: true
+    })
+    this.onSearch();
   }
 
   // Tìm kiếm nhân viên theo name, phone, officeId hoặc officeName

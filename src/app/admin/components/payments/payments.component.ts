@@ -88,6 +88,16 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
+  onSearchButtonClick() {
+    this.paymentFilterForm.setValue({
+      ...this.paymentFilterForm.value,
+      page: 1
+    }, {
+      onlySelf: true
+    })
+    this.onSearch();
+  }
+
   onSearch() {
     const queryParams = this.getFilterQueryParam();
     this.router.navigate([], { queryParams });

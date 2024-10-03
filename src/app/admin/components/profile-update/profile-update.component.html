@@ -1,100 +1,108 @@
 <div class="container">
-  <h3 class="mb-4">Profile</h3>
-  <!-- Form cập nhật thông tin người dùng -->
-  <form class="row row-gap-3" [formGroup]="updateForm" (ngSubmit)="onUpdate()">
-    <!-- Hidden fields cho Account ID, Employee ID, và Office ID -->
-    <input type="hidden" formControlName="accountId">
-    <input type="hidden" formControlName="employeeId">
-    <input type="hidden" formControlName="officeId">
+    <h3 class="mb-4">Profile</h3>
+    <!-- Form cập nhật thông tin người dùng -->
+    <form class="row row-gap-3" [formGroup]="updateForm" (ngSubmit)="onUpdate()">
+        <!-- Hidden fields cho Account ID, Employee ID, và Office ID -->
+        <input type="hidden" formControlName="accountId">
+        <input type="hidden" formControlName="employeeId">
+        <input type="hidden" formControlName="officeId">
 
-    <!-- Tên -->
-    <div class="col-md-6">
-      <label for="name" class="form-label">Name</label>
-      <input id="name" formControlName="name" class="form-control"
-             [ngClass]="{'is-invalid': updateForm.get('name')?.invalid && updateForm.get('name')?.touched}">
-      <div *ngIf="updateForm.get('name')?.invalid && updateForm.get('name')?.touched" class="invalid-feedback">
-        This is a required field
-      </div>
-    </div>
-
-    <!-- Email -->
-    <div class="col-md-6">
-      <label for="email" class="form-label">Email</label>
-      <input id="email" formControlName="email" type="email" class="form-control"
-             [ngClass]="{'is-invalid': updateForm.get('email')?.invalid && updateForm.get('email')?.touched}">
-      <div *ngIf="updateForm.get('email')?.invalid && updateForm.get('email')?.touched" class="invalid-feedback">
-        Please enter a valid email
-      </div>
-    </div>
-
-    <!-- Số điện thoại -->
-    <div class="col-md-6">
-      <label for="phone" class="form-label">Phone</label>
-      <input id="phone" formControlName="phone" class="form-control"
-             [ngClass]="{'is-invalid': updateForm.get('phone')?.invalid && updateForm.get('phone')?.touched}">
-      <div *ngIf="updateForm.get('phone')?.invalid && updateForm.get('phone')?.touched" class="invalid-feedback">
-        Please enter a valid phone number
-      </div>
-    </div>
-
-    <!-- Ngày sinh -->
-    <div class="col-md-6">
-      <label for="dateOfBirth" class="form-label">Date of Birth</label>
-      <input id="dateOfBirth" formControlName="dateOfBirth" type="date" class="form-control"
-             [ngClass]="{'is-invalid': updateForm.get('dateOfBirth')?.invalid && updateForm.get('dateOfBirth')?.touched}">
-      <div *ngIf="updateForm.get('dateOfBirth')?.invalid && updateForm.get('dateOfBirth')?.touched"
-           class="invalid-feedback">
-        This is a required field
-      </div>
-    </div>
-
-    <!-- Giới tính -->
-    <div class="col-md-6">
-      <label for="gender" class="form-label">Gender</label>
-      <select id="gender" formControlName="gender" class="form-control">
-        <option value="" disabled>Select Gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
-      <div *ngIf="updateForm.get('gender')?.invalid && updateForm.get('gender')?.touched" class="invalid-feedback">
-        This is a required field
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <label for="password" class="form-label">Password</label>
-      <div class="position-relative">
-        <input id="password" formControlName="password" type="{{showPassword ? 'text' : 'password'}}" class="form-control no-background"
-               placeholder="Enter Password" [ngClass]="{'is-invalid': updateForm.get('password')?.invalid && updateForm.get('password')?.touched}">
-        <div *ngIf="updateForm.get('password')?.invalid && updateForm.get('password')?.touched" class="invalid-feedback">
-          This is a required field
+        <!-- Tên -->
+        <div class="col-md-6">
+            <label for="name" class="form-label">Name</label>
+            <input id="name" formControlName="name" class="form-control"
+                   [ngClass]="{'is-invalid': updateForm.get('name')?.invalid && updateForm.get('name')?.touched}">
+            <div *ngIf="updateForm.get('name')?.invalid && updateForm.get('name')?.touched" class="invalid-feedback">
+                This is a required field
+            </div>
         </div>
-        <button tabindex="-1" class="btn btn-outline-secondary password-toggle-btn" type="button" (click)="togglePasswordVisibility()">
-          <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-        </button>
-      </div>
-    </div>
 
-    <div class="col-md-6">
-      <label for="confirmPassword" class="form-label">Confirm Password</label>
-      <div class="position-relative">
-        <input id="confirmPassword" formControlName="confirmPassword" type="{{showConfirmPassword ? 'text' : 'password'}}" class="form-control no-background"
-               placeholder="Confirm Password" [ngClass]="{'is-invalid': updateForm.get('confirmPassword')?.invalid && updateForm.get('confirmPassword')?.touched}">
-        <div
-          *ngIf="updateForm.get('confirmPassword')?.hasError('mismatch') && updateForm.get('confirmPassword')?.touched"
-          class="invalid-feedback">
-          Passwords do not match
+        <!-- Email -->
+        <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" formControlName="email" type="email" class="form-control"
+                   [ngClass]="{'is-invalid': updateForm.get('email')?.invalid && updateForm.get('email')?.touched}">
+            <div *ngIf="updateForm.get('email')?.invalid && updateForm.get('email')?.touched" class="invalid-feedback">
+                Please enter a valid email
+            </div>
         </div>
-        <button tabindex="-1" class="btn btn-outline-secondary password-toggle-btn" type="button" (click)="toggleConfirmPasswordVisibility()">
-          <i [class]="showConfirmPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-        </button>
-      </div>
-    </div>
 
-    <!-- Nút Submit -->
-    <div class="col-12 d-flex">
-      <button type="submit" class="btn btn-primary btn-primary-admin" [disabled]="loading">Update</button>
-    </div>
-  </form>
+        <!-- Số điện thoại -->
+        <div class="col-md-6">
+            <label for="phone" class="form-label">Phone</label>
+            <input id="phone" formControlName="phone" class="form-control"
+                   [ngClass]="{'is-invalid': updateForm.get('phone')?.invalid && updateForm.get('phone')?.touched}">
+            <div *ngIf="updateForm.get('phone')?.invalid && updateForm.get('phone')?.touched" class="invalid-feedback">
+                Please enter a valid phone number
+            </div>
+        </div>
+
+        <!-- Ngày sinh -->
+        <div class="col-md-6">
+            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+            <input id="dateOfBirth" formControlName="dateOfBirth" type="date" class="form-control"
+                   [ngClass]="{'is-invalid': updateForm.get('dateOfBirth')?.invalid && updateForm.get('dateOfBirth')?.touched}">
+            <div *ngIf="updateForm.get('dateOfBirth')?.invalid && updateForm.get('dateOfBirth')?.touched"
+                 class="invalid-feedback">
+                This is a required field
+            </div>
+        </div>
+
+        <!-- Giới tính -->
+        <div class="col-md-6">
+            <label for="gender" class="form-label">Gender</label>
+            <select id="gender" formControlName="gender" class="form-control">
+                <option value="" disabled>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <div *ngIf="updateForm.get('gender')?.invalid && updateForm.get('gender')?.touched"
+                 class="invalid-feedback">
+                This is a required field
+            </div>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <div class="position-relative">
+                <input id="password" formControlName="password" type="{{showPassword ? 'text' : 'password'}}"
+                       class="form-control no-background"
+                       placeholder="Enter Password"
+                       [ngClass]="{'is-invalid': updateForm.get('password')?.invalid && updateForm.get('password')?.touched}">
+                <div *ngIf="updateForm.get('password')?.invalid && updateForm.get('password')?.touched"
+                     class="invalid-feedback">
+                    This is a required field
+                </div>
+                <button tabindex="-1" class="btn btn-outline-secondary password-toggle-btn" type="button"
+                        (click)="togglePasswordVisibility()">
+                    <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <div class="position-relative">
+                <input id="confirmPassword" formControlName="confirmPassword"
+                       type="{{showConfirmPassword ? 'text' : 'password'}}" class="form-control no-background"
+                       placeholder="Confirm Password"
+                       [ngClass]="{'is-invalid': updateForm.get('confirmPassword')?.invalid && updateForm.get('confirmPassword')?.touched}">
+                <div
+                        *ngIf="updateForm.get('confirmPassword')?.hasError('mismatch') && updateForm.get('confirmPassword')?.touched"
+                        class="invalid-feedback">
+                    Passwords do not match
+                </div>
+                <button tabindex="-1" class="btn btn-outline-secondary password-toggle-btn" type="button"
+                        (click)="toggleConfirmPasswordVisibility()">
+                    <i [class]="showConfirmPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Nút Submit -->
+        <div class="col-12 d-flex">
+            <button type="submit" class="btn btn-primary btn-primary-admin" [disabled]="loading">Update</button>
+        </div>
+    </form>
 </div>
