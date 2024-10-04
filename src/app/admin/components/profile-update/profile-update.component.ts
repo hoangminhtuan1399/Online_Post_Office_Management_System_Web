@@ -21,7 +21,6 @@ export class ProfileUpdateComponent implements OnInit {
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
 
-  // Chứa dữ liệu hiện tại của người dùng
   currentData: any = {};
 
   constructor(
@@ -36,7 +35,7 @@ export class ProfileUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.userId = this.getUserId();
     this.initForm();
-    this.loadUserProfile();  // Gọi hàm để lấy dữ liệu người dùng và hiển thị lên form
+    this.loadUserProfile();  
   }
 
   private initForm() {
@@ -50,9 +49,9 @@ export class ProfileUpdateComponent implements OnInit {
       gender: ['', Validators.required],
       officeId: ['', Validators.required],
       password: ['', Validators.required],
-      confirmPassword: ['', Validators.required]  // Thêm Confirm Password
+      confirmPassword: ['', Validators.required] 
     }, {
-      validator: this.passwordsMatchValidator  // Thêm custom validator
+      validator: this.passwordsMatchValidator  
     });
   }
 
@@ -129,10 +128,10 @@ export class ProfileUpdateComponent implements OnInit {
     }
 
     const headers = this.getAuthHeaders();
-    const formData = this.updateForm.getRawValue(); // Lấy dữ liệu từ form
+    const formData = this.updateForm.getRawValue();
 
-    // So sánh dữ liệu từ form và giữ lại giá trị cũ nếu người dùng không nhập gì mới
-    const updatedData = {
+  
+    const updatedData:any = {
       accountId: formData.accountId || this.currentData.accountId,
       employeeId: formData.employeeId || this.currentData.employeeId,
       name: formData.name || this.currentData.name,
@@ -140,9 +139,11 @@ export class ProfileUpdateComponent implements OnInit {
       phone: formData.phone || this.currentData.phone,
       dateOfBirth: formData.dateOfBirth || this.currentData.dateOfBirth,
       gender: formData.gender || this.currentData.gender,
-      officeId: formData.officeId || this.currentData.officeId,
-      password: formData.password || ''  // Không giữ lại mật khẩu cũ, chỉ cập nhật nếu có thay đổi
+      officeId: formData.officeId || this.currentData.officeId
     };
+    if (formData.password && formData.password.trim() !== '') {
+      updatedData.password = formData.password;
+    }
 
     // Log dữ liệu gửi lên BE để kiểm tra
     console.log('Data sent to BE:', updatedData);
@@ -152,13 +153,13 @@ export class ProfileUpdateComponent implements OnInit {
       next: (response) => {
         console.log('Profile updated successfully:', response);
         this.successMessage = 'Profile updated successfully!';
-        this.toastService.showToast(this.successMessage, 'success'); // Hiển thị toast
+        this.toastService.showToast(this.successMessage, 'success'); 
         this.errorMessage = null;
       },
       error: (err) => {
         console.error('Failed to update profile:', err);
         this.errorMessage = 'Failed to update profile. Please try again.';
-        this.toastService.showToast(this.errorMessage, 'danger'); // Hiển thị toast khi lỗi
+        this.toastService.showToast(this.errorMessage, 'danger'); 
         this.successMessage = null;
       }
     });
